@@ -1,4 +1,4 @@
-#thesis-template
+# thesis-template
 
 This template is the result of collecting a lot of resources about how to structure and write a thesis. 
 The result is far from being the perfect template, but it should be a good starting point to simplify the tedious work of layout a thesis.
