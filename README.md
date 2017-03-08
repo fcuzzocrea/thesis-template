@@ -17,6 +17,9 @@ The layout of the thesis follows the guidelines indicated by Polimi's library (h
 Guidelines for Abstract, Introduction and Conclusions are from a template written by Matteo Matteucci (http://airwiki.ws.dei.polimi.it/images/3/3c/SchemaTesi.tgz).
 Inside the Documentation folder it is possible to find some usefull books about LaTeX.
 
+## Presentation
+Under the folder "presentation_slides" it is possible to find the two template for the thesis defence: the old template "classic_template" and the new one "new_template".
+
 ## Some useful links
 - http://airwiki.ws.dei.polimi.it/index.php/Suggestions_to_write_well
 - http://www.lorenzopantieri.net/LaTeX.html
