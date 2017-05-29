@@ -1,9 +1,18 @@
-$ thesis-template .gitignore
+$ thesis-template 
+.gitignore
+
 *.aux
+
 *.bbl
+
 *.blg
+
 *.lof
+
 *.log
+
 *.lot
+
 *.synctex
+*.gz
 *.toc
