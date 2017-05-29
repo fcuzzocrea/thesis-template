@@ -7,6 +7,7 @@ The result is far from being the perfect template, but it should be a good start
 The template is composed by several files. 
 
 The idea is that each part of the thesis has a dedicated TeX file (introduction.tex, abstract.tex, ...) that you can edit independently. 
+
 Each chapter has its own folder to better organize the external resources that you may include (images, pdfs, ...)
 
 `thesis-main.tex` is used to organize all the parts into a single document. 
