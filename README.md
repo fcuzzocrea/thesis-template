@@ -14,7 +14,7 @@ This template does not have your personal information.
 In addition to the thesis's body you must modify the title-page document with all your personal information and rename the chapters, remnoving the ones that you do not use.
 
 ## References
-The layout of the thesis follows the [guidelines](https://www.google.com)(http://www.tedoc.polimi.it/uploads/media/PoliTesi_Istruzioni.pdf) indicated by Polimi's library.
+The layout of the thesis follows the [guidelines](http://www.tedoc.polimi.it/uploads/media/PoliTesi_Istruzioni.pdf) indicated by Polimi's library.
 Guidelines for Abstract, Introduction and Conclusions are from a [template](http://airwiki.ws.dei.polimi.it/images/3/3c/SchemaTesi.tgz) written by Matteo Matteucci.
 Inside the Documentation folder it is possible to find some usefull books about LaTeX.
 
