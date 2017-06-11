@@ -1,0 +1,58 @@
+\mode<presentation>
+
+% Requirements
+\usepackage{ifthen}
+
+% Settings
+\useinnertheme{polimi}
+\useoutertheme{polimi}
+\usefonttheme{polimi}
+\usecolortheme{polimi}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{blocks}[rounded][shadow=true] 
+
+%supervisor command
+\let\insertsupervisor\relax
+\newcommand\supervisortitle[2]{\def\insertsupervisortitle{#1, #2}}
+\newcommand\supervisor[2]{\def\insertsupervisor{#1: #2}}
+
+% Title page command
+\newcommand{\polimititlepage[1]}
+{
+
+{
+ \ifthenelse{\equal{#1}{polimi}} % logo polimi
+ {
+ \setbeamertemplate{background canvas}[polimi theme titlepagepolimi]
+ }
+ {
+    \ifthenelse{\equal{#1}{airlab}} % logo airlab
+    {
+    \setbeamertemplate{background canvas}[polimi theme titlepageairlab]
+    }
+    {
+        \ifthenelse{\equal{#1}{necst}}
+        {
+         \setbeamertemplate{background canvas}[polimi theme titlepagenecst]
+         }
+         {%else no logo
+         \setbeamertemplate{background canvas}[polimi theme titlepagesimple]
+         }
+     }
+ }
+ 
+ \setbeamertemplate{footline}[polimi theme titlepage]
+ 
+ \begin{frame}
+  \titlepage
+ \end{frame}
+
+ 
+}
+
+
+ 
+}
+
+\mode<all>

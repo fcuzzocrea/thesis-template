@@ -83,6 +83,8 @@
 \chapter*{Sommario}
 \addcontentsline{toc}{chapter}{Sommario}
 \input{initial-final-stuff/sommario.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of contents
 \tableofcontents 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of figures
@@ -105,38 +107,6 @@
 \chapter{First chapter\label{chap:first-chapter}}
 \input{chapters/chapter-1/chapter-1.tex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 2
-\chapter{Second chapter\label{chap:second-chapter}}
-\input{chapters/chapter-2/chapter-2.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 3
-\chapter{Third chapter\label{chap:third-chapter}}
-\input{chapters/chapter-3/chapter-3.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 4
-\chapter{Fourth chapter\label{chap:fourth-chapter}}
-\input{chapters/chapter-4/chapter-4.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 5
-\chapter{Fifth chapter\label{chap:fifth-chapter}}
-\input{chapters/chapter-5/chapter-5.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 6
-\chapter{Sixth chapter\label{chap:sixth-chapter}}
-\input{chapters/chapter-6/chapter-6.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 7
-\chapter{Seventh chapter\label{chap:seventh-chapter}}
-\input{chapters/chapter-7/chapter-7.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 8
-\chapter{Eighth chapter\label{chap:eighth-chapter}}
-\input{chapters/chapter-8/chapter-8.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 9
-\chapter{Ninth chapter\label{chap:ninth-chapter}}
-\input{chapters/chapter-9/chapter-9.tex}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusion
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
@@ -144,22 +114,15 @@
 \input{initial-final-stuff/conclusions.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Bibliography
-\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{bibliography}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendix A
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendices
 \appendix
+%%% Appendix A
 \chapter{First appendix\label{app:first-appendix}}
 \input{appendices/appendix-a/appendix-a.tex}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendix B
-\chapter{Second appendix\label{app:second-appendix}}
-\input{appendices/appendix-b/appendix-b.tex}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendix  C
-\chapter{Third appendix\label{app:third-appendix}}
-\input{appendices/appendix-c/appendix-c.tex}
-\cleardoublepage{}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF THE DOCUMENT
+\cleardoublepage{}
 \end{document}

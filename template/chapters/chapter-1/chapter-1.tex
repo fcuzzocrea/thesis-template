@@ -1,60 +1,39 @@
-\section{Lorem ipsum}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lectus
-mi, aliquet ac lectus at, luctus ornare enim. Donec eleifend ornare
-ante. Curabitur non adipiscing risus. Vivamus congue sem non magna
-tristique, ut pellentesque diam ornare. Donec eget arcu congue, vulputate
-nisl et, aliquam tellus. Morbi tincidunt odio quis mi hendrerit aliquet
-sit amet sit amet lorem. Donec fringilla nec lectus nec lacinia. Aliquam
-eu nunc euismod, tempus neque in, consequat velit. Duis arcu quam,
-convallis quis ultricies vitae, semper in est. Aliquam congue sagittis
-tortor, eget blandit lorem ullamcorper id. Maecenas venenatis nec
-neque in consectetur. Nulla nisl turpis, elementum a enim interdum,
-tincidunt vehicula tortor. Praesent pulvinar mi sit amet condimentum
-placerat. Curabitur mollis libero non auctor condimentum. Suspendisse
-ante lectus, sodales vel mauris vel, pharetra laoreet eros.
+In this chapter will be described the basic 'How-To' for writing a thesis in \LaTeX
 
-Nam lacinia nunc lorem, adipiscing ornare purus semper sit amet. Morbi
-elementum augue vitae purus vehicula, ac varius leo sagittis. Vestibulum
-eu orci in ipsum suscipit posuere. Nulla quis erat rhoncus risus rutrum
-venenatis vel at lectus. Vivamus pharetra tempor rhoncus. Proin vitae
-turpis vitae lacus ultrices lacinia eu ac nunc. Morbi id metus purus.
-Pellentesque facilisis at arcu ut adipiscing. Etiam eu nisi hendrerit,
-congue orci non, vehicula orci. Interdum et malesuada fames ac ante
-ipsum primis in faucibus. Aenean porttitor eu velit sed pulvinar.
-Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-per inceptos himenaeos. Maecenas ut pretium nisi, nec aliquam massa.
-Maecenas vitae rhoncus lacus, non tempus turpis.
+\section{How to cite a reference} 
+This is how to cite a reference \cite{Dijkstra68Letters}.
 
-Nam luctus in nisi dignissim congue. Nullam dapibus dui sed ligula
-euismod congue. Nulla vestibulum, justo a feugiat porttitor, massa
-nunc molestie lectus, ultrices tempus turpis massa posuere augue.
-Phasellus pulvinar vulputate ipsum, et eleifend sapien mollis vel.
-Sed vitae eros id sapien dictum ultricies. Aliquam ultricies nisl
-et bibendum imperdiet. Cras a sem eros. Quisque ut mauris a libero
-hendrerit tincidunt ac ac mi. Mauris feugiat est sem, eu malesuada
-ipsum faucibus id. Duis at ante et justo ullamcorper hendrerit sed
-ut turpis. Donec eu dolor ac enim venenatis placerat venenatis vitae
-velit. Curabitur lacus nisi, molestie id ligula vel, congue porta
-felis. Nam eu aliquam justo. Mauris sapien nulla, accumsan id eros
-a, porttitor interdum nunc.
+\section{How to include and reference a Figure}
+As it is possible to see from Figure \ref{fig1}, a figure has been included and cited.
 
-Vestibulum aliquam et mauris imperdiet consectetur. Pellentesque convallis
-metus dignissim neque tincidunt, egestas commodo odio rhoncus. Integer
-purus leo, posuere non leo eget, aliquet condimentum neque. Quisque
-non hendrerit quam. Phasellus sit amet neque quam. Suspendisse at
-sollicitudin ante. Mauris fermentum turpis eget sem cursus tempor.
-Fusce ac rutrum libero, sed adipiscing diam.
+\begin{figure}[htbp]
+\centering
+\includegraphics[width = \textwidth]{chapters/chapter-1/figures/sin_figure.eps}
+\caption{Example of a MATLAB plot ($x, \sin(x)$)}
+\label{fig1}
+\end{figure}
 
-Praesent quis ultricies diam, in hendrerit nibh. Praesent diam dolor,
-bibendum sit amet pharetra a, viverra vel tortor. Mauris id eleifend
-diam. Maecenas tristique est massa, et lacinia ante tristique nec.
-Praesent sapien odio, iaculis sollicitudin tristique vitae, mattis
-non lacus. Ut vehicula enim pellentesque, mollis ante vitae, mollis
-mauris. Aenean imperdiet tellus lorem, eget malesuada ante rhoncus
-id. Pellentesque dignissim nisl id pretium condimentum. Sed congue
-commodo massa in rhoncus. Phasellus elementum sollicitudin erat id
-rhoncus. Fusce sem nunc, semper at tempor sit amet, congue nec orci.
-Vivamus a egestas dui, vel viverra eros. Sed sit amet eros sit amet
-nisi gravida ullamcorper. Nam rutrum in mi sit amet vulputate. Aenean
-pellentesque velit eu nisi eleifend faucibus sit amet vel dui. Pellentesque
-sapien est, auctor at fringilla vel, vehicula ut urna \cite{Dijkstra68Letters}.
+\section{How to include and reference an Equation}
+As it is possible to see from Equation \eqref{eq1}, an equation has been included and cited.
+
+\begin{equation}
+y = sin(x)
+\label{eq1}
+\end{equation}
+
+\section{How to create a Table}
+Table \ref{tab1} has been taken as an example from \citep{latexTables}
+
+\begin{table}
+\centering
+\begin{tabular}{l*{6}{c}r}
+Team              & P & W & D & L & F  & A & Pts \\
+\hline
+Manchester United & 6 & 4 & 0 & 2 & 10 & 5 & 12  \\
+Celtic            & 6 & 3 & 0 & 3 &  8 & 9 &  9  \\
+Benfica           & 6 & 2 & 1 & 3 &  7 & 8 &  7  \\
+FC Copenhagen     & 6 & 2 & 1 & 3 &  5 & 8 &  7  \\
+\end{tabular}
+\caption{This is a Table}
+\label{tab1}
+\end{table}
