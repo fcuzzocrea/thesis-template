@@ -16,3 +16,5 @@ $ thesis-template
 *.synctex
 *.gz
 *.toc
+
+Thumbs.db
