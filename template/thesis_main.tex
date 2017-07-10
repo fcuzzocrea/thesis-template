@@ -59,33 +59,36 @@
 \newgeometry{margin=3cm}
 \input{title-page/title-page.tex}
 \restoregeometry
-
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Dedication
 \begin{flushright}
 \emph{\input{initial-final-stuff/dedication.tex}}
-\cleardoublepage{}
 \par
 \end{flushright}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acnowledgment
 \chapter*{Acknowledgments}
 \addcontentsline{toc}{chapter}{Acknowledgments}
 \input{initial-final-stuff/acknowledgments.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Abstract
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 \input{initial-final-stuff/abstract.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Sommario
 \chapter*{Sommario}
 \addcontentsline{toc}{chapter}{Sommario}
 \input{initial-final-stuff/sommario.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of contents
 \tableofcontents 
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of figures
 \listoffigures
@@ -102,27 +105,31 @@
 \addcontentsline{toc}{chapter}{Introduction}
 \markboth{Introduction}{Introduction}
 \input{initial-final-stuff/introduction.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 1
 \chapter{First chapter\label{chap:first-chapter}}
 \input{chapters/chapter-1/chapter-1.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusion
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
 \markboth{Conclusions}{Conclusions}
 \input{initial-final-stuff/conclusions.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Bibliography
 \bibliographystyle{unsrt}
 \bibliography{bibliography}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendices
 \appendix
 %%% Appendix A
 \chapter{First appendix\label{app:first-appendix}}
 \input{appendices/appendix-a/appendix-a.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF THE DOCUMENT
-\cleardoublepage{}
 \end{document}
