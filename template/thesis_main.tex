@@ -56,6 +56,7 @@
 	\renewcommand{\headrulewidth}{0pt}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title page	
+\pagenumbering{gobble}
 \newgeometry{margin=3cm}
 \input{title-page/title-page.tex}
 \restoregeometry
@@ -69,6 +70,7 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acnowledgment
+\pagenumbering{Roman}
 \chapter*{Acknowledgments}
 \addcontentsline{toc}{chapter}{Acknowledgments}
 \input{initial-final-stuff/acknowledgments.tex}
@@ -91,16 +93,19 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of figures
-\listoffigures
+\phantomsection
 \addcontentsline{toc}{chapter}{List of figures}
+\listoffigures
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of tables
-\listoftables
+\phantomsection
 \addcontentsline{toc}{chapter}{List of tables}
+\listoftables
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction
+\pagenumbering{arabic}
 \chapter*{Introduction\label{chap:introduction}}
 \addcontentsline{toc}{chapter}{Introduction}
 \markboth{Introduction}{Introduction}
