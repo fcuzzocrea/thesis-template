@@ -1,5 +1,0 @@
-#!/bin/sh
-
-texhash
-
-exit 0
