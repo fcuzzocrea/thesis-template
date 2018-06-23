@@ -19,7 +19,7 @@ This template does not have your personal information.
 In addition to the thesis's body you must modify the title-page document with all your personal information and rename the chapters, removing the ones that you do not use.
 
 ## Presentation
-Under the folder `presentation_slides/` it is possible to find the two template for the thesis defence: the old template `classic_template` and the new one `new_template`.
+Under the folder `presentation_slides/` it is possible to find the template for the thesis defence (both 16/9 and 4/3 format).
 
 ## References
 The layout of the thesis follows the [guidelines](http://www.tedoc.polimi.it/uploads/media/PoliTesi_Istruzioni.pdf) indicated by Polimi's library.
