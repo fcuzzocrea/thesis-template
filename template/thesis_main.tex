@@ -19,7 +19,7 @@
 \usepackage{bookmark}
 \usepackage{xfrac}
 \usepackage{epsfig}
-
+	
 \pagestyle{fancy}
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
@@ -37,23 +37,11 @@
     pdfauthor  = {AUTHOR-NAME},    		    % author
     pdftitle   = {TITLE},    				% title
  	pdfsubject = {Master's Degree Thesis},  % subject of the document
- 	pdfkeywords= {KEYWORD-1, KEYWORD-2}      % list of keywords
+ 	pdfkeywords= {KEYWORD-1, KEYWORD-2}     % list of keywords
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BEGIN OF THE DOCUMENT
 \begin{document}
-
-\pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-\fancyhf{} \fancyhead[LE,RO]{\bfseries\thepage}
-\fancyhead[LO]{\bfseries\rightmark}
-\fancyhead[RE]{\bfseries\leftmark}
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0pt}
-\fancypagestyle{plain}{
-	\fancyhead{}
-	\renewcommand{\headrulewidth}{0pt}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title page	
 \pagenumbering{gobble}
