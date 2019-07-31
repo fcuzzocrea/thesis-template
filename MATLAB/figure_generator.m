@@ -47,10 +47,22 @@ xlabel('[$s$]', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE)
 %% Make figures folder
 ORIGINAL_PATH = pwd;
 FIGURES_FOLDER_NAME = 'figures';
+FIG_FIGURES_FOLDER_NAME = 'fig';
+COMPRESSED_FIGURES_FOLDER_NAME = 'pdf_compressed';
+ORIGINAL_FIGURES_FOLDER_NAME = 'pdf_original';
+
 FIGURES_DESTINATION_PATH = strcat([ORIGINAL_PATH, filesep, FIGURES_FOLDER_NAME]);
+FIG_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, FIG_FIGURES_FOLDER_NAME]);
+COMPRESSED_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, COMPRESSED_FIGURES_FOLDER_NAME]);
+ORIGINAL_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, ORIGINAL_FIGURES_FOLDER_NAME]);
 
 if ~exist(FIGURES_DESTINATION_PATH, 'dir')
     mkdir(FIGURES_DESTINATION_PATH);
+    mkdir(FIG_FIGURES_DESTINATION_PATH);
+    mkdir(COMPRESSED_FIGURES_DESTINATION_PATH);
+    mkdir(ORIGINAL_FIGURES_DESTINATION_PATH);
+    
+    cd(FIGURES_DESTINATION_PATH)
 else
     disp('Destination folder already exist!!')
     overwrite_flag = input('Would you like to over-write plots? (y/n): ','s');
@@ -59,18 +71,26 @@ else
         disp('STOPPED')
         return
     end
-
-    cd(FIGURES_DESTINATION_PATH)
     
-    saveas(f_omega, FIG_NAME, 'pdf');
-    system(strcat(['pdfcrop ', FIG_NAME, '.pdf',' ', FIG_NAME, '.pdf']));
-    saveas(f_omega, FIG_NAME, 'fig');
+    cd(FIGURES_DESTINATION_PATH)
 end
+
+saveas(f_omega, FIG_NAME, 'pdf');
+system(strcat(['pdfcrop ', FIG_NAME, '.pdf',' ', FIG_NAME, '.pdf']));
+saveas(f_omega, FIG_NAME, 'fig');
 
 %% Back to the original path
 cd(ORIGINAL_PATH)
 
 %% Final suggestion
-system('pdf_compresser.sh');
+if ismac
+    % Code to run on Mac platform
+elseif isunix
+    system('./pdf_compresser.sh');
+elseif ispc
+    system('pdf_compresser.sh');
+else
+    disp('Platform not supported')
+end
 
 %% END OF CODE

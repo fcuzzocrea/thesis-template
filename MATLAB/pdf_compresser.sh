@@ -3,16 +3,13 @@
 EXTENSIONS="pdf"
 BKP=./pdf_original
 ORI=./pdf_compressed
-FIG=.$DIR/fig
+FIG=./fig
 
 for entry in ./*
 do
  if [ -d "$entry" ];then	#condition with -d is true if the file is a directory
   echo "$entry"
   cd "$entry"
-   mkdir $BKP
-   mkdir $ORI
-   mkdir $FIG
       for FILE in ./*.$EXTENSIONS
       do
       if [ $(head -c 4 $FILE) = "%PDF" ]; then
