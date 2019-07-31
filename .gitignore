@@ -17,4 +17,6 @@ $ thesis-template
 *.gz
 *.toc
 
+*.bak
+
 Thumbs.db
