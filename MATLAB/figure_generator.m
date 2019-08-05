@@ -10,12 +10,13 @@ clc
 
 %% Data to be plotted in a figure
 time = 0:0.1:2*pi;
-omega = sin(time);
+omega_1 = sin(time);
+omega_2 = sin(2*time);
 
 %% Figure settings
 FIG_NAME = 'sample_figure';
 
-FIGURE_POSITION = [0, 0, 800,600];
+FIGURE_POSITION = [0, 0, 640,480];
 TITLE_FONT_SIZE = 14.0;
 LABEL_FONT_SIZE = 14.0;
 LEGEND_FONT_SIZE = 14.0;
@@ -26,23 +27,31 @@ YL_SHIFT2 = [-0.1, 0.5, 0];
 Y_LIM = [-1.1,+1.1];
 Y_TIKS = Y_LIM(1):0.5:Y_LIM(2);
 
-DOWNSAMPLE_FACTOR = 1;
+X_LIM = [time(1),time(end)];
+X_TIKS = X_LIM(1):2:X_LIM(2);
+
+DOWNSAMPLE_FACTOR = 1; 
+%used to reduce by a factor DOWNSAMPLE_FACTOR the number of plotted points, 
+%useful if the figure contains many lines and the figure can become heavy
 
 %% Create figure
 f_omega = figure('Position', FIGURE_POSITION);
 hold on
-plot(downsample(time, DOWNSAMPLE_FACTOR), downsample(omega, DOWNSAMPLE_FACTOR))
+plot(downsample(time, DOWNSAMPLE_FACTOR), downsample(omega_1, DOWNSAMPLE_FACTOR), '-')
+plot(downsample(time, DOWNSAMPLE_FACTOR), downsample(omega_2, DOWNSAMPLE_FACTOR), '--')
 hold off
-ylim(Y_LIM)
-yticks(Y_TIKS)
-lgd = legend('$\omega$');
-set(lgd, 'Interpreter', 'latex', 'Fontsize', LEGEND_FONT_SIZE, 'Orientation', 'horizontal', 'Location', 'southeast', 'Location', 'Best')
-title('Sample image', 'Interpreter', 'latex', 'fontsize', TITLE_FONT_SIZE)
 grid on
 box on
-yl = ylabel('[$rad/s$]', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE);
+ylim(Y_LIM)
+yticks(Y_TIKS)
+xlim(X_LIM)
+xticks(X_TIKS)
+lgd = legend('$\omega_1$','$\omega_2$');
+set(lgd, 'Interpreter', 'latex', 'Fontsize', LEGEND_FONT_SIZE, 'Orientation', 'horizontal', 'Location', 'southeast', 'Location', 'Best')
+yl = ylabel('Angular velocity $\left[rad/s\right]$', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE);
 set(yl, 'Units', 'Normalized', 'Position', YL_SHIFT)
-xlabel('[$s$]', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE)
+xlabel('Time $\left[s\right]$', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE)
+%title('Sample image', 'Interpreter', 'latex', 'fontsize', TITLE_FONT_SIZE) % do not put title in document, just in presentations
 
 %% Make figures folder
 ORIGINAL_PATH = pwd;
