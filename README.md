@@ -12,7 +12,6 @@ Each chapter has its own folder to better organize the external resources that y
 
 `thesis-main.tex` is used to organize all the parts into a single document. 
 
-
 ## What you have to modify in this template
 This template does not have your personal information.
 
@@ -27,3 +26,10 @@ The layout of the thesis follows the [guidelines](http://www.tedoc.polimi.it/upl
 Guidelines for Abstract, Introduction and Conclusions are from a [template](http://airwiki.ws.dei.polimi.it/images/3/3c/SchemaTesi.tgz) written by Matteo Matteucci.
 
 Inside the `documentation/` folder it is possible to find some usefull book about LaTeX.
+
+## Useful tools
+Here you can find usefull tools for the creation of equations, tables and figures:
+
+*	https://mathpix.com/
+*	http://www.tablesgenerator.com/
+* 	https://www.mathcha.io/
