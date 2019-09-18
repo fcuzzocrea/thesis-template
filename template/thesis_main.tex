@@ -1,4 +1,6 @@
 \documentclass[a4paper,twoside,12pt]{book}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Packages mandatory for the template
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper, left=37mm, right=27mm, top=39mm, bottom=39mm, headsep=12mm, footskip=15mm]{geometry}
 \setlength{\headheight}{15pt}
@@ -16,10 +18,14 @@
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0pt}
 \fancypagestyle{plain}{
-	\fancyhead{}
-	\renewcommand{\headrulewidth}{0pt}}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Included packages by the student
+% "Please keep in mind that Latex ninjas are not welcome: as a rule, if you include more than a dozen packages then your .tex files will be needlessly complicated and hard to re-use"
+%\usepackage{•}
 
-%%%%%%%%%% General thesis informations go here! (TITLE, AUTHOR-NAME, KEYWORD-1, KEYWORD-2,...
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  General thesis informations go here!
 \hypersetup{
     pdfauthor  = {AUTHOR-NAME},    		    % author
     pdftitle   = {TITLE},    				% title

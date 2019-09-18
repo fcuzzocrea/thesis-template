@@ -22,7 +22,6 @@ LABEL_FONT_SIZE = 14.0;
 LEGEND_FONT_SIZE = 14.0;
 
 YL_SHIFT = [-0.06, 0.5, 0];
-YL_SHIFT2 = [-0.1, 0.5, 0];
 
 Y_LIM = [-1.1,+1.1];
 Y_TIKS = Y_LIM(1):0.5:Y_LIM(2);
