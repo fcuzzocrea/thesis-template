@@ -46,7 +46,7 @@ yticks(Y_TIKS)
 xlim(X_LIM)
 xticks(X_TIKS)
 lgd = legend('$\omega_1$','$\omega_2$');
-set(lgd, 'Interpreter', 'latex', 'Fontsize', LEGEND_FONT_SIZE, 'Orientation', 'horizontal', 'Location', 'southeast', 'Location', 'Best')
+set(lgd, 'Interpreter', 'latex', 'Fontsize', LEGEND_FONT_SIZE, 'Orientation', 'horizontal', 'Location', 'Best')
 yl = ylabel('Angular velocity $\left[rad/s\right]$', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE);
 set(yl, 'Units', 'Normalized', 'Position', YL_SHIFT)
 xlabel('Time $\left[s\right]$', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE)
