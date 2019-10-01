@@ -33,3 +33,4 @@ Here you can find usefull tools for the creation of equations, tables and figure
 *	https://mathpix.com/
 *	http://www.tablesgenerator.com/
 * 	https://www.mathcha.io/
+*	http://latexdraw.sourceforge.net/
