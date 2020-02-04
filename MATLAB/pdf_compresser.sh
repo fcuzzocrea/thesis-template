@@ -4,6 +4,7 @@ EXTENSIONS="pdf"
 BKP=./pdf_original
 ORI=./pdf_compressed
 FIG=./fig
+PNG=./png
 
 for entry in ./*
 do
@@ -17,8 +18,8 @@ do
          mv $FILE $BKP/$FILE
       fi
       done
-      #rm ./*.fig
       mv ./*.fig $FIG
+      mv ./*.png $PNG
   cd ..
  fi
  done

@@ -50,23 +50,25 @@ set(lgd, 'Interpreter', 'latex', 'Fontsize', LEGEND_FONT_SIZE, 'Orientation', 'h
 yl = ylabel('Angular velocity $\left[rad/s\right]$', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE);
 set(yl, 'Units', 'Normalized', 'Position', YL_SHIFT)
 xlabel('Time $\left[s\right]$', 'Interpreter', 'latex', 'fontsize', LABEL_FONT_SIZE)
-%title('Sample image', 'Interpreter', 'latex', 'fontsize', TITLE_FONT_SIZE) % do not put title in document, just in presentations
 
 %% Make figures folder
 ORIGINAL_PATH = pwd;
 FIGURES_FOLDER_NAME = 'figures';
 FIG_FIGURES_FOLDER_NAME = 'fig';
+PNG_FIGURES_FOLDER_NAME = 'png';
 COMPRESSED_FIGURES_FOLDER_NAME = 'pdf_compressed';
 ORIGINAL_FIGURES_FOLDER_NAME = 'pdf_original';
 
 FIGURES_DESTINATION_PATH = strcat([ORIGINAL_PATH, filesep, FIGURES_FOLDER_NAME]);
 FIG_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, FIG_FIGURES_FOLDER_NAME]);
+PNG_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, PNG_FIGURES_FOLDER_NAME]);
 COMPRESSED_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, COMPRESSED_FIGURES_FOLDER_NAME]);
 ORIGINAL_FIGURES_DESTINATION_PATH = strcat([FIGURES_DESTINATION_PATH, filesep, ORIGINAL_FIGURES_FOLDER_NAME]);
 
 if ~exist(FIGURES_DESTINATION_PATH, 'dir')
     mkdir(FIGURES_DESTINATION_PATH);
     mkdir(FIG_FIGURES_DESTINATION_PATH);
+    mkdir(PNG_FIGURES_DESTINATION_PATH);
     mkdir(COMPRESSED_FIGURES_DESTINATION_PATH);
     mkdir(ORIGINAL_FIGURES_DESTINATION_PATH);
     
@@ -86,6 +88,10 @@ end
 saveas(f_omega, FIG_NAME, 'pdf');
 system(strcat(['pdfcrop ', FIG_NAME, '.pdf',' ', FIG_NAME, '.pdf']));
 saveas(f_omega, FIG_NAME, 'fig');
+
+%% Save figure for presentation slides
+title('Sample image', 'Interpreter', 'latex', 'fontsize', TITLE_FONT_SIZE) %add title
+saveas(f_omega, FIG_NAME, 'png');
 
 %% Back to the original path
 cd(ORIGINAL_PATH)
