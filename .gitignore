@@ -2,21 +2,15 @@ $ thesis-template
 .gitignore
 
 *.aux
-
 *.bbl
-
 *.blg
-
 *.lof
-
 *.log
-
 *.lot
-
 *.synctex
 *.gz
 *.toc
-
 *.bak
+*.out
 
 Thumbs.db
