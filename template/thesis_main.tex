@@ -1,3 +1,19 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thesis template
+% This is a Master of Science thesis template for students
+% graduating at Politecnico di Milano.
+%
+% NOTICE: this is not an "official" template by Politecnico
+% di Milano, nor Politecnico di Milano endorses the use of
+% this template.
+%
+% Copyright Mattia Giurato, 2020
+%
+% This template is released under the Creative Commons
+% CC-BY-NC-SA license
+% https://creativecommons.org/licenses/by-nc-sa/3.0/
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[a4paper,twoside,12pt]{book}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Packages mandatory for the template
@@ -8,7 +24,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{amsmath}
-	
+
 \pagestyle{fancy}
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
@@ -20,7 +36,7 @@
 \fancypagestyle{plain}{
 \fancyhead{}
 \renewcommand{\headrulewidth}{0pt}}
-	
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Included packages by the student
 % "Please keep in mind that Latex ninjas are not welcome: as a rule, if you include more than a dozen packages then your .tex files will be needlessly complicated and hard to re-use"
 %\usepackage{•}
@@ -40,7 +56,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BEGIN OF THE DOCUMENT
 \begin{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title page	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Title page
 \pagenumbering{gobble}
 \newgeometry{margin=3cm}
 \input{./title-page/title-page.tex}
@@ -74,7 +90,7 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of contents
-\tableofcontents 
+\tableofcontents
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% List of figures
