@@ -1,0 +1,167 @@
+%% LyX 2.3.5.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english,openright]{book}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3.5cm,lmargin=4cm,rmargin=3cm}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand{\LyX}{\texorpdfstring%
+  {L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+  {LyX}}
+\DeclareRobustCommand*{\lyxarrow}{%
+\@ifstar
+{\leavevmode\,$\triangleleft$\,\allowbreak}
+{\leavevmode\,$\triangleright$\,\allowbreak}}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+\floatstyle{ruled}
+\newfloat{algorithm}{tbp}{loa}[chapter]
+\providecommand{\algorithmname}{Algorithm}
+\floatname{algorithm}{\protect\algorithmname}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% additional packages
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage{amsthm}
+\usepackage{rotating}
+\usepackage{caption}
+\usepackage{epsfig}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage{cite}
+\usepackage[normalem]{ulem}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{algpseudocode}
+
+% this is a dirty fix for LTS version of Ubuntu/Kubuntu that has a
+% very outdated "geometry" package
+\include{geometry.sty}
+
+% fixes the page number of the first page of each chapter
+\fancypagestyle{plain}{
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[OC]{\begin{flushright}\thepage\end{flushright}}
+}
+
+% fancy headers for the thesis
+\fancyhead{}
+\fancyhead[LE]{\slshape \nouppercase \leftmark}
+\fancyhead[RO]{\slshape \nouppercase \rightmark}
+\fancyfoot[EC]{\begin{flushleft}\thepage\end{flushleft}}
+\fancyfoot[OC]{\begin{flushright}\thepage\end{flushright}}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\@ifundefined{showcaptionsetup}{}{%
+ \PassOptionsToPackage{caption=false}{subfig}}
+\usepackage{subfig}
+\makeatother
+
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listing}
+
+\begin{document}
+\frontmatter
+\pagestyle{empty}
+\newgeometry{margin=3cm}\input{title-page/title-page.tex}\restoregeometry
+
+\cleardoublepage{}
+
+\begin{flushright}
+\emph{\input{dedication.tex}}\cleardoublepage{}
+\par\end{flushright}
+
+\chapter*{Acknowledgments}
+
+\thispagestyle{empty}\input{acknowledgments.tex}\cleardoublepage{}
+
+\chapter*{Abstract}
+
+\thispagestyle{empty}\input{abstract.tex}\cleardoublepage{}
+
+\chapter*{Sommario}
+
+\thispagestyle{empty}\input{sommario.tex}\cleardoublepage\pagenumbering{roman}
+\setcounter{page}{1}
+\pagestyle{fancy}\tableofcontents{}\listoffigures
+\listoftables
+\listof{algorithm}{List of Algorithms}
+\cleardoublepage\mainmatter
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+
+\chapter*{Introduction\label{chap:introduction}}
+
+\addcontentsline{toc}{chapter}{Introduction}
+\markboth{Introduction}{Introduction}\input{introduction.tex}
+
+\chapter{State of Art\label{chap:first-chapter}}
+
+\input{chapter-1/chapter-1.tex}
+
+\chapter{Problem setup\label{chap:second-chapter}}
+
+\input{chapter-2/chapter-2.tex}
+
+\chapter{Synthetic image generation\label{chap:third-chapter}}
+
+\input{chapter-3/chapter-3.tex}
+
+\chapter{The SVD architecture for pose initialization\label{chap:fourth-chapter}}
+
+\input{chapter-4/chapter-4.tex}
+
+\chapter{Algorithm implementation\label{chap:fifth-chapter}}
+
+\input{chapter-5/chapter-5.tex}
+
+\chapter{Results\label{chap:sixth-chapter}}
+
+\input{chapter-6/chapter-6.tex}
+
+\chapter*{Conclusions\label{chap:conclusion}}
+
+\addcontentsline{toc}{chapter}{Conclusions}
+\markboth{Conclusions}{Conclusions}\input{conclusions.tex}\bibliographystyle{plain}
+\bibliography{bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+
+\appendix
+
+\chapter{First appendix\label{app:first-appendix}}
+
+\input{appendix-a/appendix-a.tex}
+
+\chapter{Second appendix\label{app:second-appendix}}
+
+\input{appendix-b/appendix-b.tex}
+
+\chapter{Third appendix\label{app:third-appendix}}
+
+\input{appendix-c/appendix-c.tex}\cleardoublepage
+\end{document}
