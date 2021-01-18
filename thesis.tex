@@ -57,6 +57,16 @@
 \usepackage[table]{xcolor}
 \usepackage{booktabs}
 \usepackage{algpseudocode}
+\usepackage[detect-all]{siunitx}
+\usepackage{euler}
+\usepackage{sectsty}
+\usepackage[font={footnotesize }]{caption}
+\usepackage{multicol}
+\usepackage{prettyref}
+\usepackage[nointegrals]{wasysym}
+
+% Acronyms
+\usepackage[acronym,nonumberlist,nopostdot,section=section,toc,numberedsection]{glossaries}
 
 % this is a dirty fix for LTS version of Ubuntu/Kubuntu that has a
 % very outdated "geometry" package
@@ -114,19 +124,19 @@
 \listoftables
 \listof{algorithm}{List of Algorithms}
 \cleardoublepage\mainmatter
+
+%************************************************************
+% Defining useful commands
+%************************************************************
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 \renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 
-\chapter*{Introduction\label{chap:introduction}}
-
-\addcontentsline{toc}{chapter}{Introduction}
-\markboth{Introduction}{Introduction}\input{introduction.tex}
-
-\chapter{State of Art\label{chap:first-chapter}}
+\chapter{Introduction\label{chap:first-chapter}}
 
 \input{chapter-1/chapter-1.tex}
 
-\chapter{Problem setup\label{chap:second-chapter}}
+\chapter{State-of-the-art and Limitations\label{chap:second-chapter}}
 
 \input{chapter-2/chapter-2.tex}
 
@@ -138,13 +148,9 @@
 
 \input{chapter-4/chapter-4.tex}
 
-\chapter{Algorithm implementation\label{chap:fifth-chapter}}
-
-\input{chapter-5/chapter-5.tex}
-
 \chapter{Results\label{chap:sixth-chapter}}
 
-\input{chapter-6/chapter-6.tex}
+\input{chapter-5/chapter-5.tex}
 
 \chapter*{Conclusions\label{chap:conclusion}}
 

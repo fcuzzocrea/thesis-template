@@ -9,22 +9,62 @@ Katherine Johnson
 \end{quotation}
 \vspace{0.5cm}
 
-\section{POV-Ray}
+\section{Mathematical Preliminaries}
+
+\subsection{Reference Frames}
+% copia paro paro quello che ha fatto il tizio nella tesi con i sistemi di riferimento
+
+\section{Image generation}
 
 \subsection{Raytracing}
 
-\subsection{Program's features}
+\subsubsection{What is raytracing}
 
-\subsection{Light source ?}
+\subsubsection{POVRay}
+POVRay it is an opensource ray-tracing tool. It does not offer a nice GUI for modeling objects, like Blender, but it can be used as Blender rendering engine to be able to have a 3D modeling environment to model our objects. \\
+POVRay has also been used by a different number of people doing research work in the space field to generate images, for example it has been used under the ESA LunarSim study to render images of lunar surfaces. It can also be extended to correctly simulate images of spacecraft. It is a powerful software which let us define surfaces and materials relevant properties such as reflectivity, diffraction, specularity and brillance. Those parameters can be fine tuned to obtain an image as realistic as possible, under certain limits.\\
+POVRay can be scripted in order to be used in conjunction with other softwares.\\
+Although does not let the user to add some sort of disturbance or noise to the generated images, those disturbances may be added by using some third party software such as MATLAB thanks to POVRay's ease of scriptability.\\
+Up to a certain point, it also let us define some basic characteristic of the camera, such as the focal lengths, although it does not let us correctly simulate some other effects such as lens distorsions.\\
+It has some drawbacks, such as:
+\begin{itemize}
+    \item Only a Lambertian reflectance model is possible;
+    \item A uniform surface albedo is used and realistic albedo values cannot used;
+    \item The extended illumination source (sun) can be modelled only as an array of point light sources or as an area light, which is a suboptimal solution;
+    \item Background lighting (starlight) is cannnot modelled;
+    \item Earthshine cannot be easily modelled;
+    \item POV-Ray can produceshigh quality images but rendering is slow as many minutes (sometimes hours) are required to produce a single image;
+\end{itemize}
+Despite those limitations POVRay can been used to produce synthetic space imagery with an acceptable degree of accuracy for CV algorithm training.\\
 
-\subsection{Camera setup ?}
+\subsection{Environment Modeling}
 
-\subsubsection{camera attitude matrix ?}
+\subsubsection{World Setup}
 
-\subsection{Earth setup ?}
+\subsubsection{Earth Modeling}
 
-\subsection{Spacecraft Modeling ?}
-\subsubsection{Blender ?}
+\paragraph{Cloud Layer}
 
-\section{Matlab integration ?}
+\paragraph{Athmospheric Model}
 
+\subsubsection{Light Modeling}
+
+\subsection{Tango Spacecraft Modeling}
+
+\subsubsection{3D Model of the Spacecraft}
+
+\subsubsection{Blender}
+
+\subsubsection{POVRay}
+
+\subsection{Mango Spacecraft Modeling}
+
+\subsubsection{Camera model}
+
+\section{MATLAB integration}
+
+\subsection{Random Attitude Image Generation}
+% Copia paro paro il paper
+
+\subsection{Pseudo-random Attitude Image generation ?}
+% Copia paro paro la relazione di biggs
