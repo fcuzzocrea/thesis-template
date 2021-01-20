@@ -13,6 +13,9 @@ $(PROJECT).pdf: $(PROJECT).aux $(PROJECT).bbl $(PROJECT).tex */*.tex
 $(PROJECT).bbl: $(REFERENCES)
 	bibtex $(PROJECT)
 
+$(PROJECT).nlo:
+	makeindex $(PROJECT).nlo -s nomencl.ist -o $(PROJECT).nls
+
 $(PROJECT).aux: 
 	$(BUILDTEX) -draftmode
 

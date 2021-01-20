@@ -1,11 +1,6 @@
-\section{Kinematics}
-In this section the kinematics representation used for the simulation will briefly be descripted. Two approach has been taken : 
-\begin{itemize}
- \item [-] The DCM representation
- \item [-] The quaternion representation
-\end{itemize}
+In this appendix the kinematic and dynamic representation used for the simulation of the attitude of the target spacefrat will briefly be descripted.
 
-\subsection{Direct Cosine Matrix}
+\section{Direct Cosine Matrix}
 The direct cosine matrix, or attitude matrix, gives the transformation of a vector from a reference frame $N$ to another reference frame $O$ : 
 
 \begin{equation}
@@ -36,41 +31,6 @@ where $[\omega_{B/N} \times]$ is the skew-symmetric cross product matrix contain
 \end{equation*}
 
 Thus, by integrating this relation, we can get full attitude at every iteration.
-
-\subsection{Quaternions}
-Quaternions are another way to parametrize the attitude of a rigid body in space. They are commonly used for control purpose due to the fact that they don't have kinematics singularities.
-A quaternion is a four-component vector with some additional operations defined on it. A quaternion $\mathbf{q}$ has a three-vector part $\mathbf{q_{1:3}}$ and a scalar part $q_{4}$ : 
-
-\begin{equation*}
- \mathbf{q} =
-                                \begin{bmatrix}
-                                    q_{1}\\
-                                    q_{2}\\
-                                    q_{3}\\
-                                    q_{4}\\
-                                \end{bmatrix}
-\end{equation*}
-
-The kinematic equation for the quaternion can be written as :
-
-\begin{equation}
- \label{eq:quaternion}
- \dot{q} = \frac{1}{2} \mathbf{\varXi(\mathbf{q})} \mathbf{\omega_{B/N}}
-\end{equation}
-
-where $\mathbf{\varXi(\mathbf{q})}$ is defined as 
-
-\begin{equation*}
- \mathbf{\varXi(\mathbf{q})} =
-                                \begin{bmatrix}
-                                   q_4 & -q_3 & q_2\\
-                                   q_3 & q_4 & -q_1\\
-                                  -q_2 & q_1 & q_4\\
-                                  -q_1 & -q_2 & -q_3\\
-                                \end{bmatrix}
-\end{equation*}
-
-By integrating Eq. \ref{eq:quaternion} can get the full attitude at every iteration in terms of quaternion.
 
 \section{Dynamics}
 \subsection{Euler Equations}

@@ -9,36 +9,41 @@ George Box
 \end{quotation}
 \vspace{0.5cm}
 
-\section{Host Company}
-This thesis project was developed at D-Orbit.
-D-Orbit is a New Space company with solutions convering the entire life-cycle of a space mission, including mission analysus and design, engineering, manufacturing, integration, testing, launch, mission control and end of life decommisioning.\\
-The company's competitive advantage is in the versatility of its launch and deployement services that can me tailored to the customer's needs, from the launch procurement of a single spacecraft using standard deployment strategies to the precise deployment of a full constrallation with ION Satellite Carrier, a satellite dispenser developed and operated by D-Orbit.\\
-ION Satellite Carrier can host any combination of CubeSat with a total volume of up to 48U and release them individually into distinct orbital slots, enabling delplyment schemes previously unavailable to spacecraft with no independet propulsion.\\
-Committed to pursuin business modeal that are profitable, friendly for the environment, and socially beneficia, D-Orbit is the first certified B-Corp space company in the world.\\
-Headquartered in Como, Italy, D-Orbit has subsidiaries in Lisbon, Portugal, Harwell, UK, and Washington DC, USA.\\
-
 \section{Motivation}
-Close range proximity operations between spacecrafts has been studied and discussed by space agencies and private companies since the early stages of space exploration, dating back to the Apollo program \cite{LangleyApollo}.\\
-Since then we can find a wide range of missions where close-range proximity operations are in, like formation flying \cite{2001FormationFliying}  \cite{2009FormationFliying}, on-orbit servicing \cite{Zimpfer2005} \cite{Tatsch2006} \cite{FloresAbad2014} and active debris removal \cite{clerc2012astrium} \cite{Bonnal2013}.\\
-Most of those missions were possible thanks to the presence of on-board crew or to the cooperativeness between spacecrafts.\\
-A target space object is deemed cooperative if it is built to provide information suitable for the estimation of its distance and orientation in space with respect to the chaser spacecraft. Also, it can be be actively or passively cooperative depending on whether it interacts with a dedicated radio-link with the chaser spacecraft or not \cite{Opromolla2017}.\\
-As regard to the new generation of space robotics missions such as debris removal and On-Orbit Servicing, proximity operations and docking are key-enabling capabilities for either repair, refuel or deorbit end-of-life and nonfunctional satellites \cite{2016Ventura}.\\
-The main challenge when performing close-range navigation in actual on-orbit servicing and debris removal missions however is when the target spacecraft may be uncooperative.\\
-This implies that the target spacecraft may not be equipped with an active communication link or identifiable markers such as light-emitting diodes or corner cube reflectors to help with computing the relative position and attitude of the active satellite (chaser) with respect to a uncooperative target space object \cite{2019phdSharma}.\\
-Another important aspect, which comes out when dealing with uncooperative targets, is that debris or operating satellites to be serviced may have suffered physical damages as well as optical degradation of their surfaces due to the prolonged exposure to the space environment, thus appearing different than expected \cite{Opromolla2017}.\\
-Thus, when operating in close-proximity the attitude and the motion of the target spacecraft must be estimated in autonomy by exploiting the sensors available on the servicer spacecraft.\\
+Close range proximity operations between \acrfull{sc}s has been studied and discussed by space agencies and private companies since the early stages of space exploration, dating back to the Apollo program \cite{LangleyApollo}.\\
+Since then we can find a wide range of missions where close-range proximity operations are in, like \acrfull{ff} \cite{2001FormationFliying}  \cite{2009FormationFliying}, \acrfull{oos} \cite{Zimpfer2005} \cite{Tatsch2006} \cite{FloresAbad2014} and \acrfull{adr} \cite{clerc2012astrium} \cite{Bonnal2013}.\\
+Most of those missions were possible thanks to the presence of on-board crew or to the cooperativeness between \acrshort{sc}s.\\
+A target space object is deemed cooperative if it is built to provide information suitable for the estimation of its distance and orientation in space with respect to the chaser \acrshort{sc}. Also, it can be be actively or passively cooperative depending on whether it interacts with a dedicated radio-link with the chaser \acrshort{sc} or not \cite{Opromolla2017}.\\
+As regard to the new generation of space robotics missions such as debris removal and \acrshort{oos}, proximity operations and docking are key-enabling capabilities for either repair, refuel or deorbit end-of-life and nonfunctional \acrshort{sc}s \cite{2016Ventura}.\\
+The main challenge when performing close-range navigation in actual \acrshort{oos} and \acrshort{adr} removal missions however is when the target \acrshort{sc} may be uncooperative.\\
+This implies that the target \acrshort{sc} may not be equipped with an active communication link or identifiable markers such as light-emitting diodes or corner cube reflectors to help with computing the relative position and attitude of the active \acrshort{sc} (chaser) with respect to a uncooperative target space object \cite{2019phdSharma}.\\
+Another important aspect, which comes out when dealing with uncooperative targets, is that debris or operating \acrshort{sc}s to be serviced may have suffered physical damages as well as optical degradation of their surfaces due to the prolonged exposure to the space environment, thus appearing different than expected \cite{Opromolla2017}.\\
+Thus, when operating in close-proximity the attitude and the motion of the target \acrshort{sc} must be estimated in autonomy by exploiting the sensors available on the servicer \acrshort{sc}.\\
 With regards to the technological aspects, Electro-Optical (EO) sensors have been identified as the best option for relative navigation in the foredescribed scenario \cite{Opromolla2017} \cite{pesciolino}.\\
 Either active Light Detection and Ranging (LIDAR) systems or passive monocular and stereo cameras can be used. The selection of the navigation sensor must consider the resources available on board in terms of mass, electrical and processing power, on one side, the mission scenario and the costs to be sustained for design and development of the satellite system, on the other side \cite{clerc2012astrium} \cite{pesciolino}.\\
-As stated in \cite{Sharma2016} Monocular vision navigation has been identified as an enabling technology for present and future formation-flying and on-orbit servicing missions (namely PROBA-3 by ESA \cite{Casti2019}, PRISMA by OHB Sweden \cite{2013Damico}).\\
+As stated in \cite{Sharma2016} monocular vision navigation has been identified as an enabling technology for present and future \acrshort{ff} and \acrshort{oos} missions (namely PROBA-3 by ESA \cite{Casti2019}, PRISMA by OHB Sweden \cite{2013Damico}).\\
 Monocular navigation on such missions relies on finding an estimate of the initial pose of the space resident object with respect to the camera, based on a minimum number of features from a 3D computer model and a single 2D image \cite{Sharma2016}.\\
-In contrast to other state-of-the-art systems based on LIDAR or stero camera sensors, monocular navigation ensures rapid pose determination while offering some advantages such as lower hardware complexity, cost, weight and power consumption, possibility to be simultaneously used for supervised applications and a much larger operational range, not limited by the size of the platform \cite{Sharma2018} \cite{2016Ventura} \cite{pesciolino}.
+In contrast to other state-of-the-art systems based on \acrfull{lidar} or stero camera sensors, monocular navigation ensures rapid pose determination while offering some advantages such as lower hardware complexity, cost, weight and power consumption, possibility to be simultaneously used for supervised applications and a much larger operational range, not limited by the size of the platform \cite{Sharma2018} \cite{2016Ventura} \cite{pesciolino}.
 However, the benefit of lower hardware complexity trades off with increased algorithmic complexity since a monocular sensor cannot provide direct
 direct three-dimensional (3D) measurements about the target.\\
 Moreover, monocular sensors can be less robust to adverse illumination conditions typical of the space environment \cite{Volpe2017} (e.g., saturation under direct Sun illumination, or absence of light during eclipse) \cite{pesciolino}.\\
 The increasing challenges of space exploration and moreover the urgent need for debris removal to free slots in orbit and to avoid unwanted collisions is what mainly motivate this work.\\
 The capability of being able to develop and test pose determination algorithm in fact will be a key factor for the overall success of new generation missions.\\
-Furthermore this work is motivated also to give to the space community a FLOSS solution for simulating spaceborne imagery for computer vision alghoritm needs.\\
+Thus, this work is motivated from the need to give to the space community a reliable and extendable \acrfull{floss} solution for simulating spaceborne imagery for \acrfull{cv} alghoritms needs.\\
 
 \section{Problem Statement}
+As will be better explained in the following chapters, in order to verify the goodness of a given image dataset, the most meaningful way it is to apply on it a \acrshort{cv} algorithm on it.\\
+In this work so, we will validate the generated dataset by implementing the \acrfull{svd} monocular pose initialization algorithm, which relies on edge detection tecniques to find features which will be then fed to a \acrfull{pnp} solver.\\
+As stated in \cite{D2014} and \cite{Sharma2018}, the pose initialization problem consist of determining the position of a non-cooperative target spacecraft (no markers or other specific supportive means) center of mass \gls{t_c} and the orientation of the veichle's principal axes \gls{A_TC} with respect to the camera frame C from a single \acrfull{2d} image given its \acrfull{3d} geometrica representation (referred as map or model).
+We assume that the \acrshort{3d} model of the target \acrshort{sc} is defined in the body fixed coordinate system T, and it is aligned with the target's principal axes with its origin at the center of mass. The orientation is defined by the \acrfull{dcm} \gls{A_TC}, which represents the trasformation from the coordinate system of T to C.\\
+Note that the use of a single image is in contrast to methods relying on batches or sequences of multiple images, like \acrshort{3d} reconstruction or \acrfull{slam} algorithms.\\
+
+\section{Host Company}
+This thesis project was developed at D-Orbit.
+D-Orbit is a New Space company with solutions convering the entire life-cycle of a space mission, including mission analysus and design, engineering, manufacturing, integration, testing, launch, mission control and end of life decommisioning.\\
+The company's competitive advantage is in the versatility of its launch and deployement services that can me tailored to the customer's needs, from the launch procurement of a single satellite using standard deployment strategies to the precise deployment of a full constrallation with ION satellite Carrier, a satellite dispenser developed and operated by D-Orbit.\\
+ION \acrshort{sc} Carrier can host any combination of CubeSat with a total volume of up to 48U and release them individually into distinct orbital slots, enabling delplyment schemes previously unavailable to satellite with no indipendent propulsion.\\
+Committed to pursuin business modeal that are profitable, friendly for the environment, and socially beneficia, D-Orbit is the first certified B-Corp space company in the world.\\
+Headquartered in Como, Italy, D-Orbit has subsidiaries in Lisbon, Portugal, Harwell, UK, and Washington DC, USA.\\
 
 \section{Structure of the Thesis}
