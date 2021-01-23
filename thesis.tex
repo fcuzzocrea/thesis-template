@@ -75,7 +75,7 @@
 \newacronym{adr}{ADR}{Active Debris Removal}
 \newacronym{ff}{FF}{Formation Fliying}
 \newacronym{lidar}{LIDaR}{Light Detection and Ranging}
-\newacronym{floss}{FLOSS}{Free,Libre and Open Source Software}
+\newacronym{floss}{FLOSS}{Free, Libre and Open Source Software}
 \newacronym{cv}{CV}{Computer-Vision}
 \newacronym{svd}{SVD}{Sharma-Ventura-D'Amico}
 \newacronym{pnp}{P-\textit{n}-P}{Perspective-\textit{n}-Point}
@@ -83,10 +83,18 @@
 \newacronym{3d}{3-D}{Three-Dimensional}
 \newacronym{dcm}{DCM}{Direction Cosine Matrix}
 \newacronym{slam}{SLAM}{Simultaneous Localization and Mapping}
+\newacronym{cg}{CG}{Center of Mass}
+\newacronym{rd}{R\&D}{Research and Development}
+\newacronym{wge}{WGE}{Weak Gradient Eliminator}
+\newacronym{nr}{NR}{Netwon-Raphson}
+\newacronym{eo}{EO}{Electro-Optical}
+\newacronym{stl}{STL}{Stereolitographic}
 
 % Definire qui i simboli che verranno utilizzati nel testo
-\newglossaryentry{t_c}{name=$t_c$,description={Target Center of Mass Location}}
-\newglossaryentry{A_TC}{name=$A_{T\{\}C}$,description={Orientation of Target Principal Axes}}
+\newglossaryentry{t_c}{name=${t_C}$,description={Target Center of Mass Location WRT Camera Frame}}
+\newglossaryentry{A_TC}{name=${A_{BC}}$,description={Orientation of Target Principal Axes WRT Camera Frame}}
+\newglossaryentry{fx}{name=${f_x}$,description={Orizontal Focal Length}}
+\newglossaryentry{fy}{name=${f_y}$,description={Vertical Focal Length}}
 
 % fixes the page number of the first page of each chapter
 \fancypagestyle{plain}{
@@ -165,7 +173,7 @@
 
 \input{chapter-2/chapter-2.tex}
 
-\chapter{Synthetic image generation\label{chap:third-chapter}}
+\chapter{Synthetic image generation : \label{chap:third-chapter}}
 
 \input{chapter-3/chapter-3.tex}
 
@@ -181,20 +189,22 @@
 
 \addcontentsline{toc}{chapter}{Conclusions}
 \markboth{Conclusions}{Conclusions}\input{conclusions.tex}\bibliographystyle{plain}
-\bibliography{bibliography}
-\addcontentsline{toc}{chapter}{Bibliography}
 
 \appendix
 
-\chapter{First appendix: Random Rotation Matrix Generation \label{app:first-appendix}}
+\chapter{First appendix: Attitude and Orbit Simulator \label{app:first-appendix}}
 
 \input{appendix-a/appendix-a.tex}
 
-\chapter{Second appendix: Attitude Simulator \label{app:second-appendix}}
+\chapter{Second appendix: Random Rotation Matrix Generation \label{app:second-appendix}}
 
-\input{appendix-b/appendix-b.tex}
+\input{appendix-b/appendix-b.tex}\cleardoublepage
 
-\chapter{Third appendix\label{app:third-appendix}}
+%\chapter{Third appendix\label{app:third-appendix}}
 
-\input{appendix-c/appendix-c.tex}\cleardoublepage
+%\input{appendix-c/appendix-c.tex}\cleardoublepage
+
+\bibliography{bibliography}
+\addcontentsline{toc}{chapter}{Bibliography}
+
 \end{document}

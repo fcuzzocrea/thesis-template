@@ -15,18 +15,28 @@ Katherine Johnson
 % copia paro paro quello che ha fatto il tizio nella tesi con i sistemi di riferimento
 
 \section{Image generation}
+The use of artificial images gives a complete control over the scene.\\
+As stated in \cite{paolocorti}, the generated dataset should be as complete as possible in terms of metals and terrain features and illumination conditions.\\
+A lack of realism in image generation can lead to incoherent results, not representative of real operative conditions and thus can lead to wrong results in terms of \acrshort{cv} algorithm tuning.\\
+A particular care is then required in the image generation process.\\
+For the purpose of this work, a new procedure for the generation of realistic images, representative of a dataset taken by a monocular navigation camera during a close-proximity approach to targeg \acrshort{sc} has been developed.\\
+Without too much fantasy work, the procedure has been named Ray-traced Camera Simulation Tool for Spacecrafts (RCSTS).\\
+Unsing the illustrated procedure, the user is able to create synthetic images of a target \acrshort{sc} given it's \acrshort{stl} model, by fine tuning all the properties of the materials composing the target \acrshort{sc}.\\
+Since there could be also cases in which the Earth can be behind the target \acrshort{sc}, the developed tool is also able to simulate Earth's presence at any given location. The tool is also able to the simulate the the athmosphere of the Earth and the cloud layer \cite{jacopo}.\\
 
 \subsection{Raytracing}
+% copia paro paro jacopo
 
 \subsubsection{What is raytracing}
+% copia paro paro jacopo
 
 \subsubsection{POVRay}
 POVRay it is an opensource ray-tracing tool. It does not offer a nice GUI for modeling objects, like Blender, but it can be used as Blender rendering engine to be able to have a 3D modeling environment to model our objects. \\
 POVRay has also been used by a different number of people doing research work in the space field to generate images, for example it has been used under the ESA LunarSim study to render images of lunar surfaces. It can also be extended to correctly simulate images of spacecraft. It is a powerful software which let us define surfaces and materials relevant properties such as reflectivity, diffraction, specularity and brillance. Those parameters can be fine tuned to obtain an image as realistic as possible, under certain limits.\\
 POVRay can be scripted in order to be used in conjunction with other softwares.\\
 Although does not let the user to add some sort of disturbance or noise to the generated images, those disturbances may be added by using some third party software such as MATLAB thanks to POVRay's ease of scriptability.\\
-Up to a certain point, it also let us define some basic characteristic of the camera, such as the focal lengths, although it does not let us correctly simulate some other effects such as lens distorsions.\\
-It has some drawbacks, such as:
+Up to a certain point, it also let us define some basic characteristic of the camera, such as the focal lengths, although it does not let us correctly simulate some other effects such as lens distorsions (which again, can be added using a third party software such as MATLAB).\\
+POV-Ray major drawback are reported in \cite{pangufinal}, and are:
 \begin{itemize}
     \item Only a Lambertian reflectance model is possible;
     \item A uniform surface albedo is used and realistic albedo values cannot used;
@@ -35,21 +45,29 @@ It has some drawbacks, such as:
     \item Earthshine cannot be easily modelled;
     \item POV-Ray can produceshigh quality images but rendering is slow as many minutes (sometimes hours) are required to produce a single image;
 \end{itemize}
-Despite those limitations POVRay can been used to produce synthetic space imagery with an acceptable degree of accuracy for CV algorithm training.\\
+Despite those limitations POVRay can been used to produce synthetic space imagery with an acceptable degree of accuracy for \acrshort{cv} algorithm training.\\
 
 \subsection{Environment Modeling}
 
 \subsubsection{World Setup}
+% storia delle terne
 
 \subsubsection{Earth Modeling}
+Earth modeling has been worked out in collaboration with Jacopo Guarneri.
+Here will follow a brief review of how Earth has been modeled taken from \cite{jacopo}.
+% copia paro paro jacopo
 
 \paragraph{Cloud Layer}
+% copia paro paro jacopo
 
 \paragraph{Athmospheric Model}
+% copia paro paro jacopo
 
 \subsubsection{Light Modeling}
+% copia paro paro jacopo
 
 \subsection{Tango Spacecraft Modeling}
+% copia un po franchiolla e un po il paper, devi solo dirgli come è fatto il satellite
 
 \subsubsection{3D Model of the Spacecraft}
 
@@ -57,14 +75,12 @@ Despite those limitations POVRay can been used to produce synthetic space imager
 
 \subsubsection{POVRay}
 
-\subsection{Mango Spacecraft Modeling}
-
-\subsubsection{Camera model}
+\subsection{Camera Modeling}
 
 \section{MATLAB integration}
 
 \subsection{Random Attitude Image Generation}
-% Copia paro paro il paper
 
-\subsection{Pseudo-random Attitude Image generation ?}
-% Copia paro paro la relazione di biggs
+\subsection{Pseudo-random Attitude Image generation}
+
+\subsection{Caveats}
