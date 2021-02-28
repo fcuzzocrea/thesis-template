@@ -39,19 +39,69 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Included packages by the student
 % "Please keep in mind that Latex ninjas are not welcome: as a rule, if you include more than a dozen packages then your .tex files will be needlessly complicated and hard to re-use"
-%\usepackage{•}
+\usepackage{float}
+\usepackage[detect-all]{siunitx}
+\usepackage{listings}
+\usepackage{subfig}
+\usepackage{babel}
+\usepackage[nointegrals]{wasysym}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acronyms and Glossary
+\usepackage[acronym,nonumberlist,nopostdot]{glossaries}
+\makenoidxglossaries
+
+% Definire qui gli acronimi che verranno utilizzati nel testo
+\newacronym{sc}{S/C}{Spacecraft}
+\newacronym{oos}{OOS}{On-Orbit Servicing}
+\newacronym{adr}{ADR}{Active Debris Removal}
+\newacronym{ff}{FF}{Formation Fliying}
+\newacronym{lidar}{LIDaR}{Light Detection and Ranging}
+\newacronym{floss}{FLOSS}{Free, Libre and Open Source Software}
+\newacronym{cv}{CV}{Computer-Vision}
+\newacronym{svd}{SVD}{Sharma-Ventura-D'Amico}
+\newacronym{pnp}{P-\textit{n}-P}{Perspective-\textit{n}-Point}
+\newacronym{2d}{2-D}{Two-Dimensional}
+\newacronym{3d}{3-D}{Three-Dimensional}
+\newacronym{dcm}{DCM}{Direction Cosine Matrix}
+\newacronym{slam}{SLAM}{Simultaneous Localization and Mapping}
+\newacronym{cg}{CG}{Center of Mass}
+\newacronym{rd}{R\&D}{Research and Development}
+\newacronym{wge}{WGE}{Weak Gradient Eliminator}
+\newacronym{nr}{NR}{Netwon-Raphson}
+\newacronym{eo}{EO}{Electro-Optical}
+\newacronym{stl}{STL}{Stereolitographic}
+\newacronym{gci}{GCI}{Geocentric Inertial Frame}
+\newacronym{povray}{POV-Ray}{The Persistence Of Vision Raytracer}
+\newacronym{ccd}{CCD}{Charge Couple Device}
+
+% Definire qui i simboli che verranno utilizzati nel testo
+\newglossaryentry{t_c}{name=${t_C}$,description={Target Center of Mass Location WRT Camera Frame}}
+\newglossaryentry{A_TC}{name=${A_{BC}}$,description={Orientation of Target Principal Axes WRT Camera Frame}}
+\newglossaryentry{fx}{name=${f_x}$,description={Orizontal Focal Length}}
+\newglossaryentry{fy}{name=${f_y}$,description={Vertical Focal Length}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  General thesis informations go here!
 \hypersetup{
-    pdfauthor  = {AUTHOR-NAME},    		    % author
-    pdftitle   = {TITLE},    				% title
- 	pdfsubject = {Master's Degree Thesis},  % subject of the document
- 	pdfkeywords= {KEYWORD-1, KEYWORD-2}     % list of keywords
+    pdfauthor  = {Francescodario Cuzzocrea},    		    % author
+    pdftitle   = {Analysis of a Vision-Based pose initialization algorithm for non-cooperative spacecraft on synthetic imagery},    				% title
+ 	pdfsubject = {Pose Determination},  % subject of the document
+ 	pdfkeywords= {Pose Determination, Computer Vision}     % list of keywords
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Custom commands
 \hyphenation{}
-\graphicspath{{./figures/}}
+\graphicspath{{./gfx/}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\inlinecode}[2]{{\lstinline[language=#1]$#2$}}
+
+\makeatletter
+\renewcommand{\thesection}{%
+  \ifnum\c@chapter<1 %\@arabic\c@section
+  \else \thechapter.\@arabic\c@section
+  \fi
+}
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BEGIN OF THE DOCUMENT
 \begin{document}
@@ -105,6 +155,14 @@
 \listoftables
 \cleardoublepage{}
 
+% Symbols section
+\clearpage
+\printnoidxglossary[title=List of Symbols]
+
+% Acronym section
+\clearpage
+\printnoidxglossary[type=\acronymtype,title=Abbreviated Terms]
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction
 \pagenumbering{arabic}
 \chapter*{Introduction\label{chap:introduction}}
@@ -114,8 +172,17 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Chapter 1
-\chapter{First chapter\label{chap:first-chapter}}
+\chapter{State-of-the-art and Limitations\label{chap:first-chapter}}
 \input{./chapters/chapter-1.tex}
+\cleardoublepage{}
+\chapter{Synthetic image generation\label{chap:second-chapter}}
+\input{./chapters/chapter-2.tex}
+\cleardoublepage{}
+\chapter{The SVD architecture for pose initialization\label{chap:third-chapter}}
+\input{./chapters/chapter-3.tex}
+\cleardoublepage{}
+\chapter{Results\label{chap:fourth-chapter}}
+\input{./chapters/chapter-4.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusion
@@ -133,8 +200,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendices
 \appendix
 %%% Appendix A
-\chapter{First appendix\label{app:first-appendix}}
+\chapter{First appendix: Attitude and Orbit Simulator \label{app:first-appendix}}
 \input{./appendices/appendix-a.tex}
+\cleardoublepage{}
+%%% Appendix B
+\chapter{Second appendix: Random Rotation Matrix Generation \label{app:second-appendix}}
+\input{./appendices/appendix-b.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF THE DOCUMENT

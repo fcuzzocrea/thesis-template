@@ -1,39 +1,55 @@
-In this chapter will be described the basic 'How-To' for writing a thesis in \LaTeX
+\begin{quotation}
+{\footnotesize
+\noindent{\emph{``We are just an advanced breed of monkeys on a minor planet of a very average star. But we can understand the Universe. That makes us something very special.''\\}
+}
+\begin{flushright}
+Stephen Hawking
+\end{flushright}
+}
+\end{quotation}
+\vspace{0.5cm}
 
-\section{How to cite a reference} 
-This is how to cite a reference \cite{Dijkstra68Letters}.
 
-\section{How to include and reference a figure}
-As it is possible to see from Figure \ref{fig:sample_figure}, a figure has been included and cited.
+\section{Synthetic Image Generation for Spaceborne Applications}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width = \textwidth]{sample_figure.pdf}
-\caption{Example of a MATLAB plot}
-\label{fig:sample_figure}
-\end{figure}
+\subsection{Professional Solutions}
 
-\section{How to include and reference an equation}
-As it is possible to see from equation \eqref{eq:omega}, an equation has been included and cited.
+\subsubsection{ESA PANGU}
+PANGU is a software developed in order to create synthetic planetary surface images, as much representative as possible, to aid the development of vision-based algorithms.\cite{10.2514/6.2004-592-389}\\
+PANGU is a nice software which is ready to use. It's use is permitted for free for users working on an ESA project, while non-ESA users have to contact STAR-Dundee to purchase PANGU with technical support.\\
+PANGU can also be integrated with proprietary or OSS simulation tools and it gives the possibility to correctly simulate a space camera in all its aspects (so focal lengths, and other relevant parameters of the image). It renders the images using OpenGL and it can use GPU cores to accelerate the rendering.
 
-\begin{equation}
-\omega = \sin(t)
-\label{eq:omega}
-\end{equation}
+\subsubsection{Airbus Surrender}
+SurRender is a software developed by Airbus Defense and Space. The software handles various space objects such as planets, asteroids, satellites and spacecraft.\\
+It is capable of accommodating solar system-sized scenes without precision loss, and optimizes the ray tracing process to explicitly target objects. It can operate in real time mode to be coupled with  proprietary or OSS simulation tools and it gives the possibility to have an Hardware in The Loop simulation to test the responsiveness of the image processing subsystem. It gives the possibility to correctly simulate a space camera in all its aspects (so focal lengths, and other relevant parameters of the image). It parallelized and so can be ran on cloud platform to accelerate rendering times.\\
 
-\section{How to create a table}
-Table \ref{tab:sample_table} has been taken as an example from \cite{latexTables}
+\subsection{Low-Cost Solutions}
 
-\begin{table}
-\centering
-\begin{tabular}{l*{6}{c}r}
-Team              & P & W & D & L & F  & A & Pts \\
-\hline
-Manchester United & 6 & 4 & 0 & 2 & 10 & 5 & 12  \\
-Celtic            & 6 & 3 & 0 & 3 &  8 & 9 &  9  \\
-Benfica           & 6 & 2 & 1 & 3 &  7 & 8 &  7  \\
-FC Copenhagen     & 6 & 2 & 1 & 3 &  5 & 8 &  7  \\
-\end{tabular}
-\caption{This is a Table}
-\label{tab:sample_table}
-\end{table}
+\subsubsection{SPEED dataset: image generation using OpenGL}
+
+\subsubsection{URSO dataset: image generation using Unreal Engine 4}
+
+\subsubsection{\acrshort{povray}}
+\acrshort{povray} it is an opensource ray-tracing tool. It does not offer a GUI for modeling objects, like Blender, but it can be used as Blender rendering engine to be able to have a 3D modeling environment to model our objects. \\
+\acrshort{povray} has also been used by a different number of people doing research work in the space field to generate images, for example it has been used under the ESA LunarSim study to render images of lunar surfaces. It can also be extended to correctly simulate images of spacecraft. It is a powerful software which let us define surfaces and materials relevant properties such as reflectivity, diffraction, specularity and brillance. Those parameters can be fine tuned to obtain an image as realistic as possible, under certain limits.\\
+\acrshort{povray} can be scripted in order to be used in conjunction with other softwares.\\
+Although does not let the user to add some sort of disturbance or noise to the generated images, those disturbances may be added by using some third party software such as MATLAB thanks to \acrshort{povray}'s ease of scriptability.\\
+Up to a certain point, it also let us define some basic characteristic of the camera, such as the focal lengths, although it does not let us correctly simulate some other effects such as lens distorsions (which again, can be added using a third party software such as MATLAB).\\
+\acrshort{povray} major drawback are reported in \cite{pangufinal}, and are:
+\begin{itemize}
+    \item Only a Lambertian reflectance model is possible;
+    \item A uniform surface albedo is used and realistic albedo values cannot used;
+    \item The extended illumination source (sun) can be modelled only as an array of point light sources or as an area light, which is a suboptimal solution;
+    \item Background lighting (starlight) is cannnot modelled;
+    \item Earthshine cannot be easily modelled;
+    \item \acrshort{povray} can produceshigh quality images but rendering is slow as many minutes (sometimes hours) are required to produce a single image;
+\end{itemize}
+Despite those limitations \acrshort{povray} can been used to produce synthetic space imagery with an acceptable degree of accuracy for \acrshort{cv} algorithm training.\\
+
+\section{Spaceborne Close-Proximity Relative Navigation}
+
+\subsection{Pose estimation sensors}
+
+\subsection{Pose estimation tecniques}
+
+
