@@ -45,7 +45,9 @@
 \usepackage{subfig}
 \usepackage{babel}
 \usepackage[nointegrals]{wasysym}
-
+\usepackage{amssymb}
+\usepackage{url}
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acronyms and Glossary
 \usepackage[acronym,nonumberlist,nopostdot]{glossaries}
 \makenoidxglossaries
@@ -73,13 +75,22 @@
 \newacronym{gci}{GCI}{Geocentric Inertial Frame}
 \newacronym{povray}{POV-Ray}{The Persistence Of Vision Raytracer}
 \newacronym{ccd}{CCD}{Charge Couple Device}
+\newacronym{sdl}{SDL}{Scene Description Language}
 
 % Definire qui i simboli che verranno utilizzati nel testo
-\newglossaryentry{t_c}{name=${t_C}$,description={Target Center of Mass Location WRT Camera Frame}}
-\newglossaryentry{A_TC}{name=${A_{BC}}$,description={Orientation of Target Principal Axes WRT Camera Frame}}
-\newglossaryentry{fx}{name=${f_x}$,description={Orizontal Focal Length}}
-\newglossaryentry{fy}{name=${f_y}$,description={Vertical Focal Length}}
-
+\newglossaryentry{A_CN}{name=${A_{CN}}$,description={Orientation of the camera frame with respect to the inertial frame}}
+\newglossaryentry{A_TN}{name=${A_{TN}}$,description={Orientation of the target principal axes with respect to the inertial frame}}
+\newglossaryentry{A_TC}{name=${A_{TC}}$,description={Orientation of target principal axes with respect to the camera frame}}
+\newglossaryentry{t_c}{name=${t_C}$,description={Target center of mass location with respect to camera frame}}
+\newglossaryentry{fx}{name=${f_x}$,description={Orizontal focal length}}
+\newglossaryentry{fy}{name=${f_y}$,description={Vertical focal length}}
+\newglossaryentry{N_u}{name=${N_u}$,description={Number of horizontal pixels}}
+\newglossaryentry{N_v}{name=${N_v}$,description={Number of vertical pixels}}
+\newglossaryentry{d_u}{name=${d_u}$,description={Horizontal pixel length}}
+\newglossaryentry{d_v}{name=${d_v}$,description={Vertical pixel length}}
+\newglossaryentry{CCD_size}{name=${CCD_{size}}$,description={Size of CCD}}
+\newglossaryentry{alpha}{name=${\alpha}$,description={Aperture Angle}}
+\newglossaryentry{ar}{name=${A.R.}$,description={Aspect Ratio}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  General thesis informations go here!
 \hypersetup{
@@ -121,11 +132,11 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acnowledgment
-\pagenumbering{Roman}
-\chapter*{Acknowledgments}
-\addcontentsline{toc}{chapter}{Acknowledgments}
-\input{./initial-final-stuff/acknowledgments.tex}
-\cleardoublepage{}
+%\pagenumbering{Roman}
+%\chapter*{Acknowledgments}
+%\addcontentsline{toc}{chapter}{Acknowledgments}
+%\input{./initial-final-stuff/acknowledgments.tex}
+%\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Abstract
 \chapter*{Abstract}
@@ -193,7 +204,7 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Bibliography
-\bibliographystyle{unsrt}
+\bibliographystyle{plain}
 \bibliography{bibliography}
 \cleardoublepage{}
 

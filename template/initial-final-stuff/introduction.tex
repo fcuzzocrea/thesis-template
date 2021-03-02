@@ -53,10 +53,10 @@ If we assume that the \acrshort{3d} model of the target \acrshort{sc} is defined
 \end{figure}
 A generic image point $p$ = $ [u,v]^T $ can be related to the corresponding $\mathbf{q_B}$ point of the \acrshort{3d} model by means of the unknown pose (\gls{t_c} \gls{A_TC}) according to the following \acrshort{2d} - \acrshort{3d} true perspective equations: 
 \begin{equation}
- \mathbf{r_C} = \left[x_C \quad  y_C \quad z_C\right]^T = \mathbf{A_{TC}} \; \mathbf{q_B} + \mathbf{t_C}
+ \mathbf{r_C} = \left[x_C \quad  y_C \quad z_C\right]^T = \mathbf{A_{TC}} \; \mathbf{q_B} + \mathbf{t_C} \,,
 \end{equation}
 \begin{equation}
- \mathbf{p} = \left[ \frac{x_C}{z_C} f_x + C_x , \frac{y_C}{z_C} f_y + C_y \right]
+ \mathbf{p} = \left[ \frac{x_C}{z_C} f_x + C_x , \frac{y_C}{z_C} f_y + C_y \right] \,,
 \end{equation}
 where \gls{fx} and \gls{fy} are the respectively the orizontal and the vertical focal lenght and $[C_x, C_y]$ are the coordinates of the center of the image.\\
 As discussed in \cite{D2014}, we can build several considerations on top of those two coupled equations : 
