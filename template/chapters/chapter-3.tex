@@ -1,35 +1,474 @@
 \begin{quotation}
-{\footnotesize
-\noindent{\emph{``Prediction is very difficult, especially if it's about the future.''\\}
-}
-\begin{flushright}
-Niels Bohr
-\end{flushright}
-}
+  {\footnotesize
+    \noindent{\emph{``Prediction is very difficult, especially if it's about the future.''\\}
+    }
+    \begin{flushright}
+      Niels Bohr
+    \end{flushright}
+  }
 \end{quotation}
 \vspace{0.5cm}
 
+Performing a robust pose initialization from a \acrshort{2d} image captured by a monocular camera in space is a very though task, particularly due to the fact that illumination conditions in space may vary during a single orbit, and therefore may cause inaccurate and unreliable features detection. Moreover, the Earth presence in the background introduces a major complexity into distinguishing the target \acrshort{sc} shape from the Earth surface. The \acrshort{svd} pose initialization architecture aims at solving the problem of pose initialization by employing a single \acrshort{2d} image taken by a monocular camera. In this chapter first the reader will be proposed with a brief \acrfull{cv} mathematical concerning some common \acrfull{cv} models and problems. After that, a detailed description of the \acrshort{svd} architecture implementation which has been carried out in this work will be given.
+
 \section{Mathematical Preliminaries}
 
-\subsection{Pinhole Camera Model}
-%review of solution methods
+\subsection{Pinhole Camera Model}\label{subsection:pinhole}
+The pinhole camera model is camera model which is widely used in \acrfull{cv}. Despite being a relatively simple model, it is still accurate enough for the vast majority of applications. The pinhole camera model is used to describe the mathematical relationship which exists between the coordinates of a point in the \acrshort{3d} world and its projection onto the image plane. In the pinhole camera model, the light passes trough a single point, the camera center, before being projected onto the image plane, and no lenses are used to focus light, so geometrical distortions or blurring are not modeled in the pinhole camera model.
 
-\subsection{Image derivatives}
-%review of solution methods
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{gfx/pinholeCamera.eps}
+  \caption{The pin-hole camera model \cite{solem2012programming}}
+  \label{fig:pinholeCamera}
+\end{figure}
 
-\subsection{The Hough Transform}
-%review of solution methods
+By referring to \ref{fig:pinholeCamera}, a \acrshort{3d} point $\mathbf{X}$ is projected to an image point $\mathbf{x}$ (both expressed in homogeneous coordinates) as :
+
+\begin{equation*}
+  \lambda\mathbf{x}=P\mathbf{X} \,,
+\end{equation*}
+
+where $P$ is a 3-by-4 matrix called camera matrix and $\lambda$ is a scalar number representing the inverse depth of the \acrshort{3d} point. As a result, the \acrshort{3d} point $\mathbf{X}$ is characterized by four elements, $X = [X, Y , Z, W ]$ in homogeneous coordinates.
+Generally, the camera matrix $P$ can be decomposed as :
+
+\begin{equation*}
+  P = K[R \ | \ \mathbf{t}] \,,
+\end{equation*}
+
+where $R$ is the rotation matrix which describes the orientation of the camera, $\mathbf{t}$ is a \acrshort{3d} translation vector which describes the position of the camera center and $K$ is the intrinsic camera calibration matrix.
+The camera calibration matrix basically describes the projection properties of the camera and can be written as :
+
+\begin{equation*}
+  K = \begin{bmatrix}
+    \alpha f & s & c_x \\
+    0        & f & c_y \\
+    0        & 0 & 1
+  \end{bmatrix} \,,
+\end{equation*}
+
+where $\alpha$ is the aspect ratio of the sensor's pixels, $f$ is the focal length, $s$ is the skew and $c_x$, $c_y$ are the coordinates of the optical center (or also called the principal point) of the image. Usually the principal point of the image can be approximated with half the height and half the width of the image. The skew is used only if the pixel array in the sensor is skewed. In most cases is safe to assume $s = 0$.
+By defining :
+
+\begin{equation*}
+  f_x = \alpha f_y
+\end{equation*}
+
+and by neglecting $s$ we can write the calibration matrix in the most common form :
+
+\begin{equation*}
+  K = \begin{bmatrix}
+    f_x & 0   & c_x \\
+    0   & f_y & c_y \\
+    0   & 0   & 1
+  \end{bmatrix} \,,
+\end{equation*}
+
+If we make the assumption of square pixel, then $\alpha = 1 $ and $ f_x = f_y = f$, and so we can write the camera calibration matrix as :
+
+\begin{equation*}
+  K = \begin{bmatrix}
+    f & 0 & c_x \\
+    0 & f & c_y \\
+    0 & 0 & 1
+  \end{bmatrix} \,.
+\end{equation*}
+
+More information about camera model and camera calibration matrix can be found in \cite{10.5555/861369} and \cite{Pollefeys2004}.
+
+\subsection{Image derivatives}\label{sec:imagegradient}
+For a grayscale image, the image intensity changes over the image itself can be described by using the $x$ and $y$ derivatives, $I_x$ and $I_y$ of the graylevel image $I$.
+Once defined the image derivatives, it is possible to define another quantity, the image gradient, which is the vector:
+
+\begin{equation*}
+  |\nabla I| = \sqrt{I_x^2 + I_y^2} \,,
+\end{equation*}
+
+which describes how strong the image intensity change. Image derivatives can be computed using a discrete approximations, which are implemented as convolutions:
+
+\begin{equation*}
+  I_x = I * D_x \ \ \,, \ \ I_y = I * D_y \,,
+\end{equation*}
+
+where $D_x$, $D_y$ are the kernel of the derivative and $*$ is the \acrshort{2d} convolutional operation. Two common choices for $D_x$, $D_y$ are either the so called Prewitt filters :
+
+\begin{equation*}
+  D_x = \begin{bmatrix}
+    -1 & 0 & 1 \\
+    -1 & 0 & 1 \\
+    -1 & 0 & 1
+  \end{bmatrix} \ \ \,,  \ \
+  D_y = \begin{bmatrix}
+    -1 & -1 & -1 \\
+    0  & 0  & 0  \\
+    1  & 1  & 1
+  \end{bmatrix}\,,
+\end{equation*}
+
+or the so called Sobel filters:
+
+\begin{equation*}
+  D_x = \begin{bmatrix}
+    -1 & 0 & 1 \\
+    -2 & 0 & 2 \\
+    -1 & 0 & 1
+  \end{bmatrix} \ \ \,,  \ \
+  D_y = \begin{bmatrix}
+    -1 & -2 & -1 \\
+    0  & 0  & 0  \\
+    1  & 2  & 1
+  \end{bmatrix}\,,
+\end{equation*}
+
+\subsection{The Hough Transform}\label{sec:hough}
+The Hough transform is a method often used in \acrfull{cv} for finding shapes in images. It wors by using a voting procedure in the parameters space of the shapes. The most common use of the Hough transform is to find lines in images.
+Consider the straight line equation, in its polar form,
+
+\begin{equation*}
+  \rho = x \cos{\theta} + y \sin{\theta} \,,
+\end{equation*}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{gfx/R_theta_line.eps}
+  \caption{Polar representation of a straight line \cite{pichough}}
+  \label{fig:linePolar}
+\end{figure}
+
+where $\rho$ obviously is the distance from the origin of the reference system to the closest point on the straight line, while $\theta$ is the angle between the x axis and the line connecting the origin with that closest point.
+The linear Hough transform algorithm estimates the two parameters that define the straight line. The transform space has two dimensions, and any point in the transform space is used as an accumulator (a bi-dimensional vector) to detect a line described by the aforementioned polar equation of the straight line. Every point in the detected edges in the image contributes to the accumulators. Generally, the dimension of the accumulator is equal to the number of unknown parameters, which in this case are two, $\rho$ and $\theta$. For each pixel and is neighborhood, the algorithm which computes the Hough transform first try to detect if the specific pixel which is being analyzed lie on a line. If so, computes $\rho$ and $\theta$ of that line, and then look for the accumulator's bin that the parameters fall into, and increment the value of that bin.
+By searching the boxes with highest values, typically by looking at local maxima in the accumulator space, it is possible to identify the the most likely lines. The final result of the Hough transform will be a \acrshort{2d} matrix, were one dimension will be represented by $\theta$ and the other one by $\rho$.
+Each element of that matrix will have a value equal to the sum of the pixels that are positioned on the line represented by the parameters $\rho$, $\theta$. So the element with the highest value indicates the straight line that is most represented in the input image \cite{houghreport}. More information about the how the Hough transform works can be retrieved in \cite{10.1145/361237.361242} and \cite{osti_4746348}.
 
 \subsection{Perspective-n-Point problem}
-%review of solution methods
+The \acrfull{pnp} point is the problem of determining the position and the orientation of a calibrated camera given its intrinsic parameters and a set of correspondences between a given set of \acrshort{3d} points and their respective \acrshort{2d} projections in the image \cite{10.1007/s11263-008-0152-6}.
+The perspective projection for a standard pinhole camera that has been introduced in section \ref{subsection:pinhole} leads to the following equation (in homogeneous coordinates) for the model:
 
-\section{Feature-based pose estimation implementation}
+\begin{equation*}
+  \lambda
+  \begin{bmatrix}
+    u \\
+    v \\
+    1 \\
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    f & 0 & c_x \\
+    0 & f & c_y \\
+    0 & 0 & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    r_{11} & r_{12} & r_{13} & t_1 \\
+    r_{21} & r_{22} & r_{23} & t_2 \\
+    r_{31} & r_{32} & r_{33} & t_3
+  \end{bmatrix}
+  \begin{bmatrix}
+    x \\
+    y \\
+    z \\
+    1 \\
+  \end{bmatrix} \,,
+\end{equation*}
+
+were $r_{ij}$ and $t_i$ are the components of the rotation matrix and the translation vector which are being calculated, respectively.
+Several methods exists for solving the \acrshort{pnp} problem, the two most common of which are the P3P method and the \textit{e}\acrshort{pnp} method. More information about their implementations can be found on  \cite{XiaoShanGao2003} \cite{Torr2000} and \cite{10.1007/s11263-008-0152-6}.
+
+\section{Feature-based pose estimation implementation: the SVD algorithm}
+The images generated  trough the toolbox presented in Chapter \ref{chap:second-chapter} will now be analyzed using the robust monocular vision-based pose initilization algorithm proposed by S. Sharma, J. Ventura and S. D'Amico in \cite{Sharma2018}.
+As briefly explained in the introduction, the problem of pose initialization consists in computing the rotation matrix,\gls{A_TC} and the translation vector, \gls{t_c} that describes the transformation between the camera frame, $C$, and the target body frame, $B$. Given a generic image point, $p$ = $ [u,v]^T $, we can relate the corresponding $\mathbf{q_B}$ point of the \acrshort{3d} model by employing the standard pinhole camera model briefly reviewed in section \ref{subsection:pinhole}:
+
+\begin{equation}
+  \mathbf{r_C} = \left[x_C \quad  y_C \quad z_C\right]^T = \mathbf{A_{TC}} \; \mathbf{q_B} + \mathbf{t_C} \,,
+  \label{eq:rc}
+\end{equation}
+
+\begin{equation}
+  \mathbf{p} = \left[ \frac{x_C}{z_C} f_x + C_x , \frac{y_C}{z_C} f_y + C_y \right] \,,
+  \label{eq:p}
+\end{equation}
+
+where \gls{fx} and \gls{fy} are the respectively the horizontal and the vertical focal length and $ \left[C_x, \ C_y \right]$ are the coordinates of the center of the image. Moreover, it is assumed - without loss of generality - that the direction $\mathit{C_3}$ of the camera frame is pointed along the boresight of the camera and the directions $\mathit{C_1}$ and $\mathit{C_2}$ are aligned with the image frame defined by $P = \left( \mathit{P_1}, \ \mathit{P_2} \right)$
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.72\textwidth]{gfx/poseProblem.eps}
+  \caption{Schematic representation of the pose estimation problem using a monocular image \cite{Sharma2018}}
+  \label{fig:theposeproblem}
+\end{figure}
+
+To be able to uniquely solve this set of equation are needed at least six correspondences between the image points and the model points \cite{10.1145/358669.358692}. The challenging part of the problem is to be able to correctly detect the most meaningful points in the \acrshort{2d} image. Usually this can be archived by employing edge detection techniques, such as the Canny edge detector \cite{10.1109/TPAMI.1986.4767851} followed by the Hough transform \cite{10.1145/361237.361242}. This approach however may be biased it applied dierctly to the image due to the fact that these algorithm are gradient based and are not able to correctly distinguish the foreground from the background and also requires the definition of numerous hyperparameters which are difficult to tune for broad applicability because the imaged scene and the illumination conditions are constantly changing throughout the orbit \cite{Sharma2018}.
 
 \subsection{Architecture}
+In \cite{Sharma2018} is proposed a novel architecture to solve the initial pose of a non cooperative client \acrshort{sc}, whose pipeline is depicted in figure \ref{fig:theposeproblem}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{gfx/SVDPipeline.eps}
+  \caption{The \acrshort{svd} architecture for solving the pose estimation problem \cite{Sharma2018}}
+  \label{fig:theposeproblem}
+\end{figure}
+
+Its key features are (directly citing \cite{Sharma2018})  :
+\begin{itemize}
+  \item the fusion of the \acrshort{wge} technique with the more traditional Sobel edge detector and the Hough algorithm to perform the feature detection;
+  \item the use of feature synthesis to reduce the search space for feature correspondences between the features extracted from the images and the \acrshort{3d} model;
+  \item the combination of the \textit{e}\acrshort{pnp} solver and the \acrfull{nr} method for the final pose determination.
+\end{itemize}
+
+As the reader can see from the schematic represented in figure \ref{fig:theposeproblem}, the pipeline is composed from two different subsystems:
+\begin{itemize}
+  \item the image processing subsystem, which receive as an input a \acrshort{2d} image, distinguishing the \acrshort{sc} from the image, extract its edge features and groups them into geometric groups;
+\end{itemize} the pose determination subsystems, which acceps as input the previously feature groups detected by the image processing subsystem and the \acrshort{3d} model. It then pairs the \acrshort{2d} and \acrshort{3d} geometric groups to formulate multiple correspondence hypotesis. For each hypothesis formulated, the endpoints of the line segments forming the geometric groups are used to solve equation \eqref{eq:rc} and equation \eqref{eq:p}. The five best solution then are iteratively refined by employing the \acrshort{nr} method.
+
+two are the most meaningful innovation the \acrshort{svd} architecture introduces:
+\begin{itemize}
+\item the usage of the \acrshort{wge} technique in order to distinguish the target \acrshort{sc} from the background and for enhancing the output of the edge detection procedure bu providing a robust identification of the small as well as large edges of the \acrshort{sc};
+\item the usage of feature groups detected in the image and in the \acrshort{3d} model to solve the feature correspondence problem, which also allows the \acrshort{svd} architecture to be more computationally efficient.  
+\end{itemize}
 
 \subsection{Image processing subsystem}
+The taks of the image processing subsystem is to extract the most meaningful features from the \acrshort{2d} image a of the target \acrshort{sc}. To effectively and rapidly detect the target \acrshort{sc} edges - even in presence of the Earth in the background - an hybrid image processing subsystem is proposed in \cite{Sharma2018}. 
+By fusing together the \acrshort{wge} technique and classical state-of-the-art edge detection techniques the architecture proposed by \textit{Et al.} is capable to provide a robust and efficient identification of the rue edges of the \acrshort{sc}.
+In particular, the \acrshort{wge} technique is able to identify the a \acrfull{roi} in a more accurate and robust way with respect to state-of-art techniques. The \acrshort{roi} is detection not only makes the entire subsystem robust against the background, but also allows an automated selection of the hyperparameters needed for the Hough transform, which will be used to detect both small and large features of the \acrshort{sc}, in contrast with state-of-the-art algorithms which rely on a single set of manually tuned hyperparameters.
+The flow of the image processing subsystem is illustrated in figure \ref{fig:imageProcessingSubsystem}.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{gfx/imageProcessingSubsystem.eps}
+  \caption{The image processing subsystem \cite{Sharma2018}}
+  \label{fig:imageProcessingSubsystem}
+\end{figure}
 
 \subsubsection{Feature Detection}
+The first sub-block of the pose estimation technique proposed in \cite{Sharma2018} is the feature detection subsystem, whose aim is to  identify, in the input image, a set of segments that corresponds to the true edges of the target \acrshort{sc}.
+The raw input image - assumed to be rectified - is imported in MATLAB and is converted to the uint8 data type trough the command \inlinecode{MATLAB}{im2uint8} . After that, A Gaussian filter is applied in order to the decrease the magnitude of image noise. The Gaussian filtering can be carried out by using the MATLAB function \inlinecode{MATLAB}{imgaussfilt}, which let the user set the desired filtering depth. For what concerns this work, the images generated in chapter \ref{chap:second-chapter}, before being fed to the image processing subsystem have been filtered by using a standard deviation $\sigma_X = 1.15$. During this work, has been observed that the choice of the $\sigma_X$ value is very important for the success of the subsequent steps, as a wrong value can highly impact the effectiveness of the \acrshort{wge} technique. Once the image has been prefiltered, is fed as input to the \acrshort{wge} block, for the computation of the target's \acrshort{roi}. The first step consist in computing the magnitude of the image gradient, $|\nabla I|$,  using the Prewitt filter for computing the image gradient, as showed in section \ref{sec:imagegradient}.
+The \acrshort{sc} can be detected in the image by observing that, under most illumination conditions, in correspondence of the target \acrshort{sc} edges the gradient variation is more pronounced with respect to the background, regardless of the fact that the background is empty or the Earth is behind.
+Indeed, to detect the spacecraft, the gradient distribution is normalized using the MATLAB \inlinecode{MATLAB}{mat2gray} function, sorted into $100$ uniformly distributed bins and fitted by and exponential \acrfull{pdf}, described by the equation :
+
+\begin{equation*}
+  y = \frac{1}{\mu} e^{-\frac{x}{\mu}} \,.
+\end{equation*}
+
+By observing the result histogram, it is clearly possible to see that most of the gradient intensities are weak and corresponds to the feature in the background or on the spacecraft surface. The weak gradient pixel locations can be classified by tresholding the \acrshort{pdf} fit to the gradient histogram. The original authors suggest to use a value of $.0.99$ to treshold the \acrshort{pdf}, however, for what concerns this work, all the pixel which corresponds to a cumulative distribution inferior to $0.996$ are classified as weak and set to zero instead. Once the weak gradients are set to zero, only the most prominent features of the \acrshort{sc} are present in the image, as shown in figure \ref{fig:wgeSteps}.
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Original image]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/chosenImage.eps}}
+  \qquad
+  \subfloat[Gradient detection of original image]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/gradientBeforeTresholding.eps}}
+  \qquad
+  \subfloat[Histogram of normalized gradient values]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/gradientDistribution.eps}}
+  \qquad
+  \subfloat[Output filtered image gradients]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/imageAfterTresholding.eps}}
+  \caption{Different steps of the \acrshort{wge}}
+  \label{fig:wgeSteps}
+\end{figure}
+
+By computing the \acrfull{cdf} of the vertical and horizontal gradient of the filtered image obtained by the \acrshort{wge}, we can determine the coordinates of a \acrshort{roi} where the features that yield the strongest intensity variations are located. Then, assuming that the filtered image gradient is normally distributed, the \acrshort{roi} coordinates can be found by limiting each of the previously computed \acrshort{cdf}s between $0.025$ and $0.975$ in order to enclose the central $95\%$ of the normal distribution.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.82\textwidth]{gfx/FeatureDetection/ROI.eps}
+  \caption{Result of the \acrshort{roi} detection procedure}
+  \label{fig:ROI}
+\end{figure}
+
+As noted in \cite{fracchio2019}, for images having a composite background the \acrshort{roi} detection is limited by the presence of interference, so a smarter choice for selecting the bounding box limits is to treshold the \acrshort{cdf}s between $0.005$ and $0.95$. Therefore, only the central $90\%$ of the normal distribution is selected. Restricting the range however negatively affect the \acrshort{roi} detection procedure for images were the background is empty. This problem can be solved by taking into account an additional constant, equal to the $5\%$ of the mean edge length of the \acrshort{roi} for enlarging the \acrshort{roi} boundaries.
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[\acrshort{roi} selected by considering only the central $90\%$ of the normal distribution]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/ROInoConstant.eps}}
+  \qquad
+  \subfloat[\acrshort{roi} enlarged by adding the $5\%$ of the mean edge length of the previously \acrshort{roi}]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/enlargedROI.eps}}
+  \caption{Improving the \acrshort{roi} detection procedure}
+  \label{fig:roicomparisons}
+\end{figure}
+
+One of the innovative features of the \acrshort{wge} technique is that, once the \acrshort{roi} is correctly determined, it is possible to compute a coarse estimation of the the relative position and line of sight even before the pose determination subsystem. By defining the diagonal length of the \acrshort{roi}, $l_{ROI}$, as:
+
+\begin{equation}
+l_{ROI} = \sqrt{{ROI_{width}}^2 + {ROI_{height}}^2} \,,
+\end{equation}
+
+a coarse estimation of the range to the target \acrshort{sc} from the origin of the camera frame is given by :
+
+\begin{equation}
+\norm{t_C}_2 = \frac{\nicefrac{((f_x+f_y)}{2}) L_C}{l_{ROI}} \,,
+\end{equation}
+
+were \gls{lc} denotes the diagonal characteristic length of the \acrshort{sc} \acrshort{3d} model. By knowing the coordinates of the center of the image, $[C_x, C_y]$ and the coordinates of the \acrshort{roi} center, $[B_x, B_y]$, it is possible to compute the azimuth and elevation angles ($\alpha, \beta$) from the origin of the camera frame, $C$, to the origin of the body-fixed coordinate system, $B$ :
+
+\begin{equation}
+\alpha = \arctan{\frac{B_x - C_x}{f_x}} \,,
+\end{equation}
+
+\begin{equation}
+\beta = \arctan{\frac{B_y - C_y}{f_y}} \,.
+\end{equation}
+
+Once ($\alpha, \beta$) are known, the coarse relative position solution is given by : 
+
+\begin{equation}
+  t_C
+  =
+  \begin{bmatrix}
+    \cos(\alpha) & 0 & -\sin(\alpha) \\
+    0 & 1 & 0 \\
+    \sin(\alpha) & 0 & \cos(\alpha)
+  \end{bmatrix}
+  \begin{bmatrix}
+    1 & 0 & 0 \\
+    0 & \cos(\beta) & \sin(\beta) \\
+    0 & -\sin(\beta) & \cos(\beta)
+  \end{bmatrix}
+  \begin{bmatrix}
+    0 \\
+    0 \\
+   \norm{t_C}_2
+  \end{bmatrix} \,.
+\end{equation}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.65\textwidth]{gfx/coarsePoseEstimation.eps}
+  \caption{Calculation of a coarse relative position solution using the WGE
+technique \cite{Sharma2018}}
+  \label{fig:imageProcessingSubsystem}
+\end{figure}
+
+In order to extract the features from the input image, a first edge detection process is applied to the tresholded image by means of the Hough transform. As briefly introduced in section \ref{sec:hough}, when applied to the problem of detecting straight lines into an image, the Hough transform performs a shape identification through a voting procedure in the paramter space ($\rho$, $\theta$).
+When computing the Hough transform with MATLAB some hyperparameters are required, which for instance are :
+
+\begin{itemize}
+\item the desired resolution of $\rho$ and $\theta$, 
+\item the maximum number of peaks to identify in the Hough transform matrix,
+\item the expected minimum length of the the line segment, \gls{l_min},
+\item procedure : the expected minimum length of the the line segment, \gls{lambda} and the maximum gap between two points to be considered in the same line segment, \gls{lambda}.
+\end{itemize}
+
+The geometrical constraints imposed to the Hough transform are dictated by the choice of \gls{l_min} and \gls{lambda}. Fixing a value of (\gls{l_min}, \gls{lambda}) for all the images will result into the inability of the algorithm to adapt to different distances between the camera and the target \acrshort{sc}. In fact, as the camera moves closer and closer to the target \acrshort{sc}, the latter will fill larger and larger portions of the image, and the expected lengths of its edges in the image plane are expected to grow, so a recomputation of the geometrical hyperparameters would be needed. However, it is reasonable to hypothesize that the size of the detected \acrshort{roi} bounding box will grow too, so, in \cite{Sharma2018} is proposed to scale the geometrical hyperparameters by using the information about the \acrshort{roi} diagonal length :
+
+\begin{equation*}
+L_{min,Hough} = \kappa_1 l_{ROI} \ \ \ \  \lambda_{Hough} = \kappa_2 l_{ROI}  \,,
+\end{equation*}
+
+were $\kappa_1$ and $\kappa_2$ are two scalars which can be empirically estimated by performing several test simulations on ground. 
+
+The idea proposed in \cite{Sharma2018} is to tune the values of $\kappa_1$ and $\kappa_2$ in order to only extract short line segments from the tresholded image.
+
+A second stream of features is then obtained by directly appling the Sobel operator, which has been shown in section \ref{sec:imagegradient}, to the unfiltered, rectified image, using the MATLAB function \inlinecode{MATLAB}{edge}. The Sobel operator is applied by imposing an intensity treshold equal to $0.04$. As proposed in \cite{fracchio2019}, in order to eliminate the pixel chunks belonging to smaller reflective elements from the output of \inlinecode{MATLAB}{edge}, it is possible to filter the output by using the MATLAB function \inlinecode{MATLAB}{bwareaopen}. Once defined a minimum pixel number $P$, \inlinecode{MATLAB}{bwareaopen} removes all connected components (objects) that have fewer than $P$ pixels from the input binary image. In contrast with what done in \cite{fracchio2019}, which sets $P = 10$ for all images, in this work the $P$ value is computed adaptively for each image exploiting the information about the \acrshort{roi} diagonal length :
+
+\begin{equation*}
+P = \lfloor \eta \ l_{ROI}
+\end{equation*}
+
+where $\lfloor$ is the commonly used symbol for the \inlinecode{MATLAB}{ceil} operator and $\eta$ is a multiplicative constants which can be tuned empirically.
+After that, the Hough transform is applied again on the output produced by the Sobel operator in order to extract line segments corresponding to the silhouette of the large components of the target \acrshort{sc}. The knowledge the \acrshort{roi} location, obtained through the \acrshort{wge} technique, is now exploited to automatically reject any line segment for which the midpoint lies outside the \acrshort{roi} itself. Also for computing the \acrfull{seh} stream of features, in \cite{Sharma2018} is advised to scale the geometrical hyperparameters needed to compute the Hough lines by using the information about the \acrshort{roi} diagonal length :
+
+\begin{equation*}
+L_{min,Hough} = \kappa_3 l_{ROI} \ \ \ \  \lambda_{Hough} = \kappa_4 l_{ROI}  \,,
+\end{equation*}
+
+where again, $\kappa_3$ and $\kappa_4$  are two multiplicative constants which can be fixed in an offline phase before the mission.
+
+\subsubsection{Merging Edges}
+The output of the Hough transform often results in multiple truncated edges, especially when applied to the image processed by the \acrshort{wge}. Since fragmentation can increase uncertainty and increase the computational cost of feature matching and pose solving \cite{fracchio2019}, a section of the \acrshort{svd} architecture is dedicated to find and merge line segments which may corresponds to the same true line segment into a single line segment.
+To check whether two line segments can be considered similar and merged into one single edge, it is possible to define some geometrical checks on the basis of the parameters $\rho$ and $\theta$, which are defined for each Hough line found using the MATLAB function \inlinecode{MATLAB}{hough}.
+Considering the two line segments represented in \ref{fig:mergeEdges}a\footnote{Note that the segments are represented in the image coordinate system, were the positive x axis points to the right, the positive y axis points downward and the positive z axis points toward the direction given by $  \mathbf{\hat{z}} = \frac{\mathbf{\hat{x}} \wedge \mathbf{\hat{y}}}{\norm{\mathbf{\hat{x}} \wedge \mathbf{\hat{y}}}}$.}, it is possible to write their polar representation in the Hough space as:
+
+\begin{equation}
+l_1 \rho_1 = x \cos (\theta_1) +  y \sin (\theta_1) \,,
+\end{equation}
+
+\begin{equation}
+l_2 \rho_2 = x \cos (\theta_2) +  y \sin (\theta_2) \,.
+\end{equation}
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[Original edge]{\includegraphics[width=0.4\textwidth]{gfx/segmentsPreMerge.eps}}
+  \qquad
+  \subfloat[Output merged edge]{\includegraphics[width=0.4\textwidth]{gfx/segmentsAfterMerge.eps}}
+  \qquad
+  \caption{Merging two truncated edges \cite{Sharma2018}}
+  \label{fig:mergeEdges}
+\end{figure}
+
+The conditions of similarity proposed by \cite{Sharma2018} are then:
+
+\begin{equation}
+|\theta_1 - \theta_2| \leqslant	\theta_{tresh} \,,
+\end{equation}
+
+\begin{equation}
+|\rho_1 - \rho_2| \leqslant	\rho_{tresh} \,,
+\end{equation}
+
+where $\theta_{tresh}$ and $\rho_{tresh}$ are set to be equal to the resolution of $\theta$ and $\rho$ in the Hough space. In \cite{fracchio2019} is proposed to scale the value of $\rho_{tresh}$ using the information about the \acrshort{roi} diagonal length in order to improve the identification of the spacecraft true edge :
+
+\begin{equation}
+\rho_{tresh} = \nu d_{ROI} \,,
+\end{equation}
+
+where $\nu$ is a multiplicative constant which can be set to be equal to the resolution of $\theta$ in the Hough space. In this work, this second approach has been preferred. 
+Furthermore, it is imposed that the Euclidean distance between the farthest pair of endpoints of the two line segments must be less than $d_{tresh}$ :
+
+\begin{equation}
+d_{p_{1b}-p_{21}} \leqslant d_{tresh} \,,
+\end{equation}
+
+where $d_{tresh}$ is computed for each image as half of the mean length of the detected segments :
+
+\begin{equation}
+d_{tresh} \leqslant {\frac{1}{2}} \overline{(l_1, l_2,\ldots, l_n)} \,.
+\end{equation}
+
+If the similarity conditions are met, then the two line segments are replaced with the line $l_3$, which is the line segment which joins the two farthest endpoints of $l_1$ and $l_2$ :
+
+\begin{equation}
+l_3 \rho_3 = x \cos (\theta_3) +  y \sin (\theta_3) \,.
+\end{equation}
+
+The Hough parameters which defines $l_3$ can be computed as follows\footnote{Note that the computation is done in the image coordinate system previously defined}. First, the angle between the positive x-axis and the joined segment is retrieved\footnote{Note that it is necessary to subtract $90^{\circ}$ from the computed angle to take into account that in the image coordinate system negative the quadrant is the upper while the positive one is the lower} :
+
+\begin{equation}
+\alpha_3 = 90^{\circ} - \arctan{\left(\frac{p_{1a,x}-p_{2b,x}}{p_{1a,y}-p_{2b,y}}\right)}
+\end{equation}
+
+from which it follows the value of $\theta_3$
+
+\begin{equation}
+\theta_3 = \alpha_3 - 90^{\circ}
+\end{equation}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{gfx/hough_rho_theta_diagram.eps}
+  \caption{$\rho$ and $\theta$ diagram}
+  \label{fig:theposeproblem}
+\end{figure}
+
+Now, to find $\rho_3$ it is sufficient to compute the intersection between a line which passes trough the origin and the joined segment :
+
+\begin{equation}
+m = \tan(\alpha_3)
+\end{equation}
+
+\begin{equation}
+x = \frac{m_3(p_{1a,x}-p_{1a,y})}{\nicefrac{1}{m_3} + m_3} \,,
+\end{equation}
+
+\begin{equation}
+y = - \frac{1}{m_3} x_3 \,,
+\end{equation}
+
+\begin{equation}
+\rho_3 = x \cos (\theta_3) +  y \sin (\theta_3) \,.
+\end{equation}
+
+For what concerns the \acrshort{seh} stream instead, after the Hough transform is applied, the output image is fed to a function which removes all the lines which midpoints are located outside the \acrshort{roi}.
+
+\subsubsection{Merge Streams}
 
 \subsubsection{Feature Synthesis}
 
@@ -37,8 +476,10 @@ Niels Bohr
 
 \subsection{Model Matching and Pose Determination}
 
-\subsubsection{Feature Correspondence (?)}
+\subsubsection{Feature Correspondence}
 
 \subsubsection{Pose Determination}
 
+\section{Conclusions}
 
+% inserisci una tabella riassuntiva con tutti i parametri utilizzati

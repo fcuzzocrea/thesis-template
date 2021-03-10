@@ -47,7 +47,10 @@
 \usepackage[nointegrals]{wasysym}
 \usepackage{amssymb}
 \usepackage{url}
- 
+\usepackage{nicefrac}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acronyms and Glossary
 \usepackage[acronym,nonumberlist,nopostdot]{glossaries}
 \makenoidxglossaries
@@ -76,12 +79,17 @@
 \newacronym{povray}{POV-Ray}{The Persistence Of Vision Raytracer}
 \newacronym{ccd}{CCD}{Charge Couple Device}
 \newacronym{sdl}{SDL}{Scene Description Language}
+\newacronym{roi}{ROI}{Region of Interest}
+\newacronym{pdf}{PDF}{Probability Distribution Function}
+\newacronym{loc}{LoC}{Lines of Code}
+\newacronym{cdf}{CDF}{Cumulative Distribution Function}
+\newacronym{seh}{S\&H}{Sobel and Hough}
 
 % Definire qui i simboli che verranno utilizzati nel testo
-\newglossaryentry{A_CN}{name=${A_{CN}}$,description={Orientation of the camera frame with respect to the inertial frame}}
-\newglossaryentry{A_TN}{name=${A_{TN}}$,description={Orientation of the target principal axes with respect to the inertial frame}}
-\newglossaryentry{A_TC}{name=${A_{TC}}$,description={Orientation of target principal axes with respect to the camera frame}}
-\newglossaryentry{t_c}{name=${t_C}$,description={Target center of mass location with respect to camera frame}}
+\newglossaryentry{A_CN}{name=${\mathbf{A_{CN}}}$,description={Orientation of the camera frame with respect to the inertial frame},sort=${A_{CN}}$}
+\newglossaryentry{A_TN}{name=${\mathbf{A_{TN}}}$,description={Orientation of the target principal axes with respect to the inertial frame},sort=${A_{TN}}$}
+\newglossaryentry{A_TC}{name=${\mathbf{A_{TC}}}$,description={Orientation of target principal axes with respect to the camera frame},sort=${A_{TC}}$}
+\newglossaryentry{t_c}{name=${\mathbf{t_C}}$,description={Target center of mass location with respect to camera frame},sort=$t_C$}
 \newglossaryentry{fx}{name=${f_x}$,description={Orizontal focal length}}
 \newglossaryentry{fy}{name=${f_y}$,description={Vertical focal length}}
 \newglossaryentry{N_u}{name=${N_u}$,description={Number of horizontal pixels}}
@@ -89,8 +97,11 @@
 \newglossaryentry{d_u}{name=${d_u}$,description={Horizontal pixel length}}
 \newglossaryentry{d_v}{name=${d_v}$,description={Vertical pixel length}}
 \newglossaryentry{CCD_size}{name=${CCD_{size}}$,description={Size of CCD}}
-\newglossaryentry{alpha}{name=${\alpha}$,description={Aperture Angle}}
+\newglossaryentry{alpha}{name=${\alpha}$,description={Aperture angle}}
 \newglossaryentry{ar}{name=${A.R.}$,description={Aspect Ratio}}
+\newglossaryentry{lc}{name=${L_C}$,description={S/C characteristic length}}
+\newglossaryentry{l_min}{name=${L_{min,Hough}}$,description={Expected minimum lenght of a line segment}}
+\newglossaryentry{lambda}{name=${\lambda_{Hough}}$,description={Maximum gap between two points to be considered on the same line segment}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  General thesis informations go here!
 \hypersetup{
@@ -132,11 +143,11 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acnowledgment
-%\pagenumbering{Roman}
-%\chapter*{Acknowledgments}
-%\addcontentsline{toc}{chapter}{Acknowledgments}
-%\input{./initial-final-stuff/acknowledgments.tex}
-%\cleardoublepage{}
+\pagenumbering{Roman}
+\chapter*{Acknowledgments}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+\input{./initial-final-stuff/acknowledgments.tex}
+\cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Abstract
 \chapter*{Abstract}

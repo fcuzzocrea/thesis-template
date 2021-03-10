@@ -9,6 +9,8 @@
 \end{quotation}
 \vspace{0.5cm}
 
+The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any \acrshort{cv} algorithm. In this chapter the reader will firstly be presented with a brief mathematical introduction. After that, the proposed solution to generate synthetic space-borne imagery will be presented and analyzed. 
+
 \section{Mathematical Preliminaries}
 
 \subsection{Reference Frames}
@@ -23,6 +25,14 @@ In order to be able to correctly analyze to problem of image generation, five re
 
 The \acrshort{gci} frame has its origin at the center of mass of the Earth. This frame has a linear acceleration because of the Earth's circular orbit about the Sun, which however can be neglected for attitude analysis.
 It's axes are aligned with the mean North pole and the mean vernal equinox at some epoch.\\
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.85\textwidth]{gfx/gci.eps}
+  \caption{\acrfull{gci} frame}
+  \label{fig:raytracing}
+\end{figure}
+
 The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and their axes are usually aligned with their respective principal axes.
 The origin of the camera frame instead coincides with the center of perspective projection.
 The target model frame is fixed with respect to the body frame and often coincides with it.
@@ -49,7 +59,7 @@ Several illumination algorithms and reflective or translucent materials may also
 At first glance may seem cumbersome to start the ray from the observer towards the object rather than casting rays to the camera (as is in reality). However, doing so speeds up a lot the computation time, as most of the light rays present in a scene may never reach the eye of the observer, and so, all the time spent for tracing those would be useless.
 After either a maximum number of reflections or a ray traveling a certain distance without intersection, the ray ceases to travel and the pixel's value is updated.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/scherma-ray-tracing.eps}
   \caption{Raytracing: from the observer to the light source \cite{pictraytracing}}
@@ -70,7 +80,7 @@ Earth modeling has been worked out in collaboration with Jacopo Guarneri.
 Here will follow a brief review of how Earth has been modeled taken from \cite{jacopo}.
 For modeling the Earth, the \acrshort{povray} \inlinecode{POV}{sphere} object has been used, in conjunction with the \inlinecode{POV}{scale} feature, which allows to make the sphere become an ellipsoid.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/sphere_scaling.eps}
   \caption{Sphere manipulation with \acrshort{povray} \cite{jacopo}}
@@ -79,7 +89,7 @@ For modeling the Earth, the \acrshort{povray} \inlinecode{POV}{sphere} object ha
 
 Once the \acrshort{3d} object is created, the most natural choice one can think of is to wrap a \acrshort{2d} texture of the Earth (\ref{fig:firstTexture}) on it, and this indeed is what has been done, using the high resolution (8K) texture of the Earth.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/first_text.eps}
   \caption{Initially chosen texture of the Earth}
@@ -90,7 +100,7 @@ Once the \acrshort{3d} object is created, the most natural choice one can think 
 
 In \ref{fig:EarthApollo} we can see a comparison of the synthetically generated image and an actual true image of the Earth as seen from the Apollo 11. From a first glance, used texture gives a good representation of what we should see when we look of a picture of the Earth taken from the space.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/earthApolloOurs.eps}
   \caption{Comparison of synthetic Earth image with Apollo 11's picture}
@@ -111,7 +121,7 @@ The solution adopted in both this work and \cite{jacopo} relies on decoupling th
 Furthermore, oceans have been splitted too, in order to be able to set different optical properties for the seas.
 For the terrain layer, a a true-color mercator image of the Earth has been used as a base, in this way every piece of the surface could possibly be visible in any picture.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/earthMercator.eps}
   \caption{True Color Earth Mercator Image \cite{bluemarble}}
@@ -120,7 +130,7 @@ For the terrain layer, a a true-color mercator image of the Earth has been used 
 
 As said before, in order to be able to use different optical properties for water and terrains, a separate two-color mercator-projection image of the Earth where the water is black and the land is white has been used.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/landmask_mercator.eps}
   \caption{Landmask Mercator Image}
@@ -129,7 +139,7 @@ As said before, in order to be able to use different optical properties for wate
 
 In \ref{fig:comparisonEarths} the result of differentiating the optical properties for terrains and oceans is shown. Despite the fact that it may seems that there is only a small distinction between the two images (in particular, shinier oceans and darker forests), is still enough the make the Earth to seem more photorealistic, and it leave some space for further tuning.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/comparisonEarths.eps}
   \caption{Comparing images with no differential treatment between land
@@ -139,7 +149,7 @@ In \ref{fig:comparisonEarths} the result of differentiating the optical properti
 
 The cloud layer is added on top of the cloudless surface and thanks to that, it can rotate with respect to the Earth by a prescribed angle set by the programmer. The cloud layer texture and the shape of the clouds itself always remains the same, but this can be partially mitigated by using different cloud textures.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/clouds.eps}
   \caption{Two-color mercator image of Earth's cloud layer}
@@ -149,7 +159,7 @@ The cloud layer is added on top of the cloudless surface and thanks to that, it 
 The cloud texture used for this work (\ref{fig:cloudsMercator}) is not actually directly printed on the surface of the earth, but rather is extruded on a shell built around the sphere which defines the Earth, which has an inner radius equal to $R_{in} = 1.001 \cdot R_{Earth}$ and an outer radius equal to $R_{out} = 1.0002 \cdot  R_{Earth}$. Those values have been found by taking as a reference the fact that low Earth clouds ranges from an altitude of \SI{600}{\m} to \SI{15000}{\m} \cite{nimbostratus}. Although higher or thicker clouds can be modeled, this will require longer rendering times. Of course, also for the cloud layer is possible to set custom optical properties, in order to make the clouds partially transparent, so that when there isn't a dense cloud area, the terrain behind is still visible under the white blanket.\\
 The result of adding the cloud layer can be seen in \ref{fig:cloudShell}
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/cloudShell.eps}
   \caption{Earth's representation using cloud shell}
@@ -163,7 +173,7 @@ To recreate the atmospheric shine effect, a strategy which is similar to the one
 For what concerns both this project and what has been done in \cite{jacopo}, the gaseous layer was made only \SI{25}{\km} thick. Despite the fact that the atmosphere should be visible up to many more kilometers, the computational load introduced by rendering a much high atmosphere is not negligible on a standard PC hardware, and so the image generation time would grow up exponentially, making the task of compiling a data-set of thousands of images very time consuming.
 In figure \ref{fig:earthAtmo} can be seen the final result of adding the atmospheric model.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/earthFinal.eps}
   \caption{Earth with the atmosphere layer}
@@ -173,7 +183,7 @@ In figure \ref{fig:earthAtmo} can be seen the final result of adding the atmosph
 In figure \ref{fig:trueVsFake} instead is possible to view the artificially generated next to a real Earth picture taken by NASA's Suomi NPP on January 4, 2012.
 It can be seen that, despite the fact that the real image isn't perfectly reproduced (because some other factors should be known in order to be taken into account, such as exposure time), the synthetic image still provide an high degree of similarity with the real one.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/trueVsFake.eps}
   \caption{Comparison between true and final rendered Earth image}
@@ -182,7 +192,7 @@ It can be seen that, despite the fact that the real image isn't perfectly reprod
 
 In table \ref{tab:EarthParameters} are briefly resumed the values used to model the various layer of the Earth.
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \begin{tabular}{c cccc}
     \hline
@@ -228,7 +238,7 @@ The procedure will be detailed in the following paragraphs.
 The Tango spacecraft has been modeled using the dimensions specified in \cite{Sharma2018}, which will be here reported for ease of reading. The solar panel is represented by a polygon of \SI{570}{\mm} x \SI{759}{\mm}, while the spacecraft body instead is represented by a convex polyhedron of \SI{560}{\mm} x \SI{550}{mm} x \SI{300}{\mm}. The radio frequency antennas length instead is of \SI{204}{\mm}. The origin of the CAD model is located in correspondence of the \acrshort{cg}.\\
 Using the aforementioned dimensions, the Tango spacecraft has firstly been reproduced using Autodesk Inventor. The result of the modeling procedure is shown in figure \ref{fig:tango3d}.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.62\textwidth]{gfx/tangoScreenshot2.eps}
   \caption{Tango \acrshort{sc} \acrshort{3d} model}
@@ -244,7 +254,7 @@ So, to workaround this limitation, it is a good practice to first split the diff
 This will enable us to set different material properties for each children surface or to apply different textures to different surfaces.
 For the purpose of this work, the original \acrshort{stl} model has been subdivided into thirty children object, each one with its own optical parameters, as can be seen from figure \ref{fig:tangoblender} .
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/tangoBlender.eps}
   \caption{Tango \acrshort{sc} \acrshort{3d} model in Blender}
@@ -253,16 +263,30 @@ For the purpose of this work, the original \acrshort{stl} model has been subdivi
 
 The Blender \acrshort{povray} add-on also let the user to inject custom POV code (figure \ref{fig:tangoblenderpov}) into the auto-generated one, which can be useful especially for adding textures, for example to the solar panels, as it has been done into this project.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/tangoBenderPOVCode.eps}
   \caption{Add custom POV code into Blender}
   \label{fig:tangoblenderpov}
 \end{figure}
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{gfx/foil_gold_ramp.eps}
+  \caption{Texture used to model MLI}
+  \label{fig:mliTexture}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{gfx/solar_panel.eps}
+  \caption{Texture used to model solar panels}
+  \label{fig:solarPanelTexture}
+\end{figure}
+
 The end results is showed in figure \ref{fig:tangoblenderfinal}
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/tangoPolished.eps}
   \caption{Tango \acrshort{sc} rendered using \acrshort{povray} Blender add-on}
@@ -272,12 +296,12 @@ The end results is showed in figure \ref{fig:tangoblenderfinal}
 \subsubsection{\acrshort{povray}}
 The major issue of the code generated from the  \acrshort{povray} Blender add-on is that is composed of several separated \inlinecode{POV}{mesh2} objects which makes almost impossible to rotate the whole object by imposing a given attitude matrix, since one is supposed to rotate all the \inlinecode{POV}{mesh2} objects by hand.\\
 In order to workaround this limitation, from all the \inlinecode{POV}{mesh2} objects which have been generated from \acrshort{povray} Blender add-on are merged into one single \inlinecode{POV}{merge} object.
-The \inlinecode{POV}{merge} \acrshort{povray} operation allows to bind two or more shapes into a single entity that can be manipulated as a single object, which is exactly what we want. The new object created by the merge operation can be scaled, translated and rotated as a single shape. The entire merge can share a single texture and optical parameters but each object contained in the union may also have its own texture and optical parameters, which will override any texture statements in the parent object. So, all the \inlinecode{POV}{mesh2} objects which describes the \acrshort{sc} surfaces are merged into a single big (21K LoC) \textbf{spacecraft} \inlinecode{POV}{merge} object.
+The \inlinecode{POV}{merge} \acrshort{povray} operation allows to bind two or more shapes into a single entity that can be manipulated as a single object, which is exactly what we want. The new object created by the merge operation can be scaled, translated and rotated as a single shape. The entire merge can share a single texture and optical parameters but each object contained in the union may also have its own texture and optical parameters, which will override any texture statements in the parent object. So, all the \inlinecode{POV}{mesh2} objects which describes the \acrshort{sc} surfaces are merged into a single big (21K \acrshort{loc}) \textbf{spacecraft} \inlinecode{POV}{merge} object.
 To ease the usage of the \inlinecode{POV}{merge} object, a \acrshort{povray} include file it is created, with the sole purpose of containing the \textbf{spacecraft} \inlinecode{POV}{merge} object.
 The include file is read in as if it were inserted at that point in the file. Using include is almost the same as cutting and pasting the entire contents of this file into the scene. This allow to define the \textbf{spacecraft} \inlinecode{POV}{merge} once and call it from any other POV file just like any other predefined object is called, and so, it is possible to manipulate its position and orientation in a much more easier way by just using the \inlinecode{POV}{matrix} keyword. The \inlinecode{POV}{matrix} keyword  allows to specify directly the orientation of the \textbf{spacecraft} object, \gls{A_TN}, and its location with respect to \acrshort{povray} "inertial" world.
 In table \ref{tab:SCParameters} are briefly resumed the optical parameters used to model the different part of the \acrshort{sc}.
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \begin{tabular}{c cccc}
     \hline
@@ -300,11 +324,11 @@ In table \ref{tab:SCParameters} are briefly resumed the optical parameters used 
 \end{table}
 
 \subsection{Camera Modeling}
-In \acrshort{povray}'s camera environment, the programmer can set all relevant camera parameters, which will be then used to simulate the camera trough which the scene will be rendered.
+\acrshort{povray} let the programmer simulate a perspective pinhole camera (more details about the pinhole camera will be given in section \ref{subsection:pinhole}). In \acrshort{povray}'s camera environment, the programmer can set all relevant camera parameters, which will be then used to simulate the camera trough which the scene will be rendered.
 The most meaningful parameters which can be imposed are the location of the camera itself, the direction of the boresight axis (where is the camera looking at), the view angle and the direction of the camera reference frame.\\
 The major issue which has been faced when modeling the camera in \acrshort{povray} is the fact that the program defaults to a left handed coordinate system to describe the scene, while all other software (like Autodesk Inventor, Blender) are using a right handed coordinate system.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \subfloat[\acrshort{povray} axis directions]{\includegraphics[width=0.4\textwidth]{gfx/povrayTern.eps}}
   \qquad
@@ -316,7 +340,7 @@ The major issue which has been faced when modeling the camera in \acrshort{povra
 Moreover, the right handed coordinate system is used also to model the orbit that the spacecraft will follow and the spacecraft attitude from Euler equations.
 It is possible to trick \acrshort{povray} to behave like it using a right handed coordinate system by acting on the \inlinecode{POV}{right} vector of the camera environment. The camera \inlinecode{POV}{right} vector describes the direction to the right of the camera, so, in practicte, tells \acrshort{povray} where the right side of the screen is. Therefore, the  sign of the x component of the \inlinecode{POV}{right} vector can be used to determine the handedness of the coordinate system in use.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \subfloat[Left Handed Coordinate System]{\includegraphics[width=0.4\textwidth]{gfx/axesLeft.eps}}
   \qquad
@@ -330,7 +354,7 @@ Doing only that however left us having the y axis as the one pointing upward and
 To have a more comfortable, which also uses the same axes of the \acrshort{gci} reference frame, we can flip y and z axis by overriding the \inlinecode{POV}{sky} vector.
 By default, in fact, \acrshort{povray} uses \inlinecode{POV}{<0,1,0>} as \inlinecode{POV}{sky} vector. By redefining it as \inlinecode{POV}{<0,0,1>}  \acrshort{povray} will roll the camera until the top of the camera is in line with the \inlinecode{POV}{sky} vector, giving us the desired reference frame.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \subfloat[\acrshort{povray} standard coordinate system]{\includegraphics[width=0.4\textwidth]{gfx/tangoAxesNormal.eps}}
   \qquad
@@ -343,7 +367,7 @@ By default, in fact, \acrshort{povray} uses \inlinecode{POV}{<0,1,0>} as \inline
 
 In order to rightly simulate a real camera, the \acrshort{povray} camera aperture angle has been computed by assuming the intrinsic properties of a real camera, a Point Grey Grasshopper 3, equipped with a Xenoplan 1.9/17 mm lens, which is the same camera employed to capture the SPEED dataset \cite{DBLP:journals/corr/abs-1911-02050}.
 
-\begin{table}
+\begin{table}[htbp]
   \centering
   \begin{tabular}{ccc}
     \hline
@@ -381,6 +405,7 @@ By assuming a square \acrshort{ccd} sensor with square pixels we can obtain:
 \begin{equation}
   \alpha = 2 \cdot \arctan{\frac{CCD_{size}}{2 \cdot f_x}} \,,
 \end{equation}
+
 where $A.R.$ is the Aspect Ratio of the picture, which is passed as first component \inlinecode{POV}{right} vector (with the negative sign, as described before), and $\alpha$ is the aperture angle which will be input in \acrshort{povray}.
 Using the parameters detailed in table \ref{tab:SPEEDCameraParameters} we can compute:
 \begin{itemize}
@@ -388,7 +413,7 @@ Using the parameters detailed in table \ref{tab:SPEEDCameraParameters} we can co
   \item \gls{alpha} = $35.4515 ^{\circ}$
 \end{itemize}
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/tangoNoNoise.eps}
   \caption{Tango \acrshort{sc} rendered using table \ref{tab:SPEEDCameraParameters} parameters}
@@ -401,7 +426,7 @@ Using the \inlinecode{POV}{look_at} keyword we specify the direction of the came
 By imposing \inlinecode{POV}{sky} and \inlinecode{POV}{right} vectors we impose the initial direction which \acrshort{povray} uses for orienting the camera.
 By imposing the \inlinecode{POV}{look_at} vector \acrshort{povray} will first roll the camera until the top of the camera is in line with the sky vector. Then it uses the \inlinecode{POV}{sky} vector as the axis of rotation left or right and then to tilt up or down in line with the \inlinecode{POV}{sky} until until it lines up with the \inlinecode{POV}{look_at} point. Then tilts straight up or down until the \inlinecode{POV}{look_at} point is met exactly.
 
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.82\textwidth]{gfx/perspcam.eps}
   \caption{\acrshort{povray} default perspective camera}
@@ -446,12 +471,12 @@ At this point, the full pose (\gls{A_TC}, \gls{t_c}) of the camera with respect 
 
 At this point, the pose imposed to the camera is completely defined.
 
-\subsection{Adding the noise}\label{subsection:addingthenoise}
+\subsection{Noise modeling}\label{subsection:addingthenoise}
 Finally, for augmenting the "realness" of an image generated though \acrshort{povray}, the image needs to be post-processed using MATLAB.
 The image so is input in MATLAB and two different noises are applied through the \inlinecode{MATLAB}{imnoise} command : speckle noise ($\sigma^2 = 0.004$) and Gaussian white noise ($\sigma^2 = 0.003$).
 The final result can be seen in image \ref{fig:comparisonNoise}.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
   \centering
   \subfloat[Image without noise added]{\includegraphics[width=0.45\textwidth]{gfx/tangoNoNoise.eps}}
   \qquad
@@ -468,29 +493,12 @@ For each time instant for which the attitudes of the target \acrshort{sc} have b
 All the properties of the scene are stored in a custom .att file, which can be passed in a second time to retrieve the absolute position and orientation of both the camera and the target \acrshort{sc} and their pose.
 A .pov \acrshort{sdl} file is written for each time instant for which the attitudes of the target \acrshort{sc} have been computed and \acrshort{povray} is called to render each image in the background, from within MATLAB. Rightly after an image has been rendered, it is post-processed by MATLAB in order to add the noise, as described in \ref{subsection:addingthenoise}.
 
-\begin{figure}[H]
-  \centering
-  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_14.eps}}
-  \qquad
-  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_15.eps}}
-  \qquad
-  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_31.eps}}
-  \qquad
-  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_60.eps}}
-  \qquad
-  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_259.eps}}
-  \qquad
-  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_268.eps}}
-  \caption{Final result}
-  \label{fig:comparisonNoise}
-\end{figure}
-
-\section{Caveats}
+\section{Conclusions}
 It must be noted by the reader, that a custom \acrshort{povray} version is required in order to correctly replicate what has been done in this project.
 The issue originates by the fact that at the beginning of this project it has been decided that 1 unit in the \acrshort{povray} world is exactly to \SI{1}{\km} to ease the modeling of the solar system. Thus, the Earth is placed at the origin of the \acrshort{povray} world (consistently with the \acrshort{gci} frame)and it has a \SI{6378}{\km} radius, and the light source, the Sun, is placed \SI{1.4723e8}{\km} far from the Earth, and has a radius of \SI{696340}{\km}.
 The \acrshort{sc} instead is placed on an orbit characterized by the orbital parameters specified in table \ref{tab:orbitalParameters}.
 
-\begin{table}[H]
+\begin{table}[htbp]
   \centering
   \begin{tabular}{ccc}
     \hline
@@ -513,11 +521,29 @@ The \acrshort{sc} instead is placed on an orbit characterized by the orbital par
     \hline
     \hline
   \end{tabular}
-  \caption{Parameters used to generate the reference orbit}
+  \caption{Parameters used to generate the reference orbit \cite{prismaOrbitParameters}}
   \label{tab:orbitalParameters}
 \end{table}
 
 The issue originates from the fact that what is being represented is a scene having an extremely small object (the \acrshort{sc}) in front of a giant object {the Earth}, which is impacted by light which is generated from a very far distance (the Sun).
 Due to the exquisite peculiarity of this kind of scene, in some corner cases a "bounding issue" can be triggered, causing the \acrshort{sc} to be only partially redendered in the scene, or, in worst case scenario, not being rendered at all.
 Directly citing the \acrshort{povray} documentation, in order to speed up the ray-object intersection tests \acrshort{povray} uses a variety of spatial sub-division systems. The primary system uses a hierarchy of nested bounding boxes. This system compartmentalizes all finite objects in a scene into invisible rectangular boxes that are arranged in a tree-like hierarchy. Before testing the objects within the bounding boxes the tree is descended and only those objects are tested whose bounds are hit by a ray. This can greatly improve rendering speed.
-However, during the development of this project turned out that \acrshort{povray} automatic bounding is not perfect. There are situations where a perfect automatic bounding is very hard to calculate, like the one faced in this project. Unfortunately, \acrshort{povray} developers removed the possibility of turning off bounding control in \acrshort{povray}, thus it is necessary to compile a custom \acrshort{povray} version which introduces back the command line switch \textbf{-MB} which allows the user to turn off bounding control. According to the GPL license \acrshort{povray} is shipped with, the patch is freely available \footnote{\url{https://github.com/fcuzzocrea/povray/commit/2aecdfb20eef3ed3b6a5698392a9c91fa3f1afcd}}.
+However, during the development of this project turned out that \acrshort{povray} automatic bounding is not perfect. There are situations where a perfect automatic bounding is very hard to calculate, like the one faced in this project. Unfortunately, \acrshort{povray} developers removed the possibility of turning off bounding control in \acrshort{povray}, thus it is necessary to compile a custom \acrshort{povray} version which introduces back the command line switch \textbf{-MB} which allows the user to turn off bounding control. According to the GPL license \acrshort{povray} is shipped with, the patch has been made freely available \footnote{\url{https://github.com/fcuzzocrea/povray/commit/2aecdfb20eef3ed3b6a5698392a9c91fa3f1afcd}}.\\
+The output of the toolbox which has been described trough this chapter can be observed in figure \ref{fig:finalResult}. 
+
+\begin{figure}[htbp]
+  \centering
+  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_14.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_15.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_31.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_60.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_259.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.4\textwidth]{gfx/tango/tango_268.eps}}
+  \caption{Final result}
+  \label{fig:finalResult}
+\end{figure}
