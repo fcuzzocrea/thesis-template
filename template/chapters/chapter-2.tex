@@ -231,7 +231,7 @@ Furthermore, the option \inlinecode{POV}{jitter} has been used, which tells the 
 
 \subsection{Tango Spacecraft Modeling}
 
-\subsubsection{3D Model of the Spacecraft}
+\subsubsection{3D Model of the Spacecraft}\label{sec:3dmodel}
 The problem of modeling rather complex shapes with \acrshort{povray}, such as can be a spacecraft, it was one of the most long and painful one during this work, which also required to patch \acrshort{povray} source code, to prevent the ray-tracer to made assumption that aren't true. Obviously, the path of building the \acrshort{sc} using \acrshort{povray} primitives was really not feasible, as many different \acrshort{sc} can have different shapes, and modeling them by using simpler shapes it is simply not possible. Furthermore, usually detaled \acrshort{3d} CAD models of \acrshort{sc} are available which can be easily exported into \acrshort{stl} format, so the focus has been putted into trying to understand how to translate those \acrshort{3d} CAD models directly into \acrshort{povray} code.
 Several open source and closed source software have been coupled together in order to produce trough \acrshort{povray} a render of a given \acrshort{stl} model.
 The procedure will be detailed in the following paragraphs.
@@ -488,7 +488,7 @@ The final result can be seen in image \ref{fig:comparisonNoise}.
 \section{MATLAB integration}
 Since it would be highly unpractical to hand edit every time all the parameters to render the \acrshort{sc} in different position and attitudes as well as Earth's different rotations, a MATLAB toolbox has been developed which allows the user to automatically generate .pov \acrshort{sdl} files, and it renders them trough \acrshort{povray} automatically.
 The implemented toolbox takes as input \gls{N_u}, \gls{N_v}, \gls{fx}, \gls{fy}, \gls{d_u}, \gls{d_v} to compute intrinsic camera parameters to set \acrshort{povray} camera.
-Then, it offers the user the possibility to generate a sequence of random attitudes, given the orbital parameters of a reference orbit. If inertial properties of the target \acrshort{sc} are available, instead, it can compute the full uncontrolled dynamics of the \acrshort{sc} trough a Simulink model at each time instant. Details about how random attitude matrices are computed and how the Space environment has been modeled in Simulink are give in \ref{app:first-appendix} and \ref{app:second-appendix}, respectively.
+Then, it offers the user the possibility to generate a sequence of random attitudes, given the orbital parameters of a reference orbit. If inertial properties of the target \acrshort{sc} are available, instead, it can compute the full uncontrolled dynamics (so to speak, the dynamics of the \acrshort{sc} when only subjected to the disturbances torques acting on the reference orbit) of the \acrshort{sc} trough a Simulink model at each time instant. Details about how random attitude matrices are computed and how the Space environment has been modeled in Simulink are give in \ref{app:first-appendix} and \ref{app:second-appendix}, respectively.
 For each time instant for which the attitudes of the target \acrshort{sc} have been computed, the relative position of the camera with respect to the target \acrshort{sc} is computed by selecting a random point inside a sphere having a \SI{20}{\m} radius centered in the target position, and the imposed pose is computed. A random Earth's rotation is computed as well.
 All the properties of the scene are stored in a custom .att file, which can be passed in a second time to retrieve the absolute position and orientation of both the camera and the target \acrshort{sc} and their pose.
 A .pov \acrshort{sdl} file is written for each time instant for which the attitudes of the target \acrshort{sc} have been computed and \acrshort{povray} is called to render each image in the background, from within MATLAB. Rightly after an image has been rendered, it is post-processed by MATLAB in order to add the noise, as described in \ref{subsection:addingthenoise}.
@@ -496,7 +496,7 @@ A .pov \acrshort{sdl} file is written for each time instant for which the attitu
 \section{Conclusions}
 It must be noted by the reader, that a custom \acrshort{povray} version is required in order to correctly replicate what has been done in this project.
 The issue originates by the fact that at the beginning of this project it has been decided that 1 unit in the \acrshort{povray} world is exactly to \SI{1}{\km} to ease the modeling of the solar system. Thus, the Earth is placed at the origin of the \acrshort{povray} world (consistently with the \acrshort{gci} frame)and it has a \SI{6378}{\km} radius, and the light source, the Sun, is placed \SI{1.4723e8}{\km} far from the Earth, and has a radius of \SI{696340}{\km}.
-The \acrshort{sc} instead is placed on an orbit characterized by the orbital parameters specified in table \ref{tab:orbitalParameters}.
+The \acrshort{sc} instead is placed on an orbit characterized by the orbital parameters specified in table \ref{tab:orbitalParameters}. The inertial properties of the target instead are computed by assuming a mass of \SI{50}{\kg} and using the dimension given in \ref{sec:3dmodel}.
 
 \begin{table}[htbp]
   \centering
