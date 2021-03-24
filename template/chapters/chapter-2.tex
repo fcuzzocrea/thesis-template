@@ -79,7 +79,7 @@ For modeling the Earth, the \acrshort{povray} \inlinecode{POV}{sphere} object ha
   \label{fig:spherescaling}
 \end{figure}
 
-Once the \acrshort{3d} object is created, the most natural choice one can think of is to wrap a \acrshort{2d} texture of the Earth (\ref{fig:firstTexture}) on it, and this indeed is what has been done, using an high resolution texture of the Earth.
+Once the \acrshort{3d} object is created, the most natural choice one can think of is to wrap a \acrshort{2d} texture of the Earth (figure \ref{fig:firstTexture}) on it, and this indeed is what has been done, using an high resolution texture of the Earth.
 
 \begin{figure}[htbp]
   \centering
@@ -90,7 +90,7 @@ Once the \acrshort{3d} object is created, the most natural choice one can think 
 
 \bigskip
 
-In \ref{fig:EarthApollo} we can see a comparison of the synthetically generated image and an actual true image of the Earth as seen from the Apollo 11. From a first glance, used texture gives a good representation of what we should see when we look of a picture of the Earth taken from the space.
+In figure \ref{fig:EarthApollo} we can see a comparison of the synthetically generated image and an actual true image of the Earth as seen from the Apollo 11. From a first glance, used texture gives a good representation of what we should see when we look of a picture of the Earth taken from the space.
 
 \begin{figure}[htbp]
   \centering
@@ -129,7 +129,7 @@ As said before, in order to be able to use different optical properties for wate
   \label{fig:LandmaskMercator}
 \end{figure}
 
-In \ref{fig:comparisonEarths} the result of differentiating the optical properties for terrains and oceans is shown. Despite the fact that it may seems that there is only a small distinction between the two images (in particular, shinier oceans and darker forests), is still enough the make the Earth to seem more photo-realistic, and it leave some space for further tuning.
+In figure \ref{fig:comparisonEarths} the result of differentiating the optical properties for terrains and oceans is shown. Despite the fact that it may seems that there is only a small distinction between the two images (in particular, shinier oceans and darker forests), is still enough the make the Earth to seem more photo-realistic, and it leave some space for further tuning.
 
 \begin{figure}[htbp]
   \centering
@@ -148,8 +148,8 @@ The cloud layer is added on top of the cloudless surface and thanks to that, it 
   \label{fig:cloudsMercator}
 \end{figure}
 
-The cloud texture used for this work (\ref{fig:cloudsMercator}) is not actually directly printed on the surface of the earth, but rather is extruded on a shell built around the sphere which defines the Earth, which has an inner radius equal to $R_{in} = 1.001 \cdot R_{Earth}$ and an outer radius equal to $R_{out} = 1.0002 \cdot  R_{Earth}$. Those values have been found by taking as a reference the fact that low Earth clouds ranges from an altitude of \SI{600}{\m} to \SI{15000}{\m} \cite{nimbostratus}. Although higher or thicker clouds can be modeled, this will require longer rendering times. Of course, also for the cloud layer is possible to set custom optical properties, in order to make the clouds partially transparent, so that when there isn't a dense cloud area, the terrain behind is still visible under the white blanket.\\
-The result of adding the cloud layer can be seen in \ref{fig:cloudShell}
+The cloud texture used for this work (figure \ref{fig:cloudsMercator}) is not actually directly printed on the surface of the earth, but rather is extruded on a shell built around the sphere which defines the Earth, which has an inner radius equal to $R_{in} = 1.001 \cdot R_{Earth}$ and an outer radius equal to $R_{out} = 1.0002 \cdot  R_{Earth}$. Those values have been found by taking as a reference the fact that low Earth clouds ranges from an altitude of \SI{600}{\m} to \SI{15000}{\m} \cite{nimbostratus}. Although higher or thicker clouds can be modeled, this will require longer rendering times. Of course, also for the cloud layer is possible to set custom optical properties, in order to make the clouds partially transparent, so that when there isn't a dense cloud area, the terrain behind is still visible under the white blanket.\\
+The result of adding the cloud layer can be seen in figure \ref{fig:cloudShell}
 
 \begin{figure}[htbp]
   \centering
@@ -451,20 +451,20 @@ Knowing the versors which define the reference frame, the attitude of the camera
   \mathbf{{A_{CN}}} \triangleq [\mathbf{\hat{x}}, \mathbf{\hat{y}} \,. \mathbf{\hat{z}}]
 \end{equation}
 
-At this point, the full pose (\gls{A_TC}, \gls{t_c}) of the camera with respect to the \acrshort{sc} is completely defined by:
+At this point, the imposed ground truth pose (\gls{A_TC}, \gls{t_c}) of the camera with respect to the \acrshort{sc} is completely defined by:
 
 \begin{equation}
-  \mathbf{{A_{TC}}} = \mathbf{{A_{CN}}} \mathbf{{A_{TN}}'} \,,
+  \mathbf{{A_{TC}}} = \mathbf{{A_{CN}}} \mathbf{{A^T_{TN}}} \,,
 \end{equation}
 
 \begin{equation}
-  \mathbf{t_C} = - (\text{\inlinecode{POV}{look_at}} - \text{\inlinecode{POV}{location}}) \mathbf{{A_{TN}}'} \,.
+  \mathbf{t_C} = - (\text{\inlinecode{POV}{look_at}} - \text{\inlinecode{POV}{location}}) \mathbf{{A^T_{TN}}} \,.
 \end{equation}
 
 \subsection{Noise modeling}\label{subsection:addingthenoise}
 Finally, for augmenting the "realness" of an image generated though \acrshort{povray}, the image needs to be post-processed using MATLAB.
 The image so is input in MATLAB and two different noises are applied through the \inlinecode{MATLAB}{imnoise} command : speckle noise ($\sigma^2 = 0.004$) and Gaussian white noise ($\sigma^2 = 0.003$).
-The final result can be seen in image \ref{fig:comparisonNoise}.
+The final result can be seen in figure \ref{fig:comparisonNoise}.
 
 \begin{figure}[htbp]
   \centering
