@@ -10,3 +10,16 @@ Greg Kroah-Hartman
 }
 \end{quotation}
 \vspace{0.5cm}
+
+ Some of the \acrshort{povray} major drawbacks when applied to spaceborne imagery generation are \cite{pangufinal}:
+
+\begin{itemize}
+  \item only a Lambertian reflectance model is possible;
+  \item a uniform surface albedo is used and realistic albedo values cannot used;
+  \item the extended illumination source (sun) can be modeled only as an array of point light sources or as an area light, which is a suboptimal solution;
+  \item background lighting (starlight) is cannot modeled;
+  \item earthshine cannot be easily modeled;
+  \item \acrshort{povray} can produce high quality images but rendering is slow as many minutes (sometimes hours) are required to produce a single image, depending on the H/W is running on.
+\end{itemize}
+
+Finalmente è finita.

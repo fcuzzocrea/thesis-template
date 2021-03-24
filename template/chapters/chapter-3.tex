@@ -121,7 +121,7 @@ or the so called Sobel filters:
 \end{equation*}
 
 \subsection{The Hough Transform}\label{sec:hough}
-The Hough transform is a method often used in \acrfull{cv} for finding shapes in images. It wors by using a voting procedure in the parameters space of the shapes. The most common use of the Hough transform is to find lines in images.
+The Hough transform is a method often used in \acrfull{cv} for finding shapes in images. It works by using a voting procedure in the parameters space of the shapes. The most common use of the Hough transform is to find lines in images.
 Consider the straight line equation, in its polar form,
 
 \begin{equation*}
@@ -174,7 +174,7 @@ were $r_{ij}$ and $t_i$ are the components of the rotation matrix and the transl
 Several methods exists for solving the \acrshort{pnp} problem, the two most common of which are the P3P method and the \textit{e}\acrshort{pnp} method. More information about their implementations can be found on  \cite{XiaoShanGao2003} \cite{Torr2000} and \cite{10.1007/s11263-008-0152-6}.
 
 \section{Feature-based pose estimation implementation: the SVD algorithm}
-The images generated  trough the toolbox presented in Chapter \ref{chap:second-chapter} will now be analyzed using the robust monocular vision-based pose initilization algorithm proposed by S. Sharma, J. Ventura and S. D'Amico in \cite{Sharma2018}.
+The images generated  trough the toolbox presented in Chapter \ref{chap:second-chapter} will now be analyzed using the robust monocular vision-based pose initialization algorithm proposed by S. Sharma, J. Ventura and S. D'Amico in \cite{Sharma2018}.
 As briefly explained in the introduction, the problem of pose initialization consists in computing the rotation matrix,\gls{A_TC} and the translation vector, \gls{t_c} that describes the transformation between the camera frame, $C$, and the target body frame, $B$. Given a generic image point, $p$ = $ [u,v]^T $, we can relate the corresponding $\mathbf{q_B}$ point of the \acrshort{3d} model by employing the standard pinhole camera model briefly reviewed in section \ref{subsection:pinhole}:
 
 \begin{equation}
@@ -196,7 +196,7 @@ where \gls{fx} and \gls{fy} are the respectively the horizontal and the vertical
   \label{fig:theposeproblem}
 \end{figure}
 
-To be able to uniquely solve this set of equation are needed at least six correspondences between the image points and the model points \cite{10.1145/358669.358692}. The challenging part of the problem is to be able to correctly detect the most meaningful points in the \acrshort{2d} image. Usually this can be archived by employing edge detection techniques, such as the Canny edge detector \cite{10.1109/TPAMI.1986.4767851} followed by the Hough transform \cite{10.1145/361237.361242}. This approach however may be biased it applied dierctly to the image due to the fact that these algorithm are gradient based and are not able to correctly distinguish the foreground from the background and also requires the definition of numerous hyperparameters which are difficult to tune for broad applicability because the imaged scene and the illumination conditions are constantly changing throughout the orbit \cite{Sharma2018}.
+To be able to uniquely solve this set of equation are needed at least six correspondences between the image points and the model points \cite{10.1145/358669.358692}. The challenging part of the problem is to be able to correctly detect the most meaningful points in the \acrshort{2d} image. Usually this can be archived by employing edge detection techniques, such as the Canny edge detector \cite{10.1109/TPAMI.1986.4767851} followed by the Hough transform \cite{10.1145/361237.361242}. This approach however may be biased it applied dierctly to the image due to the fact that these algorithm are gradient based and are not able to correctly distinguish the foreground from the background and also requires the definition of numerous hyper-parameters which are difficult to tune for broad applicability because the imaged scene and the illumination conditions are constantly changing throughout the orbit \cite{Sharma2018}.
 
 \subsection{General Architecture}
 In \cite{Sharma2018} is proposed a novel architecture to solve the initial pose of a non cooperative client \acrshort{sc}, whose pipeline is depicted in figure \ref{fig:theposeproblem}.
@@ -222,14 +222,14 @@ As the reader can see from the schematic represented in figure \ref{fig:theposep
 
 two are the most meaningful innovation the \acrshort{svd} architecture introduces:
 \begin{itemize}
-\item the usage of the \acrshort{wge} technique in order to distinguish the target \acrshort{sc} from the background and for enhancing the output of the edge detection procedure bu providing a robust identification of the small as well as large edges of the \acrshort{sc};
-\item the usage of feature groups detected in the image and in the \acrshort{3d} model to solve the feature correspondence problem, which also allows the \acrshort{svd} architecture to be more computationally efficient.  
+  \item the usage of the \acrshort{wge} technique in order to distinguish the target \acrshort{sc} from the background and for enhancing the output of the edge detection procedure bu providing a robust identification of the small as well as large edges of the \acrshort{sc};
+  \item the usage of feature groups detected in the image and in the \acrshort{3d} model to solve the feature correspondence problem, which also allows the \acrshort{svd} architecture to be more computationally efficient.
 \end{itemize}
 
 \subsection{Image processing subsystem}
-The taks of the image processing subsystem is to extract the most meaningful features from the \acrshort{2d} image a of the target \acrshort{sc}. To effectively and rapidly detect the target \acrshort{sc} edges - even in presence of the Earth in the background - an hybrid image processing subsystem is proposed in \cite{Sharma2018}. 
-By fusing together the \acrshort{wge} technique and classical state-of-the-art edge detection techniques the architecture proposed by Sharma \textit{Et al.} is capable to provide a robust and efficient identification of the rue edges of the \acrshort{sc}.
-In particular, the \acrshort{wge} technique is able to identify the a \acrfull{roi} in a more accurate and robust way with respect to state-of-art techniques. The \acrshort{roi} is detection not only makes the entire subsystem robust against the background, but also allows an automated selection of the hyperparameters needed for the Hough transform, which will be used to detect both small and large features of the \acrshort{sc}, in contrast with state-of-the-art algorithms which rely on a single set of manually tuned hyperparameters.
+The taks of the image processing subsystem is to extract the most meaningful features from the \acrshort{2d} image a of the target \acrshort{sc}. To effectively and rapidly detect the target \acrshort{sc} edges - even in presence of the Earth in the background - an hybrid image processing subsystem is proposed in \cite{Sharma2018}.
+By fusing together the \acrshort{wge} technique and classical state-of-the-art edge detection techniques the architecture proposed by Sharma \textit{et al.} is capable to provide a robust and efficient identification of the rue edges of the \acrshort{sc}.
+In particular, the \acrshort{wge} technique is able to identify the a \acrfull{roi} in a more accurate and robust way with respect to state-of-art techniques. The \acrshort{roi} is detection not only makes the entire subsystem robust against the background, but also allows an automated selection of the hyper-parameters needed for the Hough transform, which will be used to detect both small and large features of the \acrshort{sc}, in contrast with state-of-the-art algorithms which rely on a single set of manually tuned hyper-parameters.
 The flow of the image processing subsystem is illustrated in figure \ref{fig:imageProcessingSubsystem}.
 
 \begin{figure}[htbp]
@@ -287,44 +287,44 @@ As noted in \cite{fracchio2019}, for images having a composite background the \a
 One of the innovative features of the \acrshort{wge} technique is that, once the \acrshort{roi} is correctly determined, it is possible to compute a coarse estimation of the the relative position and line of sight even before the pose determination subsystem. By defining the diagonal length of the \acrshort{roi}, $l_{ROI}$, as:
 
 \begin{equation}
-l_{ROI} = \sqrt{{ROI_{width}}^2 + {ROI_{height}}^2} \,,
+  l_{ROI} = \sqrt{{ROI_{width}}^2 + {ROI_{height}}^2} \,,
 \end{equation}
 
 a coarse estimation of the range to the target \acrshort{sc} from the origin of the camera frame is given by :
 
 \begin{equation}
-\norm{t_C}_2 = \frac{\nicefrac{((f_x+f_y)}{2}) L_C}{l_{ROI}} \,,
+  \norm{t_C}_2 = \frac{\nicefrac{((f_x+f_y)}{2}) L_C}{l_{ROI}} \,,
 \end{equation}
 
 were \gls{lc} denotes the diagonal characteristic length of the \acrshort{sc} \acrshort{3d} model. By knowing the coordinates of the center of the image, $[C_x, C_y]$ and the coordinates of the \acrshort{roi} center, $[B_x, B_y]$, it is possible to compute the azimuth and elevation angles ($\alpha, \beta$) from the origin of the camera frame, $C$, to the origin of the body-fixed coordinate system, $B$ :
 
 \begin{equation}
-\alpha = \arctan{\frac{B_x - C_x}{f_x}} \,,
+  \alpha = \arctan{\frac{B_x - C_x}{f_x}} \,,
 \end{equation}
 
 \begin{equation}
-\beta = \arctan{\frac{B_y - C_y}{f_y}} \,.
+  \beta = \arctan{\frac{B_y - C_y}{f_y}} \,.
 \end{equation}
 
-Once ($\alpha, \beta$) are known, the coarse relative position solution is given by : 
+Once ($\alpha, \beta$) are known, the coarse relative position solution is given by :
 
 \begin{equation}
   t_C
   =
   \begin{bmatrix}
     \cos(\alpha) & 0 & -\sin(\alpha) \\
-    0 & 1 & 0 \\
+    0            & 1 & 0             \\
     \sin(\alpha) & 0 & \cos(\alpha)
   \end{bmatrix}
   \begin{bmatrix}
-    1 & 0 & 0 \\
-    0 & \cos(\beta) & \sin(\beta) \\
+    1 & 0            & 0           \\
+    0 & \cos(\beta)  & \sin(\beta) \\
     0 & -\sin(\beta) & \cos(\beta)
   \end{bmatrix}
   \begin{bmatrix}
-    0 \\
-    0 \\
-   \norm{t_C}_2
+    0            \\
+    0            \\
+    \norm{t_C}_2
   \end{bmatrix} \,.
 \end{equation}
 
@@ -332,41 +332,41 @@ Once ($\alpha, \beta$) are known, the coarse relative position solution is given
   \centering
   \includegraphics[width=0.65\textwidth]{gfx/coarsePoseEstimation.eps}
   \caption{Calculation of a coarse relative position solution using the WGE
-technique \cite{Sharma2018}}
+    technique \cite{Sharma2018}}
   \label{fig:imageProcessingSubsystem}
 \end{figure}
 
 In order to extract the features from the input image, a first edge detection process is applied to the tresholded image by means of the Hough transform. As briefly introduced in section \ref{sec:hough}, when applied to the problem of detecting straight lines into an image, the Hough transform performs a shape identification through a voting procedure in the paramter space ($\rho$, $\theta$).
-When computing the Hough transform with MATLAB some hyperparameters are required, which for instance are :
+When computing the Hough transform with MATLAB some hyper-parameters are required, which for instance are :
 
 \begin{itemize}
-\item the desired resolution of $\rho$ and $\theta$, 
-\item the maximum number of peaks to identify in the Hough transform matrix,
-\item the expected minimum length of the the line segment, \gls{l_min},
-\item procedure : the expected minimum length of the the line segment, \gls{lambda} and the maximum gap between two points to be considered in the same line segment, \gls{lambda}.
+  \item the desired resolution of $\rho$ and $\theta$,
+  \item the maximum number of peaks to identify in the Hough transform matrix,
+  \item the expected minimum length of the the line segment, \gls{l_min},
+  \item the expected minimum length of the the line segment, \gls{lambda} and the maximum gap between two points to be considered in the same line segment, \gls{lambda}.
 \end{itemize}
 
-The geometrical constraints imposed to the Hough transform are dictated by the choice of \gls{l_min} and \gls{lambda}. Fixing a value of (\gls{l_min}, \gls{lambda}) for all the images will result into the inability of the algorithm to adapt to different distances between the camera and the target \acrshort{sc}. In fact, as the camera moves closer and closer to the target \acrshort{sc}, the latter will fill larger and larger portions of the image, and the expected lengths of its edges in the image plane are expected to grow, so a recomputation of the geometrical hyperparameters would be needed. However, it is reasonable to hypothesize that the size of the detected \acrshort{roi} bounding box will grow too, so, in \cite{Sharma2018} is proposed to scale the geometrical hyperparameters by using the information about the \acrshort{roi} diagonal length :
+The geometrical constraints imposed to the Hough transform are dictated by the choice of \gls{l_min} and \gls{lambda}. Fixing a value of (\gls{l_min}, \gls{lambda}) for all the images will result into the inability of the algorithm to adapt to different distances between the camera and the target \acrshort{sc}. In fact, as the camera moves closer and closer to the target \acrshort{sc}, the latter will fill larger and larger portions of the image, and the expected lengths of its edges in the image plane are expected to grow, so a recomputation of the geometrical hyper-parameters would be needed. However, it is reasonable to hypothesize that the size of the detected \acrshort{roi} bounding box will grow too, so, in \cite{Sharma2018} is proposed to scale the geometrical hyper-parameters by using the information about the \acrshort{roi} diagonal length :
 
 \begin{equation*}
-L_{min,Hough} = \kappa_1 l_{ROI} \ \ \ \  \lambda_{Hough} = \kappa_2 l_{ROI}  \,,
+  L_{min,Hough} = \kappa_1 l_{ROI} \ \ \ \  \lambda_{Hough} = \kappa_2 l_{ROI}  \,,
 \end{equation*}
 
-were $\kappa_1$ and $\kappa_2$ are two scalars which can be empirically estimated by performing several test simulations on ground. 
+were $\kappa_1$ and $\kappa_2$ are two scalars which can be empirically estimated by performing several test simulations on ground.
 
 The idea proposed in \cite{Sharma2018} is to tune the values of $\kappa_1$ and $\kappa_2$ in order to only extract short line segments from the tresholded image.
 
 A second stream of features is then obtained by directly appling the Sobel operator, which has been shown in section \ref{sec:imagegradient}, to the unfiltered, rectified image, using the MATLAB function \inlinecode{MATLAB}{edge}. The Sobel operator is applied by imposing an intensity treshold equal to $0.04$. As proposed in \cite{fracchio2019}, in order to eliminate the pixel chunks belonging to smaller reflective elements from the output of \inlinecode{MATLAB}{edge}, it is possible to filter the output by using the MATLAB function \inlinecode{MATLAB}{bwareaopen}. Once defined a minimum pixel number $P$, \inlinecode{MATLAB}{bwareaopen} removes all connected components (objects) that have fewer than $P$ pixels from the input binary image. In contrast with what done in \cite{fracchio2019}, which sets $P = 10$ for all images, in this work the $P$ value is computed adaptively for each image exploiting the information about the \acrshort{roi} diagonal length :
 
 \begin{equation*}
-P = \lfloor \eta \ l_{ROI}
+  P = \lfloor \eta \ l_{ROI}
 \end{equation*}
 
-where $\lfloor$ is the commonly used symbol for the \inlinecode{MATLAB}{ceil} operator and $\eta$ is a multiplicative constants which can be tuned empirically.
-After that, the Hough transform is applied again on the output produced by the Sobel operator in order to extract line segments corresponding to the silhouette of the large components of the target \acrshort{sc}. The knowledge the \acrshort{roi} location, obtained through the \acrshort{wge} technique, is now exploited to automatically reject any line segment for which the midpoint lies outside the \acrshort{roi} itself. Also for computing the \acrfull{seh} stream of features, in \cite{Sharma2018} is advised to scale the geometrical hyperparameters needed to compute the Hough lines by using the information about the \acrshort{roi} diagonal length :
+where $\lfloor$ is the commonly used symbol for the \inlinecode{MATLAB}{floor} operator and $\eta$ is a multiplicative constants which can be tuned empirically.
+After that, the Hough transform is applied again on the output produced by the Sobel operator in order to extract line segments corresponding to the silhouette of the large components of the target \acrshort{sc}. The knowledge the \acrshort{roi} location, obtained through the \acrshort{wge} technique, is now exploited to automatically reject any line segment for which the midpoint lies outside the \acrshort{roi} itself. Also for computing the \acrfull{seh} stream of features, in \cite{Sharma2018} is advised to scale the geometrical hyper-parameters needed to compute the Hough lines by using the information about the \acrshort{roi} diagonal length :
 
 \begin{equation*}
-L_{min,Hough} = \kappa_3 l_{ROI} \ \ \ \  \lambda_{Hough} = \kappa_4 l_{ROI}  \,,
+  L_{min,Hough} = \kappa_3 l_{ROI} \ \ \ \  \lambda_{Hough} = \kappa_4 l_{ROI}  \,,
 \end{equation*}
 
 where again, $\kappa_3$ and $\kappa_4$  are two multiplicative constants which can be fixed in an offline phase before the mission. The idea proposed in \cite{Sharma2018} is to tune the values of $\kappa_3$ and $\kappa_4$ in order to extract large line segments from the image.
@@ -377,11 +377,11 @@ To check whether two line segments can be considered similar and merged into one
 Considering the two line segments represented in \ref{fig:mergeEdges}a\footnote{Note that the segments are represented in the image coordinate system, where the positive x axis points to the right, the positive y axis points downward and the positive z axis points toward the direction given by $  \mathbf{\hat{z}} = \frac{\mathbf{\hat{x}} \wedge \mathbf{\hat{y}}}{\norm{\mathbf{\hat{x}} \wedge \mathbf{\hat{y}}}}$.}, it is possible to write their polar representation in the Hough space as:
 
 \begin{equation}
-l_1 \rho_1 = x \cos (\theta_1) +  y \sin (\theta_1) \,,
+  l_1 \rho_1 = x \cos (\theta_1) +  y \sin (\theta_1) \,,
 \end{equation}
 
 \begin{equation}
-l_2 \rho_2 = x \cos (\theta_2) +  y \sin (\theta_2) \,.
+  l_2 \rho_2 = x \cos (\theta_2) +  y \sin (\theta_2) \,.
 \end{equation}
 
 \begin{figure}[htbp]
@@ -397,48 +397,48 @@ l_2 \rho_2 = x \cos (\theta_2) +  y \sin (\theta_2) \,.
 The conditions of similarity proposed by \cite{Sharma2018} are then:
 
 \begin{equation}
-|\theta_1 - \theta_2| \leqslant	\theta_{tresh} \,,
+  |\theta_1 - \theta_2| \leqslant \theta_{tresh} \,,
 \end{equation}
 
 \begin{equation}
-|\rho_1 - \rho_2| \leqslant	\rho_{tresh} \,,
+  |\rho_1 - \rho_2| \leqslant \rho_{tresh} \,,
 \end{equation}
 
 where $\theta_{tresh}$ and $\rho_{tresh}$ are set to be equal to the resolution of $\theta$ and $\rho$ in the Hough space. In \cite{fracchio2019} is proposed to scale the value of $\rho_{tresh}$ using the information about the \acrshort{roi} diagonal length in order to improve the identification of the spacecraft true edges :
 
 \begin{equation}
-\rho_{tresh} = \nu d_{ROI} \,,
+  \rho_{tresh} = \nu d_{ROI} \,,
 \end{equation}
 
-where $\nu$ is a multiplicative constant which can be set to be equal to the resolution of $\rho$ in the Hough space. In this work, this second approach has been preferred. 
+where $\nu$ is a multiplicative constant which can be set to be equal to the resolution of $\rho$ in the Hough space. In this work, this second approach has been preferred.
 Furthermore, it is imposed that the Euclidean distance between the farthest pair of endpoints of the two line segments must be less than $d_{tresh}$ :
 
 \begin{equation}
-d_{p_{1a}-p_{2b}} \leqslant d_{tresh} \,,
+  d_{p_{1a}-p_{2b}} \leqslant d_{tresh} \,,
 \end{equation}
 
 where $d_{tresh}$ is computed for each image as half of the mean length of the detected segments :
 
 \begin{equation}
-d_{tresh} = {\frac{1}{2}} \overline{(l_1, l_2,\ldots, l_n)} \,.
+  d_{tresh} = {\frac{1}{2}} \overline{(l_1, l_2,\ldots, l_n)} \,.
 \end{equation}
 
 If the similarity conditions are met, then the two line segments are replaced with the line $l_3$, which is the line segment which joins the two farthest endpoints of $l_1$ and $l_2$ :
 
 \begin{equation}
-l_3 \rho_3 = x \cos (\theta_3) +  y \sin (\theta_3) \,.
+  l_3 \rho_3 = x \cos (\theta_3) +  y \sin (\theta_3) \,.
 \end{equation}
 
 The Hough parameters which defines $l_3$ can be computed as follows\footnote{Note that the computation is done in the image coordinate system previously defined}. First, the angle between the positive x-axis and the joined segment is retrieved\footnote{Note that it is necessary to subtract $90^{\circ}$ from the computed angle to take into account that in the image coordinate system negative the quadrant is the upper while the positive one is the lower} :
 
 \begin{equation}
-\alpha = 90^{\circ} - \arctan{\left(\frac{p_{1a,x}-p_{2b,x}}{p_{1a,y}-p_{2b,y}}\right)} \,,
+  \alpha = 90^{\circ} - \arctan{\left(\frac{p_{1a,x}-p_{2b,x}}{p_{1a,y}-p_{2b,y}}\right)} \,,
 \end{equation}
 
 from which it follows the value of $\theta_3$
 
 \begin{equation}
-\theta_3 = \alpha - 90^{\circ} \,.
+  \theta_3 = \alpha - 90^{\circ} \,.
 \end{equation}
 
 \begin{figure}[htbp]
@@ -451,19 +451,19 @@ from which it follows the value of $\theta_3$
 Now, to find $\rho_3$ it is sufficient to compute the intersection between the line which passes trough the origin and is also perpendicular to the joined segment :
 
 \begin{equation}
-m = \tan(\alpha)
+  m = \tan(\alpha)
 \end{equation}
 
 \begin{equation}
-x = \frac{m(p_{1a,x}-p_{1a,y})}{\nicefrac{1}{m} + m} \,,
+  x = \frac{m(p_{1a,x}-p_{1a,y})}{\nicefrac{1}{m} + m} \,,
 \end{equation}
 
 \begin{equation}
-y = - \frac{1}{m} x \,,
+  y = - \frac{1}{m} x \,,
 \end{equation}
 
 \begin{equation}
-\rho_3 = x \cos (\theta_3) +  y \sin (\theta_3) \,.
+  \rho_3 = x \cos (\theta_3) +  y \sin (\theta_3) \,.
 \end{equation}
 
 For what concerns the \acrshort{seh} stream instead, the \inlinecode{MATLAB}{edge} function is applied by using a treshold of $0.4$. After that, the Hough transform is applied, and a dedicated function removes all the detected lines which midpoints are located outside the \acrshort{roi}.
@@ -504,88 +504,88 @@ In figures \ref{fig:resultsMergingEdge}, \ref{fig:resultsMergingEdge2}, \ref{fig
 \end{figure}
 
 \subsubsection{Merge Streams}
-The final step of  the feature detection procedure consist into merging the two streams of features obtained by using both the \acrshort{wge} and \acrshort{seh}. The aim of combining the two different streams is to identify different elements of the \acrshort{sc} silhouette. As stated in \cite{Sharma2018}, the uniqueness check archived in this phase resolves the issue of detecting repeated edges as encountered in previous works. 
+The final step of  the feature detection procedure consist into merging the two streams of features obtained by using both the \acrshort{wge} and \acrshort{seh}. The aim of combining the two different streams is to identify different elements of the \acrshort{sc} silhouette. As stated in \cite{Sharma2018}, the uniqueness check archived in this phase resolves the issue of detecting repeated edges as encountered in previous works.
 In contrast with what proposed in \cite{Sharma2018}, which suggests to detect and merge pairs of close and similar line segments separately for the two streams and merge them after, here this job is accomplished in one step. The line segments of both streams are collected together and scanned by a loop which decides what to do with the current pair being analyzed on the basis of some geometrical conditions which are set.
-For example, pairs of close and similar line segments are detected and merged using conditions similar to the one imposed in section \ref{sec:mergingedges}: 
+For example, pairs of close and similar line segments are detected and merged using conditions similar to the one imposed in section \ref{sec:mergingedges}:
 
 \begin{equation}
-|\theta_1 - \theta_2| \leqslant \tilde{\theta}_{tresh} \,,
+  |\theta_1 - \theta_2| \leqslant \tilde{\theta}_{tresh} \,,
 \end{equation}
 
 \begin{equation}
-|\rho_1 - \rho_2| \leqslant	\tilde{\rho}_{tresh} \,,
+  |\rho_1 - \rho_2| \leqslant \tilde{\rho}_{tresh} \,,
 \end{equation}
 
 where $\tilde{\rho}_{tresh}$ can be expressed as a function of the \acrshort{roi} diagonal lenght trough the multiplicative constant $\tilde{\nu}$ \cite{fracchio2019}:
 
 \begin{equation}
-\tilde{\rho}_{tresh} = \tilde{\nu} d_{ROI} \,.
+  \tilde{\rho}_{tresh} = \tilde{\nu} d_{ROI} \,.
 \end{equation}
 
 Furthermore, it is imposed that the Euclidean distance between the midpoints must be less than half the length of the shorter line. With reference to figure \ref{fig:mergeEdges} :
 
 \begin{equation}
-d_{p_{1b}-p_{2a}} \leqslant \tilde{d}_{tresh} \,,
+  d_{p_{1b}-p_{2a}} \leqslant \tilde{d}_{tresh} \,,
 \end{equation}
 
 where $\tilde{d}_{tresh}$ is computed for each pair being considered as half the length of the longer line segment :
 
 \begin{equation}
-\tilde{d}_{tresh} = {\frac{1}{2}} max(l_1, l_2) \,.
+  \tilde{d}_{tresh} = {\frac{1}{2}} max(l_1, l_2) \,.
 \end{equation}
 
-If the $\tilde{d}_{tresh}$ check is failed, the loop does two more checks before passing to the next pair. The first check controls if it is being considered a case were are present two long lines which intersect. The intersection can be computed by exploiting linear algebra. Considering two lines, $l_1$ ($x_1,x_2$,$y_1$,$y_2$) and $l_2$ ($x_3,x_4$,$y_3$,$y_4$) is possible to compute the following determinants : 
+If the $\tilde{d}_{tresh}$ check is failed, the loop does two more checks before passing to the next pair. The first check controls if it is being considered a case were are present two long lines which intersect. The intersection can be computed by exploiting linear algebra. Considering two lines, $l_1$ ($x_1,x_2$,$y_1$,$y_2$) and $l_2$ ($x_3,x_4$,$y_3$,$y_4$) is possible to compute the following determinants :
 
 \begin{equation}
-dt_1 = det \left(
+  dt_1 = det \left(
   \begin{bmatrix}
-    1 & 1 & 1 \\
-    x_1 & x_2 & x_3 \\
-    y_1 & y_2 & y_3
-  \end{bmatrix}
+      1   & 1   & 1   \\
+      x_1 & x_2 & x_3 \\
+      y_1 & y_2 & y_3
+    \end{bmatrix}
   \begin{bmatrix}
-    1 & 1 & 1 \\
-    x_1 & x_2 & x_4 \\
-    y_1 & y_2 & y_4
-  \end{bmatrix}  
-\right)
+      1   & 1   & 1   \\
+      x_1 & x_2 & x_4 \\
+      y_1 & y_2 & y_4
+    \end{bmatrix}
+  \right)
 \end{equation}
 
 \begin{equation}
-dt_2 = det \left(
+  dt_2 = det \left(
   \begin{bmatrix}
-    1 & 1 & 1 \\
-    x_1 & x_3 & x_4 \\
-    y_1 & y_3 & y_4
-  \end{bmatrix}
+      1   & 1   & 1   \\
+      x_1 & x_3 & x_4 \\
+      y_1 & y_3 & y_4
+    \end{bmatrix}
   \begin{bmatrix}
-    1 & 1 & 1 \\
-    x_2 & x_3 & x_4 \\
-    y_2 & y_3 & y_4
-  \end{bmatrix}  
-\right)
+      1   & 1   & 1   \\
+      x_2 & x_3 & x_4 \\
+      y_2 & y_3 & y_4
+    \end{bmatrix}
+  \right)
 \end{equation}
 
 at this point, if $dt_1  \leqslant 0$ and $dt_2  \leqslant 0$ the two lines intersect, otherwise they do not.
 If they do intersect, then only the line segment composed by joining the farthest endpoints is retained if the following condition is met:
 
 \begin{equation}
-\epsilon = \frac{min(l_1,l_2)}{max(l_1,l_2)} > 0.25 \,.
+  \epsilon = \frac{min(l_1,l_2)}{max(l_1,l_2)} > 0.25 \,.
 \end{equation}
 
 The second check instead controls if it is being considered a case were are present two long lines which are almost parallel. The parallelism is computed by exploiting the information about $\rho$ :
 
 \begin{equation}
-\chi = 1 - \frac{min(\rho_1,\rho_2)}{max(\rho_1,\rho_2)} \,
+  \chi = 1 - \frac{min(\rho_1,\rho_2)}{max(\rho_1,\rho_2)} \,
 \end{equation}
 
 if $\chi$ is less than $0.005$ then the two lines are considered parallel and only the line segment composed by joining the farthest endpoints is retained if:
 
 \begin{equation}
-\epsilon = \frac{min(l_1,l_2)}{max(l_1,l_2)} > 0.25 \,.
+  \epsilon = \frac{min(l_1,l_2)}{max(l_1,l_2)} > 0.25 \,.
 \end{equation}
 
-Figures \ref{fig:mergeStreams1}, \ref{fig:mergeStreams2}, \ref{fig:mergeStreams3} shows the results of the merge streams procedure when applied to the images generated with the toolbox described in chapter \ref{chap:second-chapter}. 
+Figures \ref{fig:mergeStreams1}, \ref{fig:mergeStreams2}, \ref{fig:mergeStreams3} shows the results of the merge streams procedure when applied to the images generated with the toolbox described in chapter \ref{chap:second-chapter}.
 
 \begin{figure}[htbp]
   \centering
@@ -646,20 +646,20 @@ One of the innovation introduced in the \acrshort{svd} algorithm is what by the 
 As stated in \cite{10.1145/358669.358692}, to uniquely solve the \acrshort{pnp} problem are required at least six correspondences between model and image points. The number of possible correspondences, so, the number of hypothetical pose solution given \textit{n} points in the image and \textit{m} points in the \acrshort{3d} model therefore can be expressed as \cite{Sharma2018}:
 
 \begin{equation*}
-\binom{m}{6} \binom{n}{6} 6! \,.
+  \binom{m}{6} \binom{n}{6} 6! \,.
 \end{equation*}
 
 The idea presented by Sharma \textit{et al.} so is to reduce the solutions' search space by just using a small set of high level feature groups instead of using a large number of feature point. For example, it is sufficiently safe to say that four image points may belong to a polygonal feature such as a solar panel, then a unique solution can be found by just using four correspondences. The feature synthesis implementation proposed by Sharma \textit{et al.} groups the features into five high-level perceptual groups, which, in order of increasing complexity are :
 
 \begin{itemize}
-\item parallel pairs;
-\item proximity pairs;
-\item parallel triads;
-\item proximity triads;
-\item closed polygonal tetrads;
+  \item parallel pairs;
+  \item proximity pairs;
+  \item parallel triads;
+  \item proximity triads;
+  \item closed polygonal tetrads;
 \end{itemize}
 
-moreover, antennas are treated as a separate feature group. 
+moreover, antennas are treated as a separate feature group.
 As done for the merging procedure, the perceptual groups are recognized by examining several geometrical constraints.
 
 \begin{figure}[htbp]
@@ -681,52 +681,52 @@ As done for the merging procedure, the perceptual groups are recognized by exami
 Antennas are detected by selecting among all line segments only the one for which the following condition is met :
 
 \begin{equation}
-l_1  \leqslant \tau d_{ROI} \,,
+  l_1  \leqslant \tau d_{ROI} \,,
 \end{equation}
 
 where $\tau$ is a multiplicative constant, which \cite{Sharma2018} suggest to take equal to $\nicefrac{1}{3}$. Before checking if a line can be inserted into an high level feature group, is always checked if it cannot be characterized as antenna.
 With reference to figure \ref{fig:highLevelGroups}a, parallelism is enforced by checking the the angular difference between the two line segments:
 
 \begin{equation}
-\theta_{12} = |\theta_1 - \theta_2| \leqslant \theta_{max} \,,
+  \theta_{12} = |\theta_1 - \theta_2| \leqslant \theta_{max} \,,
 \end{equation}
 
 However, as suggested in \cite{fracchio2019}, to avoid detecting spurious parallel pairs it is useful to introduce two more geometric constraints, which are the minimum radial distance and the minimum ratio between the lines' length :
 
 \begin{equation}
-\rho_{12} = |\rho_1 - \rho_2| \geq	\rho_{min} \,,
+  \rho_{12} = |\rho_1 - \rho_2| \geq  \rho_{min} \,,
 \end{equation}
 
 \begin{equation}
-\epsilon_{12} = \frac{min(l_1,l_2)}{max(l_1,l_2)} \geq \epsilon_{min} \,.
+  \epsilon_{12} = \frac{min(l_1,l_2)}{max(l_1,l_2)} \geq \epsilon_{min} \,.
 \end{equation}
 
-Proximity pairs instead are detected by checking the distance between their closest endpoints. With reference to figure  \ref{fig:highLevelGroups}b, the geometric condition checked is: 
+Proximity pairs instead are detected by checking the distance between their closest endpoints. With reference to figure  \ref{fig:highLevelGroups}b, the geometric condition checked is:
 
 \begin{equation}
-d_{12} \leqslant d_{max} \,,
+  d_{12} \leqslant d_{max} \,,
 \end{equation}
 
 where $d_{max}$ can be adaptively computed in function of the \acrshort{roi} diagonal length trough a multiplicative constant:
 
 \begin{equation}
-d_{max} = \xi d_{ROI} \,.
+  d_{max} = \xi d_{ROI} \,.
 \end{equation}
 
-Furthermore, in order to prevent duplicated edges to be grouped as proximal pair, in \cite{fracchio2019} is proposed a supplementary constraint on the minimum angular difference between the two line segments being considered: 
+Furthermore, in order to prevent duplicated edges to be grouped as proximal pair, in \cite{fracchio2019} is proposed a supplementary constraint on the minimum angular difference between the two line segments being considered:
 
 \begin{equation}
-\theta_{12} = |\theta_1 - \theta_2| \geq \theta_{min} \,.
+  \theta_{12} = |\theta_1 - \theta_2| \geq \theta_{min} \,.
 \end{equation}
 
 Parallel triads can be detected by selecting among all parallel pairs, the ones which shares a line segment. Similarly, proximity triads are detected by scanning all the proximity pairs and extracting the ones which shares a line segment and satisfy the following geometric condition:
 
 \begin{equation}
-(P_{1a} - P_{3a})(P_{1b}-P_{3b}) > 0 \,.
+  (P_{1a} - P_{3a})(P_{1b}-P_{3b}) > 0 \,.
 \end{equation}
 
 Finally, polygonal tetrads that have two segments in common are classified as closed polygonal tetrads.
-Similarly, the perceptual grouping is applied to a reduced CAD model of the target \acrshort{sc}. As proposed in \cite{Sharma2018}, the CAD model introduced in \ref{chap:second-chapter} is reduced to only contain a low number of features. The number of features present in the wireframe reduced modules must be tuned in order to reduce all possible pose ambiguities and to reduce the number of feature correspondence hypotheses to speed up the pose determination process. The origin of the body frame is located in correspondence of the \acrshort{cg} of the \acrshort{sc}.
+Similarly, the perceptual grouping is applied to a reduced CAD model of the target \acrshort{sc}. As proposed in \cite{Sharma2018}, the CAD model introduced in chapter \ref{chap:second-chapter} is reduced to only contain a low number of features. The number of features present in the wireframe reduced modules must be tuned in order to reduce all possible pose ambiguities and to reduce the number of feature correspondence hypotheses to speed up the pose determination process. The origin of the body frame is located in correspondence of the \acrshort{cg} of the \acrshort{sc}.
 
 \begin{figure}[htbp]
   \centering
@@ -738,21 +738,99 @@ Similarly, the perceptual grouping is applied to a reduced CAD model of the targ
   \label{fig:cadModel}
 \end{figure}
 
-Once the CAD model is input in MATLAB and reduced, the same feature groups can be extracted from the \acrshort{3d} model by applying \acrshort{3d} geometry definitions instead of \acrshort{2d} ones. For example, parallelism can be defined using the unit vectors constructed using end-points of the lines. Similarly, proximal pairs can be defined based on the smallest possible distance between the end points of the line segments, etc.
+Once the CAD model is input in MATLAB\footnote{The following function can be used: \url{https://www.mathworks.com/matlabcentral/fileexchange/30923-fast-stl-import-function}} and reduced, the same feature groups can be extracted from the \acrshort{3d} model by applying \acrshort{3d} geometry definitions instead of \acrshort{2d} ones. For example, parallelism can be defined using the unit vectors constructed using end-points of the lines. Similarly, proximal pairs can be defined based on the smallest possible distance between the end points of the line segments, etc.
 From the \acrshort{3d} model shown in figure \ref{fig:cadModel} the following high level features have been detected :
 
 \begin{itemize}
-\item 18 parallel pairs;
-\item 16 proximity pairs;
-\item 12 parallel triads;
-\item 11 proximity triads;
-\item 2 closed polygonal tetrads;
+  \item 18 parallel pairs;
+  \item 16 proximity pairs;
+  \item 12 parallel triads;
+  \item 11 proximity triads;
+  \item 2 closed polygonal tetrads;
 \end{itemize}
 
 in addition to the five antennas and the lateral bar which have been placed on the \acrshort{sc}.
 
-\subsection{Model Matching and Pose Determination}
-Once all feature groups are extracted from the \acrshort{3d} model and the \acrshort{2d} image, 
+\subsection{Model Matching}
+Once all feature groups are extracted from the \acrshort{3d} model and the \acrshort{2d} image, the baseline idea is to hypothesize correspondences between the endpoints of the \acrshort{3d} model and \acrshort{2d} line segments for each matching feature group pair through simple combinations. The point correspondences then are stored in a match matrix, which can be then input to the desired \acrshort{pnp} solver.The feature groups can ranked according their geometrical complexity, and only the most geometrically complex feature group detected in the image are considered.
+
+\begin{table}[htbp]
+  \centering
+  \includegraphics[width=1.0\textwidth]{gfx/matchMatrix.eps}
+  \caption{Expected number of rows in the match matrix (column 5) based on the most geometrically complex feature
+    group detected in the image (column 1) \cite{Sharma2018}}
+  \label{tab:matchMatrix}
+\end{table}
+
+In table \ref{tab:matchMatrix} is shown the number of rows the match matrix should have for a spacecraft like the tango \acrshort{sc} in a typical scenario were at lest three antennas are detected.
+Unlike previous view based pose estimation techniques, in the \acrshort{svd} architecture not all possible feature matches are treated identically. Instead, a small set of matches is hypothesized and then verified, by combining most complex feature group with simplest feature groups detected in order to have enough point matches to fed to the pose solver. In particular, for \acrshort{sc}s like Tango, Sharma \textit{et al.} propose to to combine point correspondence from complex feature groups with point correspondences from the antennas feature group, since the \acrshort{sc} has several antennas which are visible from most viewing angles.
+
+\subsection{Pose Determination}
+For the pose determination step the original authors propose to couple the e\acrshort{pnp} pose solver \cite{10.1007/s11263-008-0152-6} to each combination of feature correspondence present in the match matrix to archive the five best solutions and then use those for pose refinement by using the \acrshort{nr} method to solve equations \eqref{eq:rc} and \eqref{eq:p} using each pose solution as initial guess in order to minimize the following fit error:
+
+\begin{equation}
+  \mathbf{E_i} = \left[u_i - \left( \frac{x_C}{z_C} f_x + C_x \right) , \left( v_i - \frac{y_C}{z_C} f_y + C_y \right) \right]  \mbox{ for } i=1,...,n \,.
+  \label{eq:errorFIT}
+\end{equation}
+
+In this work however it has been opted to use the built-in MATLAB function \inlinecode{MATLAB}{estimateWorldCameraPose} which returns orientation and position of a calibrate camera by means of a P3P solver \cite{XiaoShanGao2003} coupled with a RANSAC algorithm for outlier rejection \cite{Torr2000} in a coordinate system which is the one of the map input to the function (so to speak, the wireframe \acrshort{3d} model previously introduced). The P3P solver produces up to four symmetrical solutions using three points. Less solution can be produced if some geometrical and algebraic conditions are met.
+Since the \acrshort{pnp} is prone to error if any outliers are present in the set of give point correspondences, the RANSAC is used to make the final solution more robust.
+
+\section{Conclusions}
+This chapter is concluded showing to the reader some cases of successful pose initialization when using the \acrshort{svd} architecture which has been described and analyzed trough the whole chapter. In the table \ref{tab:svdParameters} the interested reader can see the values of some of the \acrshort{roi} parameters which have been described in the trough the previous sections used to tune the \acrshort{svd} algorithm in order to analyze the image produced with the toolbox presented in chapter \ref{chap:second-chapter}.
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{cc}
+    \hline
+    \hline
+    Symbol                   & Value          \\
+    \hline
+    $\kappa_1$               & $0.031$        \\
+    \hline
+    $\kappa_2$               & $0.0085$       \\
+    \hline
+    $\kappa_3$               & $0.086$        \\
+    \hline
+    $\kappa_4$               & $0.0146$       \\
+    \hline
+    $\eta$                   & $0.03$         \\
+    \hline
+    $\theta_{tresh}$         & \ang{10}       \\
+    \hline
+    $\nu$                    & $0.1$          \\
+    \hline
+    $\tilde{\theta}_{tresh}$ & \ang{10}       \\
+    \hline
+    $\tilde{\nu}$            & $0.129$        \\
+    \hline
+    $\theta_{max}$           & \ang{10}       \\
+    \hline
+    $\rho_{min}$             & $0.05 d_{ROI}$ \\
+    \hline
+    $\epsilon_{min}$         & 0.7            \\
+    \hline
+    $\xi$                    & $0.03$         \\
+    \hline
+    $\theta_{min}$           & \ang{10}       \\
+    \hline
+    \hline
+  \end{tabular}
+  \caption{Parameters used to tune the \acrshort{svd} algorithm}
+  \label{tab:svdParameters}
+\end{table}
+
+The accuracy of the estimated pose can be evaluated by defining the following errors:
+
+\begin{equation}
+  \mathbf{E_t} = |\mathbf{t_c}^{true} - \mathbf{t_c}^{est}|
+\end{equation}
+
+\begin{equation}
+  \mathbf{A_{diff}} = \mathbf{A_{TC}}^{est}(\mathbf{A_{TC}}^{true})^T
+\end{equation}
+
+where $\mathbf{E_t}$ represents the absolute difference between the "true" position of the \acrshort{sc} (the one imposed at the moment when the image was generated) and the estimated position provided by the pose solution, and $\mathbf{A_{diff}}$ is the \acrshort{dcm} representing the relative rotation between the "true" value (the one imposed at the moment when the image was generated) and the estimated value of $\mathbf{A_{TC}}$.
 
 \begin{figure}[htbp]
   \centering
@@ -760,10 +838,18 @@ Once all feature groups are extracted from the \acrshort{3d} model and the \acrs
   \qquad
   \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC49.eps}}
   \qquad
-  \caption{Case of succesful pose initialization}
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial214modelMap.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC214.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial212modelMap.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC212.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial311modelMap.eps}}
+  \qquad
+  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC311.eps}}
+  \qquad
+  \caption{Cases of successful pose initialization}
   \label{fig:EVVAI}
 \end{figure}
-
-\section{Conclusions}
-
-% inserisci una tabella riassuntiva con tutti i parametri utilizzati

@@ -84,6 +84,7 @@
 \newacronym{loc}{LoC}{Lines of Code}
 \newacronym{cdf}{CDF}{Cumulative Distribution Function}
 \newacronym{seh}{S\&H}{Sobel and Hough}
+\newacronym{tm}{TM}{Template Matching}
 
 % Definire qui i simboli che verranno utilizzati nel testo
 \newglossaryentry{A_CN}{name=${\mathbf{A_{CN}}}$,description={Orientation of the camera frame with respect to the inertial frame},sort=${A_{CN}}$}
@@ -124,6 +125,11 @@
   \fi
 }
 \makeatother
+
+\newcommand{\hiddensection}[1]{
+    \stepcounter{section}
+    \section*{\hspace{1em}{#1}}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BEGIN OF THE DOCUMENT
 \begin{document}
@@ -230,10 +236,6 @@
 %%% Appendix A
 \chapter{First appendix: Attitude and Orbit Simulator \label{app:first-appendix}}
 \input{./appendices/appendix-a.tex}
-\cleardoublepage{}
-%%% Appendix B
-\chapter{Second appendix: Random Rotation Matrix Generation \label{app:second-appendix}}
-\input{./appendices/appendix-b.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF THE DOCUMENT

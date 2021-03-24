@@ -9,11 +9,11 @@
 \end{quotation}
 \vspace{0.5cm}
 
-The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any \acrshort{cv} algorithm. In this chapter the reader will firstly be presented with a brief mathematical introduction. After that, the proposed solution to generate synthetic space-borne imagery will be presented and analyzed. 
+The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any \acrshort{cv} algorithm. For example, deep learning techniques relies on large annotated data-sets of images. For what concerns terrestrial applications, there are a plethora of data-sets commonly available, however for spaceborne applications there is a general lack of such data-sets. The main reason arises from the difficulty of acquiring thousands of spaceborne images of the desired target \acrshort{sc} with accurately annotated pose labels. So, in this chapter, the reader will firstly be presented with a brief mathematical introduction. After that, the proposed solution to generate synthetic spaceborne imagery will be presented and analyzed.
 
 \section{Mathematical Preliminaries}
 
-\subsection{Reference Frames}
+\subsection{Reference Frames}\label{sec:refereceFrames}
 In order to be able to correctly analyze to problem of image generation, five reference frames are of interest:
 \begin{itemize}
   \item \acrfull{gci}
@@ -33,24 +33,16 @@ It's axes are aligned with the mean North pole and the mean vernal equinox at so
   \label{fig:raytracing}
 \end{figure}
 
-The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and their axes are usually aligned with their respective principal axes.
-The origin of the camera frame instead coincides with the center of perspective projection.
-The target model frame is fixed with respect to the body frame and often coincides with it.
-For what concerns this work, we will consider the camera frame to be coincident with the chaser body-fixed frame, and the target model frame to be coincident with the target body-fixed frame.
-The transformation from one reference frame to another can be uniquely defined by means of a translation vector and a rotation matrix. The translation vector represents the relative positions between the two different frames origins and the rotation matrix is determined by a sequence of three rotations about three different linearly independent axis by three angles, according to the Euler's angle representation.
+The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and their axes are usually aligned with their respective principal axes. The origin of the camera frame instead coincides with the center of perspective projection. The target model frame is fixed with respect to the body frame and often coincides with it. For what concerns this work, we will consider the camera frame to be coincident with the chaser body-fixed frame, and the target model frame to be coincident with the target body-fixed frame. The transformation from one reference frame to another can be uniquely defined by means of a translation vector and a rotation matrix. The translation vector represents the relative positions between the two different frames origins and the rotation matrix is determined by a sequence of three rotations about three different linearly independent axis by three angles, according to the Euler's angle representation.
 
 \section{Image generation}
-The use of artificial images gives a complete control over the scene.
-As stated in \cite{paolocorti}, the generated dataset should be as complete as possible in terms of metals and terrain features and illumination conditions.
-A lack of realism in image generation can lead to incoherent results, not representative of real operative conditions and thus can lead to wrong results in terms of \acrshort{cv} algorithm tuning.
-A particular care is then required in the image generation process.
-For the purpose of this work, a new procedure for the generation of realistic images, representative of a dataset taken by a monocular navigation camera during a close-proximity approach to targeg \acrshort{sc} has been developed.
-Unsing the illustrated procedure, the user is able to create synthetic images of a target \acrshort{sc} given it's \acrshort{stl} model, by fine tuning all the properties of the materials composing the target \acrshort{sc}.
-Since there could be also cases in which the Earth can be behind the target \acrshort{sc}, the developed tool is also able to simulate Earth's presence at any given location. The tool is also able to the simulate the the athmosphere of the Earth and the cloud layer \cite{jacopo}.
-The developed tool couples a well known open source raytracer (\acrshort{povray}) with MATLAB in order to archive a good degree of realism in the generated images.
+The use of artificial images gives a complete control over the scene. As stated in \cite{paolocorti}, the generated data-set should be as complete as possible in terms of metals and terrain features and illumination conditions. A lack of realism in image generation can lead to incoherent results, not representative of real operative conditions and thus can lead to wrong results in terms of \acrshort{cv} algorithm tuning. A particular care is then required in the image generation process.
+For the purpose of this work, a new procedure for the generation of realistic images, representative of a data-set taken by a monocular navigation camera during a close-proximity approach to target \acrshort{sc} has been developed.
+Using the illustrated procedure, the user is able to create synthetic images of a target \acrshort{sc} given it's \acrshort{stl} model, by fine tuning all the properties of the materials composing the target \acrshort{sc}.
+Since there could be also cases in which the Earth can be behind the target \acrshort{sc}, the developed tool is also able to simulate Earth's presence at any given location. The tool is also able to the simulate the the atmosphere of the Earth and the cloud layer \cite{jacopo}.
+The developed tool couples the well known open-source raytracer \acrshort{povray} with MATLAB in order to archive a good degree of realism in the generated images.
 
 \subsection{Ray Tracing}
-\subsubsection{What is ray tracing}
 Ray tracing is a rendering technique used for generating artificial images which relies on the concept of controlling the path of view lines which starts from the observer camera and ends to generic virtual objects and thus calculating the color of the object.
 What is really of crucial importance for our particular use case is that ray tracing is capable of re-creating some of nature's optical effects through transparent and opaque surfaces as reflection and refraction, scattering, and dispersion phenomena (such as chromatic aberration).
 Due to this, ray tracing techniques can generate artificial images with a really high degree of photorealism.
@@ -66,13 +58,13 @@ After either a maximum number of reflections or a ray traveling a certain distan
   \label{fig:raytracing}
 \end{figure}
 
-For more information regarding how ray tracing works, and ray tracing techniques see  \cite{introductionraytracing}.
+For more information regarding how ray tracing works and ray tracing techniques in general, the interested reader can see \cite{introductionraytracing}.
 
 \subsubsection{Ray tracing with \acrshort{povray}}
-\acrshort{povray} gives the programmer several options to customize both the look and feel and the optical properties of the represented objects and the medium that light passes trough.
-\acrshort{povray} offers the programmer the choice to use some predefined geometric shapes, like spheres or cubes; another option instead is to define surfaces of the objects trough meshes. This capability has been used widely by this project to model the spacecraft object.
-Any surface can then be characterized by its own optical properties. Every object can have a color specified by an RGB triplet or can be wrapped with a texture.
-The light source is not really an object. Light sources have no visible shape of their own. They are just points or areas which emit light and can be tuned to accomplish the wanted result, for example we can tune the intensity of the light and the light color by specifying the RGB triplet; any atmospheric effect like opaque gas presence (like smoke or clouds) and its rlative optical distortions can be modeled as well.
+\acrshort{povray} is an open-source ray tracing software. It does not offer a GUI for modeling objects, but can be optionally used as Blender rendering engine in order to have a \acrshort{3d} modeling environment to model objects. \acrshort{povray} has also been already used to generate spaceborne imagery. For example, it has been used under the ESA LunarSim study to render images of lunar surfaces. Being an headless executable, \acrshort{povray} can be easily scripted in order to be used in conjunction with other softwares.
+\acrshort{povray} gives the programmer several options to customize both the look and feel and the optical properties of the represented objects and the medium that light passes trough. \acrshort{povray} offers the programmer the choice to use some predefined geometric shapes, like spheres or cubes; another option instead is to define surfaces of the objects trough meshes. This capability has been used widely by this project to model the spacecraft object.
+Any surface can then be characterized by its own optical properties. Every object can have a color specified by an Red Green Blue (RGB) triplet or can be wrapped with a texture.
+The light source is not really an object. Light sources have no visible shape of their own. They are just points or areas which emit light and can be tuned to accomplish the wanted result, for example we can tune the intensity of the light and the light color by specifying the RGB triplet; any atmospheric effect like opaque gas presence (like smoke or clouds) and its relative optical distortions can be modeled as well.
 
 \subsection{Environment Modeling}
 \subsubsection{Earth Modeling}
@@ -87,7 +79,7 @@ For modeling the Earth, the \acrshort{povray} \inlinecode{POV}{sphere} object ha
   \label{fig:spherescaling}
 \end{figure}
 
-Once the \acrshort{3d} object is created, the most natural choice one can think of is to wrap a \acrshort{2d} texture of the Earth (\ref{fig:firstTexture}) on it, and this indeed is what has been done, using the high resolution (8K) texture of the Earth.
+Once the \acrshort{3d} object is created, the most natural choice one can think of is to wrap a \acrshort{2d} texture of the Earth (\ref{fig:firstTexture}) on it, and this indeed is what has been done, using an high resolution texture of the Earth.
 
 \begin{figure}[htbp]
   \centering
@@ -118,7 +110,7 @@ In the following, those issues will be addressed.
 \paragraph{Cloud Layer}\mbox{}\\
 The fixed coupling of Earth surface and clouds is big problem for what concerns CV algorithms development, which should be trained to work in several different conditions, so, having the clouds always on the same region of the Earth despite the orientation is not acceptable.
 The solution adopted in both this work and \cite{jacopo} relies on decoupling the Earth terrain layer and the cloud layer, specifying different optical properties for each layer, specify clouds relative rotation with respect to the terrain and coupling back everything together.
-Furthermore, oceans have been splitted too, in order to be able to set different optical properties for the seas.
+Furthermore, oceans have been split too, in order to be able to set different optical properties for the seas.
 For the terrain layer, a a true-color mercator image of the Earth has been used as a base, in this way every piece of the surface could possibly be visible in any picture.
 
 \begin{figure}[htbp]
@@ -137,7 +129,7 @@ As said before, in order to be able to use different optical properties for wate
   \label{fig:LandmaskMercator}
 \end{figure}
 
-In \ref{fig:comparisonEarths} the result of differentiating the optical properties for terrains and oceans is shown. Despite the fact that it may seems that there is only a small distinction between the two images (in particular, shinier oceans and darker forests), is still enough the make the Earth to seem more photorealistic, and it leave some space for further tuning.
+In \ref{fig:comparisonEarths} the result of differentiating the optical properties for terrains and oceans is shown. Despite the fact that it may seems that there is only a small distinction between the two images (in particular, shinier oceans and darker forests), is still enough the make the Earth to seem more photo-realistic, and it leave some space for further tuning.
 
 \begin{figure}[htbp]
   \centering
@@ -224,7 +216,7 @@ There are two ways to illuminate an object with \acrshort{povray}:
 The light source is controlled by the keyword \inlinecode{POV}{light_source}, which in turn accepts several modifiers. Light sources in \acrshort{povray}have no visible shape of their own. They are just points or areas which emit light.\\
 The ambient light instead is controlled by the keyword \inlinecode{POV}{ambient} added to the \inlinecode{POV}{finish} modifier of an object, and it is used to simulate the light inside a shadowed area.
 We can think of ambient light like a kind of light that is scattered everywhere in the room. It bounces all over the place and manages to light objects up a bit even where no light is directly shining.
-In our particular case, we can use the \inlinecode{POV}{ambient} option to simulate the illumation of the object due to spurious light sources (such as stars) or reflection from other bodies (like the Moon or other planets).
+In our particular case, we can use the \inlinecode{POV}{ambient} option to simulate the illumination of the object due to spurious light sources (such as stars) or reflection from other bodies (like the Moon or other planets).
 In order to model the lightning condition of a true solar system, the light source has been modeled to resemble as much as possible the light emitted by the Sun.
 The solution adopted in this project and in \cite{jacopo} relies upon modeling the sun as an area light source through the option \inlinecode{POV}{area_light}. This allows to create a cluster of point-like light sources distributed on a disc (simulated by adding the \inlinecode{POV}{circular} option to the area light source) which has radius equal to the radius of the Sun, and placed at the exact distance which the Sun has from the Earth in the \acrshort{gci} frame. In order to cope with the fact that in reality the Sun is equal to a sphere of light and not a disc, the option \inlinecode{POV}{orient} has been used. When using \inlinecode{POV}{orient}, every object in the \acrshort{povray} world would see the Sun's disc as oriented toward it, from any position around it.
 Furthermore, the option \inlinecode{POV}{jitter} has been used, which tells the ray-tracer to slightly move the position of each light in the area light to eliminate any shadow banding that may occur.
@@ -349,10 +341,8 @@ It is possible to trick \acrshort{povray} to behave like it using a right handed
   \label{fig:frames}
 \end{figure}
 
-By default \acrshort{povray} use a positive x value in the \inlinecode{POV}{right} vector. This means that the right side of the screen is aligned with the +x-direction. By using a negative x value in the \inlinecode{POV}{right} vector instead the right side of the screen will be aligned to the -x-direction, and the coordinate system will be right handed.
-Doing only that however left us having the y axis as the one pointing upward and the z axis as the one point in the direction which goes outside the screen.
-To have a more comfortable, which also uses the same axes of the \acrshort{gci} reference frame, we can flip y and z axis by overriding the \inlinecode{POV}{sky} vector.
-By default, in fact, \acrshort{povray} uses \inlinecode{POV}{<0,1,0>} as \inlinecode{POV}{sky} vector. By redefining it as \inlinecode{POV}{<0,0,1>}  \acrshort{povray} will roll the camera until the top of the camera is in line with the \inlinecode{POV}{sky} vector, giving us the desired reference frame.
+By default \acrshort{povray} use a positive x value in the \inlinecode{POV}{right} vector. This means that the right side of the screen is aligned with the +x-direction. By using a negative x value in the \inlinecode{POV}{right} vector instead the right side of the screen will be aligned to the -x-direction, and the coordinate system will be right handed. Doing only that however left us having the y axis as the one pointing upward and the z axis as the one point in the direction which goes outside the screen.
+To have a more comfortable reference frame, aligned with the \acrshort{gci} reference frame introduced in section \ref{sec:refereceFrames}, we can flip y and z axis by overriding the \inlinecode{POV}{sky} vector. By default, in fact, \acrshort{povray} uses \inlinecode{POV}{<0,1,0>} as \inlinecode{POV}{sky} vector. By redefining it as \inlinecode{POV}{<0,0,1>}  \acrshort{povray} will roll the camera until the top of the camera is in line with the \inlinecode{POV}{sky} vector, giving us the desired reference frame.
 
 \begin{figure}[htbp]
   \centering
@@ -365,7 +355,7 @@ By default, in fact, \acrshort{povray} uses \inlinecode{POV}{<0,1,0>} as \inline
   \label{fig:framesComparison}
 \end{figure}
 
-In order to rightly simulate a real camera, the \acrshort{povray} camera aperture angle has been computed by assuming the intrinsic properties of a real camera, a Point Grey Grasshopper 3, equipped with a Xenoplan 1.9/17 mm lens, which is the same camera employed to capture the SPEED dataset \cite{DBLP:journals/corr/abs-1911-02050}.
+In order to rightly simulate a real camera, the \acrshort{povray} camera aperture angle has been computed by assuming the intrinsic properties of a real camera, a Point Grey Grasshopper 3, equipped with a Xenoplan 1.9/17 mm lens, which is the same camera employed to capture the SPEED data-set \cite{DBLP:journals/corr/abs-1911-02050}.
 
 \begin{table}[htbp]
   \centering
@@ -403,14 +393,14 @@ By assuming a square \acrshort{ccd} sensor with square pixels we can obtain:
 \end{equation}
 
 \begin{equation}
-  \alpha = 2 \cdot \arctan{\frac{CCD_{size}}{2 \cdot f_x}} \,,
+  \alpha = 2 \cdot \arctan{\left( \frac{CCD_{size}}{2 \cdot f_x} \right)} \,,
 \end{equation}
 
 where $A.R.$ is the Aspect Ratio of the picture, which is passed as first component \inlinecode{POV}{right} vector (with the negative sign, as described before), and $\alpha$ is the aperture angle which will be input in \acrshort{povray}.
 Using the parameters detailed in table \ref{tab:SPEEDCameraParameters} we can compute:
 \begin{itemize}
-  \item \gls{ar} = $1.6$
-  \item \gls{alpha} = $35.4515 ^{\circ}$
+  \item \gls{ar} = $1.6$;
+  \item \gls{alpha} = $35.4515 ^{\circ}$.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -433,13 +423,15 @@ By imposing the \inlinecode{POV}{look_at} vector \acrshort{povray} will first ro
   \label{fig:perspcam}
 \end{figure}
 
-So, by knowing how \acrshort{povray} rotates the camera to point to the the \inlinecode{POV}{look_at} point, we can compute the actual attitude matrix of the camera with respect to the "inertial" \acrshort{povray} world by exploiting simple linear algebra rules:
+So, by knowing how \acrshort{povray} rotates the camera to point to the the \inlinecode{POV}{look_at} point, we can compute the actual attitude matrix of the camera with respect to the \acrshort{gci} frame\footnote{It is reminded to the reader that the \acrshort{gci} reference frame and the \acrshort{povray}'s world frame are aligned by design} exploiting simple linear algebra rules:
 
 \begin{itemize}
   \item the z-direction, which is the one going straight out from the camera, can be computed by simply making the difference between the \inlinecode{POV}{look_at} vector and the camera \inlinecode{POV}{location} vector;
-  \item the x direction, the one going right on the image plane, can be found by the cross product between the z-direction and the \inlinecode{POV}{sky} vector
-  \item the y direction, which is the one going downward in the image plane, can be found by performing the cross product between the z-direction and y-direction
+  \item the x direction, the one going right on the image plane, can be found by the cross product between the z-direction and the \inlinecode{POV}{sky} vector;
+  \item the y direction, which is the one going downward in the image plane, can be found by performing the cross product between the z-direction and y-direction.
 \end{itemize}
+
+So, doing the needful math it is possible to write:
 
 \begin{equation}
   \mathbf{\hat{z}} = \frac{\text{\inlinecode{POV}{look_at}} - \text{\inlinecode{POV}{location}}}{\norm{\text{\inlinecode{POV}{look_at}} - \text{\inlinecode{POV}{location}}}} \,,
@@ -453,13 +445,13 @@ So, by knowing how \acrshort{povray} rotates the camera to point to the the \inl
   \mathbf{\hat{y}} = \frac{\mathbf{\hat{z}} \wedge \mathbf{\hat{x}}}{\norm{\mathbf{\hat{z}} \wedge \mathbf{\hat{x}}}} \,.
 \end{equation}
 
-So the attitude of the camera with respect an the inertial \acrshort{povray} frame, \gls{A_CN}, can be simply defined as :
+Knowing the versors which define the reference frame, the attitude of the camera with respect to the inertial \acrshort{povray} frame, \gls{A_CN}, can be simply defined as :
 
 \begin{equation}
   \mathbf{{A_{CN}}} \triangleq [\mathbf{\hat{x}}, \mathbf{\hat{y}} \,. \mathbf{\hat{z}}]
 \end{equation}
 
-At this point, the full pose (\gls{A_TC}, \gls{t_c}) of the camera with respect to the \acrshort{sc} is defined by:
+At this point, the full pose (\gls{A_TC}, \gls{t_c}) of the camera with respect to the \acrshort{sc} is completely defined by:
 
 \begin{equation}
   \mathbf{{A_{TC}}} = \mathbf{{A_{CN}}} \mathbf{{A_{TN}}'} \,,
@@ -468,8 +460,6 @@ At this point, the full pose (\gls{A_TC}, \gls{t_c}) of the camera with respect 
 \begin{equation}
   \mathbf{t_C} = - (\text{\inlinecode{POV}{look_at}} - \text{\inlinecode{POV}{location}}) \mathbf{{A_{TN}}'} \,.
 \end{equation}
-
-At this point, the pose imposed to the camera is completely defined.
 
 \subsection{Noise modeling}\label{subsection:addingthenoise}
 Finally, for augmenting the "realness" of an image generated though \acrshort{povray}, the image needs to be post-processed using MATLAB.
@@ -488,14 +478,13 @@ The final result can be seen in image \ref{fig:comparisonNoise}.
 \section{MATLAB integration}
 Since it would be highly unpractical to hand edit every time all the parameters to render the \acrshort{sc} in different position and attitudes as well as Earth's different rotations, a MATLAB toolbox has been developed which allows the user to automatically generate .pov \acrshort{sdl} files, and it renders them trough \acrshort{povray} automatically.
 The implemented toolbox takes as input \gls{N_u}, \gls{N_v}, \gls{fx}, \gls{fy}, \gls{d_u}, \gls{d_v} to compute intrinsic camera parameters to set \acrshort{povray} camera.
-Then, it offers the user the possibility to generate a sequence of random attitudes, given the orbital parameters of a reference orbit. If inertial properties of the target \acrshort{sc} are available, instead, it can compute the full uncontrolled dynamics (so to speak, the dynamics of the \acrshort{sc} when only subjected to the disturbances torques acting on the reference orbit) of the \acrshort{sc} trough a Simulink model at each time instant. Details about how random attitude matrices are computed and how the Space environment has been modeled in Simulink are give in \ref{app:first-appendix} and \ref{app:second-appendix}, respectively.
+Then, it offers the user the possibility to generate a sequence of random attitudes \cite{Arvo92}, given the orbital parameters of a reference orbit. If inertial properties of the target \acrshort{sc} are available, instead, it can compute the full uncontrolled dynamics (so to speak, the dynamics of the \acrshort{sc} when only subjected to the disturbances torques acting on the reference orbit) of the \acrshort{sc} trough a Simulink model at each time instant. For the interested reader, details about how the Space environment has been modeled in Simulink are given in \ref{app:first-appendix}.
 For each time instant for which the attitudes of the target \acrshort{sc} have been computed, the relative position of the camera with respect to the target \acrshort{sc} is computed by selecting a random point inside a sphere having a \SI{20}{\m} radius centered in the target position, and the imposed pose is computed. A random Earth's rotation is computed as well.
 All the properties of the scene are stored in a custom .att file, which can be passed in a second time to retrieve the absolute position and orientation of both the camera and the target \acrshort{sc} and their pose.
 A .pov \acrshort{sdl} file is written for each time instant for which the attitudes of the target \acrshort{sc} have been computed and \acrshort{povray} is called to render each image in the background, from within MATLAB. Rightly after an image has been rendered, it is post-processed by MATLAB in order to add the noise, as described in \ref{subsection:addingthenoise}.
 
 \section{Conclusions}
-It must be noted by the reader, that a custom \acrshort{povray} version is required in order to correctly replicate what has been done in this project.
-The issue originates by the fact that at the beginning of this project it has been decided that 1 unit in the \acrshort{povray} world is exactly to \SI{1}{\km} to ease the modeling of the solar system. Thus, the Earth is placed at the origin of the \acrshort{povray} world (consistently with the \acrshort{gci} frame)and it has a \SI{6378}{\km} radius, and the light source, the Sun, is placed \SI{1.4723e8}{\km} far from the Earth, and has a radius of \SI{696340}{\km}.
+It must be noted by the reader, that a patched \acrshort{povray} version is required in order to correctly replicate what has been done in this project, as stated in the first lines of section \ref{sec:3dmodel}. At the beginning of this project it has been decided that by design, 1 unit in the \acrshort{povray} world is exactly equal to \SI{1}{\km} to ease the modeling of the solar system. Thus, the Earth is placed at the origin of the \acrshort{povray} world (consistently with the \acrshort{gci} frame)and it has a \SI{6378}{\km} radius, and the light source, the Sun, is placed \SI{1.4723e8}{\km} far from the Earth, and has a radius of \SI{696340}{\km}.
 The \acrshort{sc} instead is placed on an orbit characterized by the orbital parameters specified in table \ref{tab:orbitalParameters}. The inertial properties of the target instead are computed by assuming a mass of \SI{50}{\kg} and using the dimension given in \ref{sec:3dmodel}.
 
 \begin{table}[htbp]
@@ -525,11 +514,8 @@ The \acrshort{sc} instead is placed on an orbit characterized by the orbital par
   \label{tab:orbitalParameters}
 \end{table}
 
-The issue originates from the fact that what is being represented is a scene having an extremely small object (the \acrshort{sc}) in front of a giant object {the Earth}, which is impacted by light which is generated from a very far distance (the Sun).
-Due to the exquisite peculiarity of this kind of scene, in some corner cases a "bounding issue" can be triggered, causing the \acrshort{sc} to be only partially redendered in the scene, or, in worst case scenario, not being rendered at all.
-Directly citing the \acrshort{povray} documentation, in order to speed up the ray-object intersection tests \acrshort{povray} uses a variety of spatial sub-division systems. The primary system uses a hierarchy of nested bounding boxes. This system compartmentalizes all finite objects in a scene into invisible rectangular boxes that are arranged in a tree-like hierarchy. Before testing the objects within the bounding boxes the tree is descended and only those objects are tested whose bounds are hit by a ray. This can greatly improve rendering speed.
-However, during the development of this project turned out that \acrshort{povray} automatic bounding is not perfect. There are situations where a perfect automatic bounding is very hard to calculate, like the one faced in this project. Unfortunately, \acrshort{povray} developers removed the possibility of turning off bounding control in \acrshort{povray}, thus it is necessary to compile a custom \acrshort{povray} version which introduces back the command line switch \textbf{-MB} which allows the user to turn off bounding control. According to the GPL license \acrshort{povray} is shipped with, the patch has been made freely available \footnote{\url{https://github.com/fcuzzocrea/povray/commit/2aecdfb20eef3ed3b6a5698392a9c91fa3f1afcd}}.\\
-The output of the toolbox which has been described trough this chapter can be observed in figure \ref{fig:finalResult}. 
+So, what is being represented is a scene having an extremely small object (the \acrshort{sc}) in front of a giant object {the Earth}, which is impacted by light which is generated from a very far distance (the Sun). Due to the exquisite peculiarity of this kind of scene, in some corner cases a "bounding issue" can be triggered, causing the \acrshort{sc} to be only partially redendered in the scene, or, in worst case scenario, not being rendered at all. Directly citing the \acrshort{povray} documentation, in order to speed up the ray-object intersection tests \acrshort{povray} uses a variety of spatial sub-division systems. The primary system uses a hierarchy of nested bounding boxes. This system compartmentalizes all finite objects in a scene into invisible rectangular boxes that are arranged in a tree-like hierarchy. Before testing the objects within the bounding boxes the tree is descended and only those objects are tested whose bounds are hit by a ray. This can greatly improve rendering speed. However, during the development of this project turned out that \acrshort{povray} automatic bounding is not perfect. There are situations where a perfect automatic bounding is very hard to calculate, like the one faced in this project. Unfortunately, \acrshort{povray} developers removed the possibility of turning off bounding control in \acrshort{povray}, thus it is necessary to compile a patched \acrshort{povray} version which introduces back the command line switch \textbf{-MB} which allows the user to turn off bounding control. According to the GPL license \acrshort{povray} is shipped with, the patch has been made freely available \footnote{\url{https://github.com/fcuzzocrea/povray/commit/2aecdfb20eef3ed3b6a5698392a9c91fa3f1afcd}}.
+The output of the toolbox which has been described trough this chapter can be observed in figure \ref{fig:finalResult}.
 
 \begin{figure}[htbp]
   \centering
