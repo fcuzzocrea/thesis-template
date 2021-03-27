@@ -75,7 +75,7 @@
 \newacronym{nr}{NR}{Netwon-Raphson}
 \newacronym{eo}{EO}{Electro-Optical}
 \newacronym{stl}{STL}{Stereolitographic}
-\newacronym{gci}{GCI}{Geocentric Inertial Frame}
+\newacronym{gci}{ECIF}{Earth Centered Inertial Frame}
 \newacronym{povray}{POV-Ray}{The Persistence Of Vision Raytracer}
 \newacronym{ccd}{CCD}{Charge Couple Device}
 \newacronym{sdl}{SDL}{Scene Description Language}
@@ -107,7 +107,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  General thesis informations go here!
 \hypersetup{
     pdfauthor  = {Francescodario Cuzzocrea},    		    % author
-    pdftitle   = {Analysis of a Vision-Based pose initialization algorithm for non-cooperative spacecraft on synthetic imagery},    				% title
+    pdftitle   = {Analysis and validation of spaceborne synthetic imagery using a Vision-Based pose initialization algorithm for non-cooperative spacecrafts},    				% title
  	pdfsubject = {Pose Determination},  % subject of the document
  	pdfkeywords= {Pose Determination, Computer Vision}     % list of keywords
 }
@@ -150,9 +150,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acnowledgment
 \pagenumbering{Roman}
-\chapter*{Acknowledgments}
-\addcontentsline{toc}{chapter}{Acknowledgments}
-\input{./initial-final-stuff/acknowledgments.tex}
+\chapter*{Ringraziamenti}
+\addcontentsline{toc}{chapter}{Ringraziamenti}
+%\input{./initial-final-stuff/acknowledgments.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Abstract
@@ -236,6 +236,10 @@
 %%% Appendix A
 \chapter{First appendix: Attitude and Orbit Simulator \label{app:first-appendix}}
 \input{./appendices/appendix-a.tex}
+\cleardoublepage{}
+%%% Appendix B
+\chapter{Second appendix: common \acrshort{cv} models and problems \label{app:second-appendix}}
+\input{./appendices/appendix-b.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF THE DOCUMENT

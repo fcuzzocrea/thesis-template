@@ -9,12 +9,11 @@
 \end{quotation}
 \vspace{0.5cm}
 
-The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any \acrshort{cv} algorithm. For example, deep learning techniques relies on large annotated data-sets of images. For what concerns terrestrial applications, there are a plethora of data-sets commonly available, however for spaceborne applications there is a general lack of such data-sets. The main reason arises from the difficulty of acquiring thousands of spaceborne images of the desired target \acrshort{sc} with accurately annotated pose labels. So, in this chapter, the reader will firstly be presented with a brief mathematical introduction. After that, the proposed solution to generate synthetic spaceborne imagery will be presented and analyzed.
+The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any \acrshort{cv} algorithm. For example, deep learning techniques relies on large annotated data-sets of images. For what concerns terrestrial applications, there are a plethora of data-sets commonly available, however for spaceborne applications there is a general lack of such data-sets. The main reason arises from the difficulty of acquiring thousands of spaceborne images of the desired target \acrshort{sc} with accurately annotated pose labels. In this chapter, the proposed solution to generate synthetic spaceborne imagery will be described and analyzed.
 
-\section{Mathematical Preliminaries}
+\section{Reference Frames}\label{sec:refereceFrames}
+Before going trough the details regarding the image generation toolbox developed during this work, it is important to define which are the reference frames of interest for image generation, which for instance are: 
 
-\subsection{Reference Frames}\label{sec:refereceFrames}
-In order to be able to correctly analyze to problem of image generation, five reference frames are of interest:
 \begin{itemize}
   \item \acrfull{gci}
   \item chaser body-fixed frame
@@ -23,8 +22,7 @@ In order to be able to correctly analyze to problem of image generation, five re
   \item target body-fixed frame
 \end{itemize}
 
-The \acrshort{gci} frame has its origin at the center of mass of the Earth. This frame has a linear acceleration because of the Earth's circular orbit about the Sun, which however can be neglected for attitude analysis.
-It's axes are aligned with the mean North pole and the mean vernal equinox at some epoch.\\
+The \acrshort{gci} frame has its origin at the center of mass of the Earth. This frame has a linear acceleration because of the Earth's circular orbit about the Sun, which however can be neglected for attitude analysis. The x-axis is aligned with the direction of the vernal equinox, which is the equinox which occurs near the first day of spring (with respect to the North hemisphere). The z-axis is aligned with the celestial North Pole. The y-axis is rotated by 90 degrees East about the celestial equator.
 
 \begin{figure}[htbp]
   \centering
@@ -33,20 +31,19 @@ It's axes are aligned with the mean North pole and the mean vernal equinox at so
   \label{fig:raytracing}
 \end{figure}
 
-The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and their axes are usually aligned with their respective principal axes. The origin of the camera frame instead coincides with the center of perspective projection. The target model frame is fixed with respect to the body frame and often coincides with it. For what concerns this work, we will consider the camera frame to be coincident with the chaser body-fixed frame, and the target model frame to be coincident with the target body-fixed frame. The transformation from one reference frame to another can be uniquely defined by means of a translation vector and a rotation matrix. The translation vector represents the relative positions between the two different frames origins and the rotation matrix is determined by a sequence of three rotations about three different linearly independent axis by three angles, according to the Euler's angle representation.
+The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and their axes are considered to be aligned with their respective principal axes. The origin of the camera frame instead coincides with the center of perspective projection. The target model frame is fixed with respect to the body frame and often coincides with it. For what concerns this work, for the sake of simplicity and without loss of generality, we will consider the camera frame to be coincident with the chaser body-fixed frame, and the target model frame to be coincident with the target body-fixed frame. 
 
 \section{Image generation}
-The use of artificial images gives a complete control over the scene. As stated in \cite{paolocorti}, the generated data-set should be as complete as possible in terms of metals and terrain features and illumination conditions. A lack of realism in image generation can lead to incoherent results, not representative of real operative conditions and thus can lead to wrong results in terms of \acrshort{cv} algorithm tuning. A particular care is then required in the image generation process.
-For the purpose of this work, a new procedure for the generation of realistic images, representative of a data-set taken by a monocular navigation camera during a close-proximity approach to target \acrshort{sc} has been developed.
+The use of artificial images gives a complete control over the scene. For the purpose of this work, a new procedure for the generation of realistic images, representative of a data-set taken by a monocular navigation camera during a close-proximity approach to target \acrshort{sc} has been developed.
 Using the illustrated procedure, the user is able to create synthetic images of a target \acrshort{sc} given it's \acrshort{stl} model, by fine tuning all the properties of the materials composing the target \acrshort{sc}.
 Since there could be also cases in which the Earth can be behind the target \acrshort{sc}, the developed tool is also able to simulate Earth's presence at any given location. The tool is also able to the simulate the the atmosphere of the Earth and the cloud layer \cite{jacopo}.
 The developed tool couples the well known open-source raytracer \acrshort{povray} with MATLAB in order to archive a good degree of realism in the generated images.
 
 \subsection{Ray Tracing}
-Ray tracing is a rendering technique used for generating artificial images which relies on the concept of controlling the path of view lines which starts from the observer camera and ends to generic virtual objects and thus calculating the color of the object.
+Ray tracing is a rendering technique used for generating artificial images which relies on the concept of controlling the path of view lines which starts from the observer camera and ends to generic virtual objects and thus calculating the color intensity of the object.
 What is really of crucial importance for our particular use case is that ray tracing is capable of re-creating some of nature's optical effects through transparent and opaque surfaces as reflection and refraction, scattering, and dispersion phenomena (such as chromatic aberration).
 Due to this, ray tracing techniques can generate artificial images with a really high degree of photorealism.
-When the ray tracer renders the scene, a ray of light is traced for every pixel of the camera. Typically, each ray must be tested for intersection with some subset of the object in the scene. Once the ray has intercepted an object, the ray tracing algorithm will estimate the amount and the type of incoming light at the point of intersection, examine the material properties declared by the programmer and by combining those information will calculate the final color that should be attributed to the pixel.
+When the ray tracer renders the scene, a ray of light is traced for every pixel of the camera. Typically, each ray must be tested for intersection with some subset of the objects in the scene. Once the ray has intercepted an object, the ray tracing algorithm will estimate the amount and the type of incoming light at the point of intersection, examine the material properties and by combining those information will calculate the final color intensity that should be attributed to the pixel.
 Several illumination algorithms and reflective or translucent materials may also require more rays to be re-cast into the scene in order to do the necessary computations.
 At first glance may seem cumbersome to start the ray from the observer towards the object rather than casting rays to the camera (as is in reality). However, doing so speeds up a lot the computation time, as most of the light rays present in a scene may never reach the eye of the observer, and so, all the time spent for tracing those would be useless.
 After either a maximum number of reflections or a ray traveling a certain distance without intersection, the ray ceases to travel and the pixel's value is updated.
@@ -62,13 +59,13 @@ For more information regarding how ray tracing works and ray tracing techniques 
 
 \subsubsection{Ray tracing with \acrshort{povray}}
 \acrshort{povray} is an open-source ray tracing software. It does not offer a GUI for modeling objects, but can be optionally used as Blender rendering engine in order to have a \acrshort{3d} modeling environment to model objects. \acrshort{povray} has also been already used to generate spaceborne imagery. For example, it has been used under the ESA LunarSim study to render images of lunar surfaces. Being an headless executable, \acrshort{povray} can be easily scripted in order to be used in conjunction with other softwares.
-\acrshort{povray} gives the programmer several options to customize both the look and feel and the optical properties of the represented objects and the medium that light passes trough. \acrshort{povray} offers the programmer the choice to use some predefined geometric shapes, like spheres or cubes; another option instead is to define surfaces of the objects trough meshes. This capability has been used widely by this project to model the spacecraft object.
-Any surface can then be characterized by its own optical properties. Every object can have a color specified by an Red Green Blue (RGB) triplet or can be wrapped with a texture.
-The light source is not really an object. Light sources have no visible shape of their own. They are just points or areas which emit light and can be tuned to accomplish the wanted result, for example we can tune the intensity of the light and the light color by specifying the RGB triplet; any atmospheric effect like opaque gas presence (like smoke or clouds) and its relative optical distortions can be modeled as well.
+\acrshort{povray} gives the programmer several options to customize both the look and feel and the optical properties of the represented objects and the medium that light passes trough. \acrshort{povray} offers the choice to use some predefined geometric shapes, like spheres or cubes; another option instead is to define surfaces of the objects trough meshes. This capability has been used widely by this project to model the spacecraft object.
+Any surface can then be characterized by its own optical properties. Every object can have a color specified by an Red Green Blue (RGB) triplet or can be wrapped with a texture.\\
+For what concerns light sources, they have no visible shape of their own. They are just points or areas which emit light and can be tuned to accomplish the wanted result. For example we can tune the intensity of the light and the light color by specifying the RGB triplet; any atmospheric effect like opaque gas presence (like smoke or clouds) and its relative optical distortions can be modeled as well.
 
 \subsection{Environment Modeling}
 \subsubsection{Earth Modeling}
-Earth modeling has been worked out in collaboration with Jacopo Guarneri.
+Earth modeling has been developed in parallel to another thesis \cite{jacopo}.
 Here will follow a brief review of how Earth has been modeled taken from \cite{jacopo}.
 For modeling the Earth, the \acrshort{povray} \inlinecode{POV}{sphere} object has been used, in conjunction with the \inlinecode{POV}{scale} feature, which allows to make the sphere become an ellipsoid.
 
@@ -95,17 +92,17 @@ In figure \ref{fig:EarthApollo} we can see a comparison of the synthetically gen
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/earthApolloOurs.eps}
-  \caption{Comparison of synthetic Earth image with Apollo 11's picture}
+  \caption{Comparison of synthetic Earth image with Apollo 11's picture (the two images have different resolutions)}
   \label{fig:EarthApollo}
 \end{figure}
 
 Despite the relatively good result, this way of modeling the Earth still haves some issues :
 \begin{itemize}
   \item since for all pictures we use the same texture, the clouds are sticked to their position on top of the surface of the Earth;
-  \item there is no way to define different optical properties for the terrain and the seas;
-  \item there is no way to try to simulate diffusion of sunlight in the atmosphere;
+  \item terrains and seas are characterized by the same optical properties, while in reality they are not;
+  \item diffusion of sunlight in the atmosphere is not simulated;
 \end{itemize}
-In the following, those issues will be addressed.
+In the following paragraphs, those issues will be addressed.
 
 \paragraph{Cloud Layer}\mbox{}\\
 The fixed coupling of Earth surface and clouds is big problem for what concerns CV algorithms development, which should be trained to work in several different conditions, so, having the clouds always on the same region of the Earth despite the orientation is not acceptable.
@@ -221,13 +218,14 @@ In order to model the lightning condition of a true solar system, the light sour
 The solution adopted in this project and in \cite{jacopo} relies upon modeling the sun as an area light source through the option \inlinecode{POV}{area_light}. This allows to create a cluster of point-like light sources distributed on a disc (simulated by adding the \inlinecode{POV}{circular} option to the area light source) which has radius equal to the radius of the Sun, and placed at the exact distance which the Sun has from the Earth in the \acrshort{gci} frame. In order to cope with the fact that in reality the Sun is equal to a sphere of light and not a disc, the option \inlinecode{POV}{orient} has been used. When using \inlinecode{POV}{orient}, every object in the \acrshort{povray} world would see the Sun's disc as oriented toward it, from any position around it.
 Furthermore, the option \inlinecode{POV}{jitter} has been used, which tells the ray-tracer to slightly move the position of each light in the area light to eliminate any shadow banding that may occur.
 
-\subsection{Tango Spacecraft Modeling}
+\subsection{Spacecraft Modeling}
 
 \subsubsection{3D Model of the Spacecraft}\label{sec:3dmodel}
-The problem of modeling rather complex shapes with \acrshort{povray}, such as can be a spacecraft, it was one of the most long and painful one during this work, which also required to patch \acrshort{povray} source code, to prevent the ray-tracer to made assumption that aren't true. Obviously, the path of building the \acrshort{sc} using \acrshort{povray} primitives was really not feasible, as many different \acrshort{sc} can have different shapes, and modeling them by using simpler shapes it is simply not possible. Furthermore, usually detaled \acrshort{3d} CAD models of \acrshort{sc} are available which can be easily exported into \acrshort{stl} format, so the focus has been putted into trying to understand how to translate those \acrshort{3d} CAD models directly into \acrshort{povray} code.
+The problem of modeling rather complex shapes with \acrshort{povray}, such as can be a spacecraft, it was one of the most demanding parts of this work, which also required to patch \acrshort{povray} source code, to prevent the ray tracer to forcibly use unnecessary features. Obviously, building the \acrshort{sc} using \acrshort{povray} primitives is a sub-optimal solution, as many different \acrshort{sc} can have different shapes, and modeling them by using simpler shapes each time it is simply not efficient. Furthermore, usually detaled \acrshort{3d} CAD models of \acrshort{sc} are available which can be easily exported into \acrshort{stl} format, so the focus has been putted into trying to understand how to translate those \acrshort{3d} CAD models directly into \acrshort{povray} code.
 Several open source and closed source software have been coupled together in order to produce trough \acrshort{povray} a render of a given \acrshort{stl} model.
 The procedure will be detailed in the following paragraphs.
-The Tango spacecraft has been modeled using the dimensions specified in \cite{Sharma2018}, which will be here reported for ease of reading. The solar panel is represented by a polygon of \SI{570}{\mm} x \SI{759}{\mm}, while the spacecraft body instead is represented by a convex polyhedron of \SI{560}{\mm} x \SI{550}{mm} x \SI{300}{\mm}. The radio frequency antennas length instead is of \SI{204}{\mm}. The origin of the CAD model is located in correspondence of the \acrshort{cg}.\\
+The \acrshort{sc} which has been modeled for developing this thesis is heavily inspired by the Tango \acrshort{sc} of the PRISMA mission, by ESA.
+The spacecraft has been modeled using the dimensions specified in \cite{Sharma2018}, which will be here reported for ease of reading. The solar panel is represented by a polygon of \SI{570}{\mm} x \SI{759}{\mm}, while the spacecraft body instead is represented by a convex polyhedron of \SI{560}{\mm} x \SI{550}{mm} x \SI{300}{\mm}. The radio frequency antennas length instead is of \SI{204}{\mm}. The origin of the CAD model is located in correspondence of the \acrshort{cg}.\\
 Using the aforementioned dimensions, the Tango spacecraft has firstly been reproduced using Autodesk Inventor. The result of the modeling procedure is shown in figure \ref{fig:tango3d}.
 
 \begin{figure}[htbp]
@@ -241,8 +239,8 @@ The \acrshort{3d} CAD model can now be exported in \acrshort{stl} format to be m
 \subsubsection{Blender}
 Once the \acrshort{3d} model of the Tango \acrshort{sc} was available, the most challenging task has been the one of rendering the \acrshort{sc} itself using \acrshort{povray} at attitudes imposed by the user.
 The first step for archiving that goal is to import the \acrshort{stl} model of the \acrshort{sc} into Blender. By exploiting the \acrshort{povray} render add-on for Blender, it is possible to render any given \acrshort{stl} file imported file using \acrshort{povray} as rendering engine. The \acrshort{povray} add-on will optionally save the generated SDL code used to render the scene.
-The generated code however, will threat the entire \acrshort{3d} model as a whole, generating one giant \acrshort{povray} \inlinecode{POV}{mesh2} object, which is something which cannot be easily managed. Just as an example, would be impossible to assign to the different parts of the \acrshort{sc} different optical parameters or textures.
-So, to workaround this limitation, it is a good practice to first split the different surfaces of the \acrshort{3d} model in different different children objects (or children surfaces), and only after render the scene in order to get the POV code. In that way, the \acrshort{povray} render add-on for Blender will generate a \inlinecode{POV}{mesh2} object for each children object created in Blender.
+The generated code however, will threat the entire \acrshort{3d} model as a whole, generating one giant \acrshort{povray} \inlinecode{POV}{mesh2} object, that is something which cannot be easily managed. Just as an example, would be impossible to assign to the different parts of the \acrshort{sc} different optical parameters or textures.
+So, to workaround this limitation, it is a good practice to first split the different surfaces of the \acrshort{3d} model in different different children objects (or children surfaces), and only after render the scene in order to get the POV code. In this way, the \acrshort{povray} render add-on for Blender will generate a \textbf{mesh2} object for each children object created in Blender.
 This will enable us to set different material properties for each children surface or to apply different textures to different surfaces.
 For the purpose of this work, the original \acrshort{stl} model has been subdivided into thirty children object, each one with its own optical parameters, as can be seen from figure \ref{fig:tangoblender} .
 
@@ -253,7 +251,7 @@ For the purpose of this work, the original \acrshort{stl} model has been subdivi
   \label{fig:tangoblender}
 \end{figure}
 
-The Blender \acrshort{povray} add-on also let the user to inject custom POV code (figure \ref{fig:tangoblenderpov}) into the auto-generated one, which can be useful especially for adding textures, for example to the solar panels, as it has been done into this project.
+The Blender \acrshort{povray} add-on also let the user to inject custom POV code (figure \ref{fig:tangoblenderpov}) into the auto-generated one, which can be useful especially for adding textures, for example to the solar panels.
 
 \begin{figure}[htbp]
   \centering
@@ -286,9 +284,9 @@ The end results is showed in figure \ref{fig:tangoblenderfinal}
 \end{figure}
 
 \subsubsection{\acrshort{povray}}
-The major issue of the code generated from the  \acrshort{povray} Blender add-on is that is composed of several separated \inlinecode{POV}{mesh2} objects which makes almost impossible to rotate the whole object by imposing a given attitude matrix, since one is supposed to rotate all the \inlinecode{POV}{mesh2} objects by hand.\\
-In order to workaround this limitation, from all the \inlinecode{POV}{mesh2} objects which have been generated from \acrshort{povray} Blender add-on are merged into one single \inlinecode{POV}{merge} object.
-The \inlinecode{POV}{merge} \acrshort{povray} operation allows to bind two or more shapes into a single entity that can be manipulated as a single object, which is exactly what we want. The new object created by the merge operation can be scaled, translated and rotated as a single shape. The entire merge can share a single texture and optical parameters but each object contained in the union may also have its own texture and optical parameters, which will override any texture statements in the parent object. So, all the \inlinecode{POV}{mesh2} objects which describes the \acrshort{sc} surfaces are merged into a single big (21K \acrshort{loc}) \textbf{spacecraft} \inlinecode{POV}{merge} object.
+The major issue of the code generated from the  \acrshort{povray} Blender add-on is that is composed of several separated \textbf{mesh2} objects which makes almost impossible to rotate the whole object by imposing a given attitude matrix, since one is supposed to rotate all the \textbf{mesh2} objects by hand.\\
+In order to workaround this limitation, from all the \textbf{mesh2} objects which have been generated from \acrshort{povray} Blender add-on are merged into one single \inlinecode{POV}{merge} object.
+The \inlinecode{POV}{merge} \acrshort{povray} operation allows to bind two or more shapes into a single entity that can be manipulated as a single object, which is exactly what we want. The new object created by the merge operation can be scaled, translated and rotated as a single shape. The entire merge can share a single texture and optical parameters but each object contained in the union may also have its own texture and optical parameters, which will override any texture statements in the parent object. So, all the \textbf{mesh2} objects which are describing the \acrshort{sc} surfaces are merged into a single big (21K \acrshort{loc}) \textbf{spacecraft} \inlinecode{POV}{merge} object.
 To ease the usage of the \inlinecode{POV}{merge} object, a \acrshort{povray} include file it is created, with the sole purpose of containing the \textbf{spacecraft} \inlinecode{POV}{merge} object.
 The include file is read in as if it were inserted at that point in the file. Using include is almost the same as cutting and pasting the entire contents of this file into the scene. This allow to define the \textbf{spacecraft} \inlinecode{POV}{merge} once and call it from any other POV file just like any other predefined object is called, and so, it is possible to manipulate its position and orientation in a much more easier way by just using the \inlinecode{POV}{matrix} keyword. The \inlinecode{POV}{matrix} keyword  allows to specify directly the orientation of the \textbf{spacecraft} object, \gls{A_TN}, and its location with respect to \acrshort{povray} "inertial" world.
 In table \ref{tab:SCParameters} are briefly resumed the optical parameters used to model the different part of the \acrshort{sc}.
@@ -316,7 +314,7 @@ In table \ref{tab:SCParameters} are briefly resumed the optical parameters used 
 \end{table}
 
 \subsection{Camera Modeling}
-\acrshort{povray} let the programmer simulate a perspective pinhole camera (more details about the pinhole camera will be given in section \ref{subsection:pinhole}). In \acrshort{povray}'s camera environment, the programmer can set all relevant camera parameters, which will be then used to simulate the camera trough which the scene will be rendered.
+\acrshort{povray} allows to simulate a perspective pinhole camera (more details about the pinhole camera will be given in section \ref{subsection:pinhole}). In \acrshort{povray}'s camera environment, the programmer can set all relevant camera parameters, which will be then used to simulate the camera trough which the scene will be rendered.
 The most meaningful parameters which can be imposed are the location of the camera itself, the direction of the boresight axis (where is the camera looking at), the view angle and the direction of the camera reference frame.\\
 The major issue which has been faced when modeling the camera in \acrshort{povray} is the fact that the program defaults to a left handed coordinate system to describe the scene, while all other software (like Autodesk Inventor, Blender) are using a right handed coordinate system.
 
@@ -355,7 +353,7 @@ To have a more comfortable reference frame, aligned with the \acrshort{gci} refe
   \label{fig:framesComparison}
 \end{figure}
 
-In order to rightly simulate a real camera, the \acrshort{povray} camera aperture angle has been computed by assuming the intrinsic properties of a real camera, a Point Grey Grasshopper 3, equipped with a Xenoplan 1.9/17 mm lens, which is the same camera employed to capture the SPEED data-set \cite{DBLP:journals/corr/abs-1911-02050}.
+In order to rightly simulate a real camera, the \acrshort{povray} camera aperture angle has been computed by assuming the intrinsic properties of a real camera, a Point Grey Grasshopper 3, equipped with a Xenoplan 1.9/17 mm lens, which is the same camera used to capture the real images of the SPEED data-set \cite{DBLP:journals/corr/abs-1911-02050}.
 
 \begin{table}[htbp]
   \centering
@@ -400,7 +398,7 @@ where $A.R.$ is the Aspect Ratio of the picture, which is passed as first compon
 Using the parameters detailed in table \ref{tab:SPEEDCameraParameters} we can compute:
 \begin{itemize}
   \item \gls{ar} = $1.6$;
-  \item \gls{alpha} = $35.4515 ^{\circ}$.
+  \item \gls{alpha} = $35.4 ^{\circ}$.
 \end{itemize}
 
 \begin{figure}[htbp]

@@ -12,23 +12,23 @@
 In this introductory chapter the reader will first be presented with a brief review of the current methods used for generating synthetic images suitable for training \acrshort{cv} algorithms. After, a section will be dedicated to illustrate the current state-of-art close-proximity relative navigation techniques which can be employed when using a monocular camera.
 
 \section{Synthetic Image Generation for Spaceborne Applications}
-The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any kind of \acrshort{cv} algorithm. The use of artificial in images in fact gives a complete control over the scene. As stated in \cite{paolocorti}, the generated data-set should be as complete as possible in terms of metals and terrain features and illumination conditions. A lack of realism in image generation can lead to incoherent results, not representative of real operative conditions and thus can lead to wrong assumptions and so, wrong results in terms of \acrshort{cv} algorithm tuning. In the following sections will follow a brief review of the current tool offered by the industry and of the one used in the academic field to produce synthetic spaceborne imagery.
+The availability of a tool capable of rendering images of a target \acrshort{sc} is of vital importance for the implementation and testing of any kind of \acrshort{cv} algorithm. The use of artificial in images in fact gives a complete control over the scene. As stated in \cite{paolocorti}, the generated data-set should be as complete as possible in terms of metals and terrain features and illumination conditions. A lack of realism in image generation can lead to incoherent results, not representative of real operative conditions and thus can lead to wrong assumptions and so, wrong results in terms of \acrshort{cv} algorithm tuning. In the following sections will follow a brief review of the current tool offered by the industry and of the one used in the academic field to produce synthetic spaceborne imagery.
 
-\subsection{Professional Solutions}
+\subsection{Commercial Solutions}
 For professional solutions are intend all those software which can be bought from a private company and so which comes with a license. The most common professional software which can be used for generating spaceborne synthetic imagery are PANGU developed by ESA and SurRender, developed by Airbus.
 
 \subsubsection{ESA PANGU}
-PANGU is a software developed in order to create synthetic planetary surface images, as much representative as possible, to aid the development of vision-based algorithms. PANGU is a user friendly software which is ready to use. It's use is permitted for free for users working on an ESA project, while non-ESA users have to contact STAR-Dundee to purchase PANGU with technical support. PANGU can also be integrated with proprietary or OSS simulation tools and it gives the possibility to correctly simulate a space camera in all its aspects (so focal lengths, and other relevant parameters of the image). It renders the images using OpenGL and it can use GPU cores to accelerate the rendering. Further information on PANGU can be found in \cite{10.2514/6.2004-592-389}.
+PANGU is a software developed in order to create synthetic planetary surface images, as much representative as possible, to aid the development of vision-based algorithms. PANGU is a user friendly software which is ready to use. PANGU can also be integrated with proprietary or OSS simulation tools and it gives the possibility to correctly simulate a space camera in all its aspects (so focal lengths, and other relevant parameters of the image). It renders the images using OpenGL and it can use GPU cores to accelerate the rendering. Further information on PANGU can be found in \cite{10.2514/6.2004-592-389}.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.98\textwidth]{gfx/pangu.eps}
-  \caption{Images rendered using PANGU. Comparison between a real (left) and a PANGU (right) image of ESA’s ATV spacecraf.}
+  \caption{Images rendered using PANGU. Comparison between a real (left) and a PANGU (right) image of ESA’s ATV spacecraf (taken from the PANGU official flyer).}
   \label{fig:PANGU}
 \end{figure}
 
 \subsubsection{Airbus Surrender}
-SurRender is a software developed by Airbus Defense and Space. The software handles various space objects such as planets, asteroids, satellites and spacecraft. It is capable of accommodating solar system-sized scenes without precision loss, and optimizes the ray tracing process to explicitly target objects. It can operate in real time mode to be coupled with  proprietary or open source simulation tools and it gives the possibility to have an Hardware in The Loop simulation to test the responsiveness of the image processing subsystem. It gives the possibility to correctly simulate a space camera in all its aspects (so focal lengths, and other relevant parameters of the image). It parallelized and so can be ran on cloud platform to accelerate rendering times. Further information regarding the SurRender software can be retrieved in \cite{Brochard2018ScientificIR}.
+SurRender is a software developed by Airbus Defense and Space. The software handles various space objects such as planets, asteroids, satellites and spacecraft. It is capable of accommodating solar system-sized scenes without precision loss, and optimizes the ray tracing process to explicitly target objects. It can operate in real time mode to be coupled with  proprietary or open source simulation tools and it gives the possibility to have an Hardware in The Loop simulation to test the responsiveness of the image processing subsystem. It gives the possibility to correctly simulate a space camera in all its aspects (so focal lengths, and other relevant parameters of the image). Parallelization is implemented, so can be ran on cloud platform to accelerate rendering times. Further information regarding the SurRender software can be retrieved in \cite{Brochard2018ScientificIR}.
 
 \begin{figure}[htbp]
   \centering
@@ -63,6 +63,8 @@ Authors of URSO points out state-of-the-art game engines, such as the Unreal Eng
     mode \cite{Proena2020DeepLF}.}
   \label{fig:URSO}
 \end{figure}
+
+\newpage
 
 \section{Pose estimation techniques based on monocular imagery}
 An accurate and trustworthy solution to the pose estimation problem represents a key element of any navigation system and it's of crucial importance for the future advancement of \acrshort{adr}, \acrshort{ff} and \acrshort{oos} missions. The target cooperativeness plays a key role in the selection of the sensor suite of the chaser \acrshort{sc} as well as in the implementation of the pose solver algorithms.
