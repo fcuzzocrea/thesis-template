@@ -77,8 +77,8 @@ The flow of the image processing subsystem is illustrated in figure \ref{fig:ima
   \label{fig:imageProcessingSubsystem}
 \end{figure}
 
-\subsubsection{Feature Detection}
-The first sub-block of the pose estimation technique proposed in \cite{Sharma2018} is the feature detection subsystem, whose aim is to  identify, in the input image, a set of segments that corresponds to the true edges of the target \acrshort{sc}.
+\subsubsection{ROI Detection}
+The first thing to perform when analyzing an image is to identify a \acrshort{roi}.
 The raw input image - assumed to be rectified - is firstly imported in MATLAB. After that, A Gaussian filter is applied in order to the decrease the magnitude of image noise. The Gaussian filtering can be carried out by using the MATLAB function \inlinecode{MATLAB}{imgaussfilt}. In this work, the images generated with the toolbox presented in chapter \ref{chap:second-chapter} are filtered by using a standard deviation $\sigma_X = 1.15$ before being fed to the image processing subsystem. During this work, has been observed that the choice of the $\sigma_X$ value is very important for the success of the subsequent steps, as a wrong value can highly impact the effectiveness of the \acrshort{wge} technique. Once the image has been prefiltered, is fed as input to the \acrshort{wge} block, for the computation of the target's \acrshort{roi}. The first step consist in computing the magnitude of the image gradient, $|\nabla I|$,  using the Prewitt filter for computing the image gradient (for more details about what the image gradient is, refer to appendix \ref{sec:imagegradient}).
 The \acrshort{sc} can be detected in the image by observing that, under most illumination conditions, in correspondence of the target \acrshort{sc} edges the gradient variation is more pronounced with respect to the background, regardless of the fact that the background is empty or the Earth is behind.
 Indeed, to detect the spacecraft, the gradient distribution is normalized using the MATLAB \inlinecode{MATLAB}{mat2gray} function, sorted into $100$ uniformly distributed bins and fitted by and exponential \acrfull{pdf}, described by the equation :
@@ -91,13 +91,13 @@ By observing the result histogram, it is clearly possible to see that most of th
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[Original image]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/chosenImage.eps}}
+  \subfloat[Original image]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/chosenImage.eps}}
   \qquad
-  \subfloat[Gradient detection of original image]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/gradientBeforeTresholding.eps}}
+  \subfloat[Gradient detection of original image]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/gradientBeforeTresholding.eps}}
   \qquad
-  \subfloat[Histogram of normalized gradient values]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/gradientDistribution.eps}}
+  \subfloat[Histogram of normalized gradient values]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/gradientDistribution.eps}}
   \qquad
-  \subfloat[Output filtered image gradients]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/imageAfterTresholding.eps}}
+  \subfloat[Output filtered image gradients]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/imageAfterTresholding.eps}}
   \caption{Different steps of the \acrshort{wge}}
   \label{fig:wgeSteps}
 \end{figure}
@@ -115,9 +115,9 @@ As noted in \cite{fracchio2019}, for images having a composite background the \a
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[\acrshort{roi} selected by considering only the central $90\%$ of the normal distribution]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/ROInoConstant.eps}}
+  \subfloat[\acrshort{roi} selected by considering only the central $90\%$ of the normal distribution]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/ROInoConstant.eps}}
   \qquad
-  \subfloat[\acrshort{roi} enlarged by adding the $5\%$ of the mean edge length of the previously \acrshort{roi}]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/enlargedROI.eps}}
+  \subfloat[\acrshort{roi} enlarged by adding the $5\%$ of the mean edge length of the previously \acrshort{roi}]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/enlargedROI.eps}}
   \caption{Improving the \acrshort{roi} detection procedure}
   \label{fig:roicomparisons}
 \end{figure}
@@ -174,7 +174,8 @@ Once ($\alpha, \beta$) are known, the coarse relative position solution is given
   \label{fig:imageProcessingSubsystem}
 \end{figure}
 
-\subsubsection{Feature Extraction}\label{sec:featureextraction}
+\subsubsection{Feature Detection}\label{sec:featureextraction}
+The aim of the feature detection is to  identify and extract from the input image a set of segments that corresponds to the true edges of the target \acrshort{sc}.
 In order to extract the features from the input image, a first edge detection process is applied to the tresholded image by means of the Hough transform. When applied to the problem of detecting straight lines into an image, the Hough transform performs a shape identification through a voting procedure in the parameter space ($\rho$, $\theta$) (for more details about how the Hough transform work, the interested reader can refer to appendix \ref{sec:hough}).
 When computing the Hough transform using MATLAB some parameters must be set:
 
@@ -225,9 +226,9 @@ Considering the two line segments represented in \ref{fig:mergeEdges}a\footnote{
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[Original edge]{\includegraphics[width=0.4\textwidth]{gfx/segmentsPreMerge.eps}}
+  \subfloat[Original edge]{\includegraphics[width=0.47\textwidth]{gfx/segmentsPreMerge.eps}}
   \qquad
-  \subfloat[Output merged edge]{\includegraphics[width=0.4\textwidth]{gfx/segmentsAfterMerge.eps}}
+  \subfloat[Output merged edge]{\includegraphics[width=0.47\textwidth]{gfx/segmentsAfterMerge.eps}}
   \qquad
   \caption{Merging two truncated edges \cite{Sharma2018}}
   \label{fig:mergeEdges}
@@ -310,11 +311,11 @@ In figures \ref{fig:resultsMergingEdge}, \ref{fig:resultsMergingEdge2}, \ref{fig
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[\acrshort{wge} output]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/wgeHough.eps}}
+  \subfloat[\acrshort{wge} output]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/wgeHough.eps}}
   \qquad
-  \subfloat[\acrshort{wge} output after merging truncated edges]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/wgeMerged.eps}}
+  \subfloat[\acrshort{wge} output after merging truncated edges]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/wgeMerged.eps}}
   \qquad
-  \subfloat[\acrshort{seh} output]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/seHough.eps}}
+  \subfloat[\acrshort{seh} output]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/seHough.eps}}
   \qquad
   \caption{Results obtained applying edge detection and Hough transform on the two streams (1)}
   \label{fig:resultsMergingEdge}
@@ -322,11 +323,11 @@ In figures \ref{fig:resultsMergingEdge}, \ref{fig:resultsMergingEdge2}, \ref{fig
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[\acrshort{wge} output]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/wgeHough3.eps}}
+  \subfloat[\acrshort{wge} output]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/wgeHough3.eps}}
   \qquad
-  \subfloat[\acrshort{wge} output after merging truncated edges]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/wgeMerged3.eps}}
+  \subfloat[\acrshort{wge} output after merging truncated edges]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/wgeMerged3.eps}}
   \qquad
-  \subfloat[\acrshort{seh} output]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/seHough3.eps}}
+  \subfloat[\acrshort{seh} output]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/seHough3.eps}}
   \qquad
   \caption{Results obtained applying edge detection and Hough transform on the two streams (2)}
   \label{fig:resultsMergingEdge2}
@@ -334,9 +335,9 @@ In figures \ref{fig:resultsMergingEdge}, \ref{fig:resultsMergingEdge2}, \ref{fig
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[\acrshort{wge} output]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/wgeHough2.eps}}
+  \subfloat[\acrshort{wge} output]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/wgeHough2.eps}}
   \qquad
-  \subfloat[\acrshort{seh} output]{\includegraphics[width=0.4\textwidth]{gfx/FeatureDetection/seHough2.eps}}
+  \subfloat[\acrshort{seh} output]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/seHough2.eps}}
   \qquad
   \caption{Case where no merging was required}
   \label{fig:resultsMergingEdge3}
@@ -428,17 +429,17 @@ Figures \ref{fig:mergeStreams1}, \ref{fig:mergeStreams2}, \ref{fig:mergeStreams3
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/192/10.png}}
+  \subfloat[\acrshort{wge} and Hough result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/192/10.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/192/11.png}}
+  \subfloat[\acrshort{seh} result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/192/11.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/192/12.png}}
+  \subfloat[\acrshort{wge} merged lines]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/192/12.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/192/13.png}}
+  \subfloat[Sobel merged lines]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/192/13.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/192/14.png}}
+  \subfloat[Merge \acrshort{wge} and Sobel]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/192/14.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/192/15.png}}
+  \subfloat[Final result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/192/15.png}}
   \qquad
   \caption{Results of the merging process (1)}
   \label{fig:mergeStreams1}
@@ -446,17 +447,17 @@ Figures \ref{fig:mergeStreams1}, \ref{fig:mergeStreams2}, \ref{fig:mergeStreams3
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/214/10.png}}
+  \subfloat[\acrshort{wge} and Hough result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/214/10.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/214/11.png}}
+  \subfloat[\acrshort{seh} result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/214/11.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/214/12.png}}
+  \subfloat[\acrshort{wge} merged lines]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/214/12.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/214/13.png}}
+  \subfloat[Sobel merged lines]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/214/13.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/214/14.png}}
+  \subfloat[Merge \acrshort{wge} and Sobel]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/214/14.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/214/15.png}}
+  \subfloat[Final result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/214/15.png}}
   \qquad
   \caption{Results of the merging process (2)}
   \label{fig:mergeStreams2}
@@ -464,17 +465,17 @@ Figures \ref{fig:mergeStreams1}, \ref{fig:mergeStreams2}, \ref{fig:mergeStreams3
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/311/10.png}}
+  \subfloat[\acrshort{wge} and Hough result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/311/10.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/311/11.png}}
+  \subfloat[\acrshort{seh} result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/311/11.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/311/12.png}}
+  \subfloat[\acrshort{wge} merged lines]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/311/12.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/311/13.png}}
+  \subfloat[Sobel merged lines]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/311/13.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/311/14.png}}
+  \subfloat[Merge \acrshort{wge} and Sobel]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/311/14.png}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/FeatureDetection/311/15.png}}
+  \subfloat[Final result]{\includegraphics[width=0.47\textwidth]{gfx/FeatureDetection/311/15.png}}
   \qquad
   \caption{Results of the merging process (3)}
   \label{fig:mergeStreams3}
@@ -673,21 +674,21 @@ where $\mathbf{E_t}$ represents the absolute difference between the "true" posit
 
 \begin{figure}[htbp]
   \centering
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial49modelMap.eps}}
+  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial49modelMap.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC49.eps}}
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC49.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial214modelMap.eps}}
+  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial214modelMap.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC214.eps}}
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC214.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial212modelMap.eps}}
+  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial212modelMap.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC212.eps}}
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC212.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial311modelMap.eps}}
+  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial311modelMap.eps}}
   \qquad
-  \subfloat[]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC311.eps}}
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC311.eps}}
   \qquad
   \caption{Cases of successful pose initialization}
   \label{fig:EVVAI}

@@ -31,12 +31,6 @@ The capability of being able to develop and test pose determination algorithm in
 
 \hiddensection{Problem Statement}
 The availability of a tool capable of rendering image of the target client \acrshort{sc} is of vital importance for the implementation and testing of any kind of \acrshort{cv} algorithm.
-
-
-=====================================\\
-PER PAOLO : Aureliano suggerisce di togliere equazioni e spiegare dopo, ma non ho idea di come implementare questa correzione\\
-=====================================\\
-
 The usage of artificial in images in fact gives a complete control over the scene and more importantly, recently investigated deep learning techniques relies on very huge annotated data-sets of images. The main difficulties when searching for suitable data-sets arises from the difficulty of acquiring thousands of spaceborne images of the desired target \acrshort{sc} with accurately annotated pose labels and with an high enough degree of realism, capable of being representative of real operative conditions. A poorly made data-set in fact can lead to incoherent results due to wrong assumptions, especially when developing techniques which are based on the implementation algorithms relying on Neural Networks. A standard tool capable of generating thousands of images at demands moreover enable the user to systematically evaluate and compare the performance of different algorithms.
 So, in this work the possibility of generating an accurate enough dataset by employing Ray-Tracing techniques will be firstly explored. After that, the generated data-set will be employed to implement the \acrfull{svd} monocular pose initialization algorithm.
 As stated in \cite{D2014} and \cite{Sharma2018}, the pose initialization problem consist of determining the position of the \acrfull{cg} \gls{t_c} and the orientation of the principal axes \gls{A_TC} of a non-cooperative target \acrshort{sc} (no markers or other specific supportive means) with respect to the camera frame \textbf{C} from a single \acrfull{2d} image, given its \acrfull{3d} geometrical representation (referred as map or model).
