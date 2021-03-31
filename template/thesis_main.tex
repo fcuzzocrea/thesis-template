@@ -50,6 +50,8 @@
 \usepackage{nicefrac}
 \usepackage{mathtools}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\usepackage{calc}
+\usepackage{microtype}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acronyms and Glossary
 \usepackage[acronym,nonumberlist,nopostdot]{glossaries}
@@ -148,11 +150,18 @@
 \end{flushright}
 \cleardoublepage{}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acnowledgment
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Ringraziamenti
 \pagenumbering{Roman}
 \chapter*{Ringraziamenti}
 \addcontentsline{toc}{chapter}{Ringraziamenti}
-%\input{./initial-final-stuff/acknowledgments.tex}
+\input{./initial-final-stuff/acknowledgments.tex}
+\cleardoublepage{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Statement of original authorship
+\pagenumbering{Roman}
+\chapter*{Statement of original authorship}
+\addcontentsline{toc}{chapter}{Statement of original authorship}
+\input{./initial-final-stuff/authorship.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Abstract
@@ -209,10 +218,10 @@
 \chapter{State-of-the-art and Limitations\label{chap:first-chapter}}
 \input{./chapters/chapter-1.tex}
 \cleardoublepage{}
-\chapter{Synthetic image generation\label{chap:second-chapter}}
+\chapter{Synthetic Image Generation\label{chap:second-chapter}}
 \input{./chapters/chapter-2.tex}
 \cleardoublepage{}
-\chapter{The SVD architecture for pose initialization\label{chap:third-chapter}}
+\chapter{The SVD Architecture for Pose Initialization\label{chap:third-chapter}}
 \input{./chapters/chapter-3.tex}
 \cleardoublepage{}
 \chapter{Results\label{chap:fourth-chapter}}
@@ -220,7 +229,7 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusion
-\chapter*{Conclusions}
+\chapter*{Conclusions}\label{chap:conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
 \markboth{Conclusions}{Conclusions}
 \input{./initial-final-stuff/conclusions.tex}
@@ -238,7 +247,7 @@
 \input{./appendices/appendix-a.tex}
 \cleardoublepage{}
 %%% Appendix B
-\chapter{Second appendix: common \acrshort{cv} models and problems \label{app:second-appendix}}
+\chapter{Second appendix: Common \acrshort{cv} Models and Problems \label{app:second-appendix}}
 \input{./appendices/appendix-b.tex}
 \cleardoublepage{}
 

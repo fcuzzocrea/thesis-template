@@ -13,7 +13,7 @@
 Close range proximity operations between \acrfull{sc}s has been studied and discussed by space agencies and private companies since the early stages of space exploration, dating back to the Apollo program \cite{LangleyApollo}.
 Since then we can find a wide range of missions where close-range proximity operations are in, like \acrfull{ff} \cite{2001FormationFliying}  \cite{2009FormationFliying}, \acrfull{oos} \cite{auricchio} \cite{Zimpfer2005} \cite{Tatsch2006} \cite{FloresAbad2014} and \acrfull{adr} \cite{clerc2012astrium} \cite{Bonnal2013}.
 Most of those missions were possible thanks to the presence of on-board crew or to the cooperativeness between \acrshort{sc}s.
-A space object is deemed cooperative if it is built to provide information suitable for the estimation of its distance and orientation in space with respect to the chaser \acrshort{sc}. Also, it can be be actively or passively cooperative depending on whether it interacts with a dedicated radio-link with the chaser \acrshort{sc} or not \cite{Opromolla2017}.
+In a typical scenario, the \acrshort{sc} which is being serviced is referred as "target" or "client", while the \acrshort{sc} which is performing the approach is referred as "chaser" or "servicer". A target is deemed cooperative if it is built to provide information suitable for the estimation of its distance and orientation in space with respect to the chaser \acrshort{sc}. Also, it can be be actively or passively cooperative depending on whether it interacts with a dedicated radio-link with the chaser \acrshort{sc} or not \cite{Opromolla2017}.
 As regard to the new generation of space robotics missions such as debris removal and \acrshort{oos}, proximity operations and docking are key-enabling capabilities for either repair, refuel or deorbit end-of-life and nonfunctional \acrshort{sc}s \cite{2016Ventura}.
 The main challenge when performing close-range operations in actual \acrshort{oos} and \acrshort{adr} missions is when the target \acrshort{sc} may be uncooperative.
 This implies that the target \acrshort{sc} may not be equipped with an active communication link or identifiable markers such as light-emitting diodes or corner cube reflectors to help with computing the relative position and attitude of the active \acrshort{sc} (chaser) with respect to a uncooperative target space object \cite{2019phdSharma}.
@@ -27,48 +27,12 @@ In contrast to other state-of-the-art systems based on \acrfull{lidar} or stero 
 However, the benefit of lower hardware complexity trades off with increased algorithmic complexity since a monocular sensor cannot provide direct three-dimensional (3D) measurements about the target.
 Moreover, monocular sensors can be less robust to adverse illumination conditions typical of the space environment \cite{Volpe2017} (e.g., saturation under direct Sun illumination, or absence of light during eclipse) \cite{pesciolino}.
 The increasing challenges of space exploration and moreover the urgent need for debris removal to free slots in orbit and to avoid unwanted collisions is what mainly motivate this work.
-The capability of being able to develop and test pose determination algorithm in fact will be a key factor for the overall success of new generation missions. Thus, this work is motivated from the need to implement a low-cost, reliable and extendable solution for simulating spaceborne imagery for \acrfull{cv} alghoritms needs.
+The capability of being able to develop and test pose determination algorithm in fact will be a key factor for the overall success of new generation missions. Thus, this work is motivated from the need to implement a low-cost, reliable and extendable solution for simulating low Earth orbit spaceborne imagery for \acrfull{cv} algorithms needs.
 
 \hiddensection{Problem Statement}
 The availability of a tool capable of rendering image of the target client \acrshort{sc} is of vital importance for the implementation and testing of any kind of \acrshort{cv} algorithm.
 The usage of artificial in images in fact gives a complete control over the scene and more importantly, recently investigated deep learning techniques relies on very huge annotated data-sets of images. The main difficulties when searching for suitable data-sets arises from the difficulty of acquiring thousands of spaceborne images of the desired target \acrshort{sc} with accurately annotated pose labels and with an high enough degree of realism, capable of being representative of real operative conditions. A poorly made data-set in fact can lead to incoherent results due to wrong assumptions, especially when developing techniques which are based on the implementation algorithms relying on Neural Networks. A standard tool capable of generating thousands of images at demands moreover enable the user to systematically evaluate and compare the performance of different algorithms.
-So, in this work the possibility of generating an accurate enough dataset by employing Ray-Tracing techniques will be firstly explored. After that, the generated data-set will be employed to implement the \acrfull{svd} monocular pose initialization algorithm.
-As stated in \cite{D2014} and \cite{Sharma2018}, the pose initialization problem consist of determining the position of the \acrfull{cg} \gls{t_c} and the orientation of the principal axes \gls{A_TC} of a non-cooperative target \acrshort{sc} (no markers or other specific supportive means) with respect to the camera frame \textbf{C} from a single \acrfull{2d} image, given its \acrfull{3d} geometrical representation (referred as map or model).
-If we assume that the \acrshort{3d} model of the target \acrshort{sc} is defined in a body fixed coordinate system \textbf{T}, and it is aligned with the target's principal axes with its origin at the \acrshort{cg}, the orientation is then defined by the \acrfull{dcm} \gls{A_TC}, which represents the trasformation from the coordinate system of \textbf{T} to \textbf{C}.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.82\textwidth]{gfx/poseProblem.eps}
-  \caption{Schematic representation of the pose estimation problem using a monocular image \cite{Sharma2018}}
-\end{figure}
-
-A generic image point $p$ = $ [u,v]^T $ can be related to the corresponding $\mathbf{q_B}$ point of the \acrshort{3d} model by means of the unknown pose (\gls{t_c} \gls{A_TC}) according to the following \acrshort{2d} - \acrshort{3d} true perspective equations:
-
-\begin{equation}
-  \mathbf{r_C} = \left[x_C \quad  y_C \quad z_C\right]^T = \mathbf{A_{TC}} \; \mathbf{q_B} + \mathbf{t_C} \,,
-\end{equation}
-
-\begin{equation}
-  \mathbf{p} = \left[ \frac{x_C}{z_C} f_x + C_x , \frac{y_C}{z_C} f_y + C_y \right] \,,
-\end{equation}
-
-where \gls{fx} and \gls{fy} are the respectively the orizontal and the vertical focal lenght and $[C_x, C_y]$ are the coordinates of the center of the image.\\
-As discussed in \cite{D2014}, we can build several considerations on top of those two coupled equations :
-
-\begin{itemize}
-  \item the relationship between image points and pose parameter is hightly non linear and the problem of retrieving the \acrshort{3d} points from the \acrshort{2d} image can have infinite solution in under-constrained situations \cite{10.1145/358669.358692};
-  \item the correspondence between $\mathbf{q_B}$ and $\mathbf{p}$ is not known \textit{a priori};
-  \item the image coordinates need to be corrected for pixel's non-quadratism and lens distortion before using the perspective projection equations.
-\end{itemize}
-
-The pose estimation system thus needs the be capable of extracting the target features from the available image (image processing) to obtain measurements, namely  $\mathbf{p}$. The extracted features then needs to be matched to the correspondent elements of a target model (model matching), namely $\mathbf{q_B}$. The unknown pose then has to be estimated based on the available measurements (pose estimation).
-The architecture proposed in \cite{Sharma2018} solve the pose estimation problem by:
-
-\begin{itemize}
-  \item coupling the \acrfull{wge} technique with the Sobel edge detection to perform the image processing;
-  \item using feature synthesis to reduce the search space for model matching;
-  \item combining a \acrshort{pnp} solver with the \acrfull{nr} method for pose estimation.
-\end{itemize}
+So, in this work the possibility of generating an accurate enough dataset by employing Ray-Tracing techniques will be firstly explored. After that, the generated data-set will be employed to solve the relative pose estimation problem. As stated in \cite{D2014} and \cite{Sharma2018}, the pose estimation problem consist of determining the position of the relative position and the relative attitude of target space object with respect to an active \acrshort{sc} which act as a servicer. Several different technological solutions can be employed to archive the goal, according to the mission budget, the mission scenario and the cooperativeness of the target. This work will be focused on the determination of the unknown \acrshort{3d} pose a non-cooperative target (no markers or other specific supportive means) using a single \acrfull{2d} image, given the target's \acrfull{3d} geometrical representation (referred as map or model).
 
 \hiddensection{Structure of the Thesis}
-The thesis is divided into four chapters. The first chapter presents to the reader a brief overview on the current state-of-art status for what concerns synthetic images generation for spaceborne applications as well as the autonomous close-proximity relative navigation problem. The second chapter is completely focused on the image generation problem, with an in-dept explanation regarding the toolbox developed to allow the end user to produce image data-sets starting from the CAD model of the target \acrshort{sc}. The third chapter is dedicated to the analysis and the implementation of the \acrshort{svd} architecture for solving the pose initialization problem when considering non cooperative \acrshort{sc}. The fourth chapter illustrates the results obtained when using the pose initialization algorithm on the generated images. The thesis ends with a depiction of the possible future developments that can be performed on both the synthetic images and the algorithm.
+The thesis is divided into four chapters. The \hyperref[chap:first-chapter]{first chapter} presents to the reader a brief overview on the current state-of-art status for what concerns synthetic images generation for spaceborne applications as well as the autonomous close-proximity relative navigation problem. The \hyperref[chap:second-chapter]{second chapter} is completely focused on the image generation problem, with an in-dept explanation regarding the toolbox developed to allow the end user to produce image data-sets starting from the CAD model of the target \acrshort{sc}. The \hyperref[chap:third-chapter]{third chapter} is dedicated to the analysis and the implementation of the \acrshort{svd} architecture for solving the pose initialization problem when considering non cooperative \acrshort{sc}. The \hyperref[chap:fourth-chapter]{fourth chapter} illustrates the results obtained when using the pose initialization algorithm on the generated images. The thesis \hyperref[chap:conclusions]{ends} with a depiction of the possible future developments that can be performed on both the synthetic images and the algorithm.

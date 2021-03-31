@@ -1,20 +1,20 @@
 %The conclusions must recall the field of work, the purpose of the thesis, what has been done and an evaluation of the obtained results.
 %Furthermore, the conclusion must also emphasize the future prospects and must show how to move forward in the study area.
 \begin{quotation}
-{\footnotesize
-\noindent{\emph{``If you didn't get angry and mad and frustrated, that means you don't care about the end result, and are doing something wrong.''\\}
-}
-\begin{flushright}
-Greg Kroah-Hartman
-\end{flushright}
-}
+  {\footnotesize
+    \noindent{\emph{``If you didn't get angry and mad and frustrated, that means you don't care about the end result, and are doing something wrong.''\\}
+    }
+    \begin{flushright}
+      Greg Kroah-Hartman
+    \end{flushright}
+  }
 \end{quotation}
 \vspace{0.5cm}
 
 This project was successful in developing a tool which allows the end user to produce hundreds of images of a target \acrshort{sc} given its \acrshort{stl} model, using the open source ray tracer \acrshort{povray} in conjunction with MATLAB. The full uncontrolled dynamics of the target \acrshort{sc} has been simulated as well, so, if the inertial properties of the target are known, is possible to closely simulate the dynamical behavior of the target itself and from that, generate the images. Optionally is possible to also insert the Earth in the background, which enhances the realism of the scene. In particular, a great care has been putted into taking in consideration both the optical properties of the Earth surface and of the \acrshort{sc} surface.
 The generated data-set has been then compared to the freely available SPEED data-set both in terms of a qualitative assessment (by comparing the histograms) and by applying a \acrshort{cv} algorithm.
 The preliminary results obtained from the comparison shows that similar results have been obtained.
-Still, there is room for improvement. Such as enhancing the model of the Earth to make it comparable with what found on the SPEED data-set. For what concerns the model of the \acrshort{sc} instead, more realistic texture could be used, if available. A better modeled surface would result in more accurate images produced and a better study could be made to better model the optical properties of the materials which covers the \acrshort{sc}.
+Still, there is room for improvement. Such as enhancing the model of the Earth to make it comparable with what found on the SPEED data-set. For what concerns the model of the \acrshort{sc} instead, more realistic texture could be used, if available. A better modeled surface would result in more accurate images produced and a better study could be made to better model the optical properties of the materials which covers the \acrshort{sc}. Moreover, overall rendering times when the Earth is in background are really long, as Earth rendering is a high demanding application. A possible improvement could be to find a way to cut the texture and Earth using not the full sphere but a subset with a mesh, for example. Or better, to patch the ray tracer source code to allow performing the rendering step on the GPU.
 Concerning the image analysis instead, different pose solvers could be tried. In this work, a MATLAB builtin function has been used. Different pose solver could be used, such as the \textit{e}\acrshort{pnp} \cite{10.1007/s11263-008-0152-6} to make a comparison in terms of efficiency. Another improvement could be to employ separated Hough transforms to detect different geometric shapes, as suggested also in \cite{Sharma2018}. In general, the image processing subsystem still has to be improved, as it is susceptible to producing spurious edges, especially when the target is far distant from the camera or when the solar panel are not in shadow (so, when they are hitted directly from the Sun's light).
 Imagining to implement the algorithm on an embedded board, the proposed toolbox also allows the set-up of hardware in the loop experiments to evaluate the computational time on real H/W.
 Moreover, having available a toolbox capable of producing hundreds of images at will, also enables to implement completely different strategies for pose determination, such as the one based on neural networks like for example what proposed in \cite{Sharma2019} and compare the results with what obtained implementing more traditional techniques such as the ones used in this project.

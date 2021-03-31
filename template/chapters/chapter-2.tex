@@ -12,7 +12,7 @@
 The availability of a tool capable of rendering batch of images of the target client \acrshort{sc} is of vital importance for the implementation and testing of any \acrshort{cv} algorithm. For example, deep learning techniques relies on large annotated data-sets of images. For what concerns terrestrial applications, there are a plethora of data-sets commonly available, however for spaceborne applications there is a general lack of such data-sets. The main reason arises from the difficulty of acquiring thousands of spaceborne images of the desired target \acrshort{sc} with accurately annotated pose labels. In this chapter, the proposed solution to generate synthetic spaceborne imagery will be described and analyzed.
 
 \section{Reference Frames}\label{sec:refereceFrames}
-Before going trough the details regarding the image generation toolbox developed during this work, it is important to define which are the reference frames of interest for image generation, which for instance are: 
+Before going trough the details regarding the image generation toolbox developed during this work, it is important to define which are the reference frames of interest for image generation, which for instance are:
 
 \begin{itemize}
   \item \acrfull{gci}
@@ -27,14 +27,14 @@ The \acrshort{gci} frame has its origin at the center of mass of the Earth. This
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{gfx/gci.eps}
-  \caption{\acrfull{gci} frame}
-  \label{fig:raytracing}
+  \caption{\acrfull{gci}}
+  \label{fig:gci}
 \end{figure}
 
-The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and their axes are considered to be aligned with their respective principal axes. The origin of the camera frame instead coincides with the center of perspective projection. The target model frame is fixed with respect to the body frame and often coincides with it. For what concerns this work, for the sake of simplicity and without loss of generality, we will consider the camera frame to be coincident with the chaser body-fixed frame, and the target model frame to be coincident with the target body-fixed frame. 
+The chaser and target body-fixed frames have their origins at the \acrshort{cg} of both, respectively, and, for the sake of simplicity their axes will be considered to be aligned with their respective principal axes. The origin of the camera frame instead coincides with the center of perspective projection \footnote{The center of projection is the location of the viewer's eye on which projected light rays converge}. The target model frame is fixed with respect to the body frame and often coincides with it. For what concerns this work, for the sake of simplicity and without loss of generality, we will consider the camera frame to be coincident with the chaser body-fixed frame, and the target model frame to be coincident with the target body-fixed frame.
 
-\section{Image generation}
-The use of artificial images gives a complete control over the scene. For the purpose of this work, a new procedure for the generation of realistic images, representative of a data-set taken by a monocular navigation camera during a close-proximity approach to target \acrshort{sc} has been developed.
+\section{Image Generation}
+The use of artificial images gives a complete control over the scene. For the purpose of this work, a new procedure for the generation of realistic images, representative of a data-set taken by a monocular camera during a close-proximity approach to target \acrshort{sc} has been developed.
 Using the illustrated procedure, the user is able to create synthetic images of a target \acrshort{sc} given it's \acrshort{stl} model, by fine tuning all the properties of the materials composing the target \acrshort{sc}.
 Since there could be also cases in which the Earth can be behind the target \acrshort{sc}, the developed tool is also able to simulate Earth's presence at any given location. The tool is also able to the simulate the the atmosphere of the Earth and the cloud layer \cite{jacopo}.
 The developed tool couples the well known open-source raytracer \acrshort{povray} with MATLAB in order to archive a good degree of realism in the generated images.
@@ -224,7 +224,7 @@ Furthermore, the option \inlinecode{POV}{jitter} has been used, which tells the 
 The problem of modeling rather complex shapes with \acrshort{povray}, such as can be a spacecraft, it was one of the most demanding parts of this work, which also required to patch \acrshort{povray} source code, to prevent the ray tracer to forcibly use unnecessary features. Obviously, building the \acrshort{sc} using \acrshort{povray} primitives is a sub-optimal solution, as many different \acrshort{sc} can have different shapes, and modeling them by using simpler shapes each time it is simply not efficient. Furthermore, usually detaled \acrshort{3d} CAD models of \acrshort{sc} are available which can be easily exported into \acrshort{stl} format, so the focus has been putted into trying to understand how to translate those \acrshort{3d} CAD models directly into \acrshort{povray} code.
 Several open source and closed source software have been coupled together in order to produce trough \acrshort{povray} a render of a given \acrshort{stl} model.
 The procedure will be detailed in the following paragraphs.
-The \acrshort{sc} which has been modeled for developing this thesis is heavily inspired by the Tango \acrshort{sc} of the PRISMA mission, by ESA.
+The \acrshort{sc} which has been modeled is heavily inspired by the Tango \acrshort{sc} of the PRISMA mission \footnote{More details about the PRISMA mission can be found at \url{https://earth.esa.int/web/eoportal/satellite-missions/p/prisma-prototype}}, by ESA.
 The spacecraft has been modeled using the dimensions specified in \cite{Sharma2018}, which will be here reported for ease of reading. The solar panel is represented by a polygon of \SI{570}{\mm} x \SI{759}{\mm}, while the spacecraft body instead is represented by a convex polyhedron of \SI{560}{\mm} x \SI{550}{mm} x \SI{300}{\mm}. The radio frequency antennas length instead is of \SI{204}{\mm}. The origin of the CAD model is located in correspondence of the \acrshort{cg}.\\
 Using the aforementioned dimensions, the Tango spacecraft has firstly been reproduced using Autodesk Inventor. The result of the modeling procedure is shown in figure \ref{fig:tango3d}.
 
@@ -459,7 +459,7 @@ At this point, the imposed ground truth pose (\gls{A_TC}, \gls{t_c}) of the came
   \mathbf{t_C} = - (\text{\inlinecode{POV}{look_at}} - \text{\inlinecode{POV}{location}}) \mathbf{{A^T_{TN}}} \,.
 \end{equation}
 
-\subsection{Noise modeling}\label{subsection:addingthenoise}
+\subsection{Noise Modeling}\label{subsection:addingthenoise}
 Finally, for augmenting the "realness" of an image generated though \acrshort{povray}, the image needs to be post-processed using MATLAB.
 The image so is input in MATLAB and two different noises are applied through the \inlinecode{MATLAB}{imnoise} command : speckle noise ($\sigma^2 = 0.004$) and Gaussian white noise ($\sigma^2 = 0.003$).
 The final result can be seen in figure \ref{fig:comparisonNoise}.
@@ -473,7 +473,7 @@ The final result can be seen in figure \ref{fig:comparisonNoise}.
   \label{fig:comparisonNoise}
 \end{figure}
 
-\section{MATLAB integration}
+\section{MATLAB Integration}
 Since it would be highly unpractical to hand edit every time all the parameters to render the \acrshort{sc} in different position and attitudes as well as Earth's different rotations, a MATLAB toolbox has been developed which allows the user to automatically generate .pov \acrshort{sdl} files, and it renders them trough \acrshort{povray} automatically.
 The implemented toolbox takes as input \gls{N_u}, \gls{N_v}, \gls{fx}, \gls{fy}, \gls{d_u}, \gls{d_v} to compute intrinsic camera parameters to set \acrshort{povray} camera.
 Then, it offers the user the possibility to generate a sequence of random attitudes \cite{Arvo92}, given the orbital parameters of a reference orbit. If inertial properties of the target \acrshort{sc} are available, instead, it can compute the full uncontrolled dynamics (so to speak, the dynamics of the \acrshort{sc} when only subjected to the disturbances torques acting on the reference orbit) of the \acrshort{sc} trough a Simulink model at each time instant. For the interested reader, details about how the Space environment has been modeled in Simulink are given in \ref{app:first-appendix}.

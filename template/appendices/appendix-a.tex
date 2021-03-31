@@ -7,7 +7,7 @@ The dynamics of the \acrshort{cg} of a rigid body is given by Newton equation of
   \frac{d}{dt} (\textit{m} \mathbf{v}) = \sum\limits_{i=1}^n \mathbf{f_i}
 \end{equation}
 
-where $\textit{m}$ is the mass of the body, $\mathbf{v}$ its velocity and $\mathbf{f_i}$ the forces applied to the system. Then, for a rigid body orbiting around a single massive body, the main force to take into account is the gravitational pull that can be modelled accordingly to Newton law of gravitation as follows :
+where $\textit{m}$ is the mass of the body, $\mathbf{v}$ its velocity and $\mathbf{f_i}$ the forces applied to the system. Then, for a rigid body orbiting around a single massive body, the main force to take into account is the gravitational pull that can be modelled accordingly to Newton law of gravitation as follows:
 
 \begin{equation}
   \label{eqn:orbiteqtn}
@@ -37,10 +37,7 @@ The most used set of parameters are often referred to as Keplerian parameters, h
 
 Then the position vector $\mathbf{r_{orb}}$ in this frame can be translated back into the inertial $\mathbf{r}$ by using three sequential rotations in the order \textit{z} - \textit{x} - \textit{z} according to the values of the other three parameters: argument of pericenter $\omega$ , inclination \textit{i} and right ascension of the ascending node $\Omega$.
 
-
-\section{Dynamics}
-
-\subsection{Euler Equations}
+\section{Euler Equations}
 
 The dynamics of a rigid body which is tumbling into space can be modeled by mean of the well known Euler equations, having in mind that such equation is expressed in a non-inertial reference frame attached to the body frame :
 
@@ -82,7 +79,7 @@ where $[\omega_{TN} \wedge]$ is the skew-symmetric cross product matrix containi
 
 Thus, by integrating this relation, we can get full attitude at every iteration.
 
-\subsection{Environmental Disturbances} \label{sec:disturbances}
+\section{Environmental Disturbances} \label{sec:disturbances}
 The external disturbances acting on spacecraft placed in a LEO orbit are basically four and are due to :
 
 \begin{itemize}

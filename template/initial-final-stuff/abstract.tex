@@ -2,11 +2,10 @@
 
 %Field of work
 %The first block must contain a sentence which describes the field of work, and eventually another sentence which focuses the specific objective of the work in details.
-
+The capability of doing close range proximity operations between spacecrafts to either repair, refuel or deorbit end of life and nonfunctional is more and more becoming a key-enabling factor for future space missions. When approaching uncooperative spacecrafts (no markers or other specific supportive means) it is also required that the spacecraft which performing the approach must be able to perform onboard estimates the pose (\textit{i.e.}, relative position and attitude) in order to correctly move towards - and eventually grasp - the target space object. The usage of vision-based sensors for pose estimation is particularly attractive to solve the problem of pose determination due to their low volumetric and power requirements, particularly in comparison to other systems such as \acrshort{lidar}. The capability of rendering thousands of images of the the target space object is particularly important when developing vision-based techniques aiming at solving the pose problem. For example, deep learning techniques relies on large annotated data-sets of images. For what concerns terrestrial applications, there are a plethora of data-sets commonly available, however for spaceborne applications there is a general lack of such data-sets. The main reason arises from the difficulty of acquiring realistic images of the desired space object which can be considered representative of a data-set taken by a real monocular camera. 
 %Purpose of the thesis
 %The second block must start with the words «The purpose of the thesis is …».
-
+The purpose of this work is to try to to overcome this limitation by presenting a method based on ray tracing which let the user generate thousand of images of a desired spacecraft given its CAD model, which will be then used to implement and test a vision-based pose estimation algorithm.
 %Short recap
 %The last block must summarize the conducted activities and the obtained results (evaluating them eventually).
-
-Nowadays...
+To reach the aforesaid purposes, the first thing made is to identify how to correctly set-up the scene by modeling both the Earth and the spacecraft in order to be as much as realistic as possible in terms of  optical properties, illumination conditions and noise. Then, to solve the pose estimation problem, is employed a novel robust monocular vision-based pose initialization architecture for non-cooperative spacecraft, called \acrshort{svd} method, which adopts newer techniques to perform feature identification and matching. The work ends by comparing the generated data-set of images against the SPEED data-set - the first publicly available machine learning set of synthetic and real spacecraft imageries - and with a preliminar validation of the \acrshort{svd} algorithm.

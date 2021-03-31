@@ -100,7 +100,7 @@ Despite said issues however, by looking at the forms of the histograms it is pos
 The Sobel edge images are also very similar. The images generated for this project presents a slightly higher level of noise (recognizable by the more presence of little white pixels). This can be due to a different $\sigma^2$ value used to add Gaussian white noise to the image during the post-processing phase.
 Lastly, in figure \ref{fig:comparison4} is showed a comparison were the Earth is in the background. As it can be clearly seen by the reader, the Earth is represented more accurately in the SPEED data-set, but this is simply due to the fact that for the SPEED data-set the Earth images comes from actually real space imagery. As described in \cite{Sharma2019}, the Earth images used for the SPEED data-set are composed by 72 actual images of the Earth captured by the Himawari-8 geostationary meteorological satellite. The 72 images each provide a \num{100e6} pixels resolution disk-view of the Earth and were taken 10 minutes apart from each other over a period of 12 hours. The quality the Earth has in the images generated with the toolbox developed during this work can be enhanced by using a texture with an higher resolution, however this comes at the cost of long rendering times and greater RAM usage for rendering the single image. Generating one single image where the Earth is present in the background takes approximately \SI{3}{\s} and occupy \textit{circa} $2$ Gb of RAM on an Intel Core i7-4500U CPU when using mercator images rescaled to $21600 \times 10800$ pixel resolution. Better results can be archived using the full $43200 \times 21600$ pixel original mercator images but rendering times as well as RAM usage would grow too much for the generation of a data-set of hundreds of images on the previously mentioned H/W.
 
-\section{\acrshort{svd} architecture tests}
+\section{\acrshort{svd} Architecture Tests}
 A further validation of the generated data-set can be obtained by analyzing the synthetic images using a \acrshort{cv} algorithm. In fact, if the quality of the generated images is poor, where for poor it is intended not being photorealistic, the \acrshort{cv} algorithm will not work consistently. Among all state-of-the-art \acrshort{cv} algorithms available, the \acrshort{svd} algorithm has been selected because of its simplicity and effectiveness.
 The identification of a correct \acrshort{roi} is of vital importance since the edge detection process as well as the merging edges block depends on geometrical parameters which are set as multiplicative constants of the diagonal length of the \acrshort{roi}. From a first batch of tests realized using the images generated using the toolbox presented in chapter \ref{chap:second-chapter}, the \acrshort{roi} detection performances of the \acrshort{wge} technique are consistent with what found in \cite{Sharma2018} and \cite{fracchio2019}. When the image has a black or nearly black background, the results of the \acrshort{wge} are very good, and in almost all cases it's capable of identifying the correct \acrshort{roi}. However, the presence of a composite background (such as the Earth) in some cases negatively affects the performances of the \acrshort{wge} technique. This is due to the fact that the presence of the Earth produces spurious element in the gradient image, which are not eliminated by the filtering procedure. This particular behavior can be observed for example in figures \ref{fig:roiResults1}a, \ref{fig:roiResults1}h and \ref{fig:roiResults2}e.
 
@@ -212,14 +212,14 @@ There are also some particular attitudes where the Hough transform fails on the 
 
 \begin{equation*}
   \mathbf{A_{TC}} = \begin{bmatrix}
-    0.8160 & -0.2675 & 0.5120 \\
-    -0.5348        & -0.6850 & 0.4943 \\
-    0.2183         & -0.6776 & -0.7021
+    0.8160  & -0.2675 & 0.5120  \\
+    -0.5348 & -0.6850 & 0.4943  \\
+    0.2183  & -0.6776 & -0.7021
   \end{bmatrix} \,,
 \end{equation*}
 
 \begin{equation*}
-\mathbf{t_C} = [-3.60654 11.19394 11.59979] \ m \,.
+  \mathbf{t_C} = [-3.6065 \ 11.1939 \ 11.5997] \ m \,.
 \end{equation*}
 
 \begin{figure}[htbp]

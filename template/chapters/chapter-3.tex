@@ -11,9 +11,9 @@
 
 Performing a robust pose initialization from a \acrshort{2d} image captured by a monocular camera in space is a very though task, particularly due to the fact that illumination conditions in space may vary during a single orbit, and therefore may cause inaccurate and unreliable features detection. Moreover, the Earth presence in the background introduces a major complexity into distinguishing the target \acrshort{sc} shape from the Earth surface. The \acrshort{svd} pose initialization architecture aims at solving the problem of pose initialization by employing a single \acrshort{2d} image taken by a monocular camera. In this chapter, a detailed description of the \acrshort{svd} architecture implementation which has been carried out in this work will be presented.
 
-\section{Feature-based pose estimation implementation: the SVD algorithm}
+\section{Feature-Based Pose Estimation}
 The images generated  trough the toolbox presented in Chapter \ref{chap:second-chapter} will now be analyzed using the robust monocular vision-based pose initialization algorithm proposed by S. Sharma, J. Ventura and S. D'Amico in \cite{Sharma2018}.
-As briefly explained in the introduction, the problem of pose initialization consists in computing the rotation matrix,\gls{A_TC} and the translation vector, \gls{t_c} that describes the transformation between the camera frame, $C$, and the target body frame, $B$. Given a generic image point, $p$ = $ [u,v]^T $, we can relate the corresponding $\mathbf{q_B}$ point of the \acrshort{3d} model by employing the standard pinhole camera model briefly reviewed in appendix \ref{subsection:pinhole}:
+The problem of pose initialization consists in computing the rotation matrix,\gls{A_TC} and the translation vector, \gls{t_c} that describes the transformation between the camera frame, $C$, and the target body frame, $B$. Given a generic image point, $p$ = $ [u,v]^T $, we can relate the corresponding $\mathbf{q_B}$ point of the \acrshort{3d} model by employing the standard pinhole camera model (the interested reader can found a brief introduction to the pinhole camera model in appendix \ref{subsection:pinhole}):
 
 \begin{equation}
   \mathbf{r_C} = \left[x_C \quad  y_C \quad z_C\right]^T = \mathbf{A_{TC}} \; \mathbf{q_B} + \mathbf{t_C} \,,
@@ -34,37 +34,46 @@ where \gls{fx} and \gls{fy} are the respectively the horizontal and the vertical
   \label{fig:theposeproblem}
 \end{figure}
 
-To be able to uniquely solve this set of equation are needed at least six correspondences between the image points and the model points \cite{10.1145/358669.358692}. The challenging part of the problem is to be able to correctly detect the most meaningful points in the \acrshort{2d} image. Usually this can be archived by employing edge detection techniques, such as the Canny edge detector \cite{10.1109/TPAMI.1986.4767851} followed by the Hough transform \cite{10.1145/361237.361242}. This approach however may be biased it applied dierctly to the image due to the fact that these algorithm are gradient based and are not able to correctly distinguish the foreground from the background and also requires the definition of numerous hyper-parameters which are difficult to tune for broad applicability because the imaged scene and the illumination conditions are constantly changing throughout the orbit \cite{Sharma2018}.
+As discussed in \cite{D2014}, we can build several considerations on top of those two coupled equations :
+
+\begin{itemize}
+  \item the relationship between image points and pose parameter is hightly non linear and the problem of retrieving the \acrshort{3d} points from the \acrshort{2d} image can have infinite solution in under-constrained situations \cite{10.1145/358669.358692};
+  \item the correspondence between $\mathbf{q_B}$ and $\mathbf{p}$ is not known \textit{a priori};
+  \item the image coordinates need to be corrected for pixel's non-quadratism and lens distortion before using the perspective projection equations.
+\end{itemize}
+
+The pose estimation system thus needs the be capable of extracting the client features from the available image (image processing) to obtain measurements, namely  $\mathbf{p}$. The extracted features then needs to be matched to the correspondent elements of a client model (model matching), namely $\mathbf{q_B}$. The unknown pose then has to be estimated based on the available measurements (pose estimation).
+To be able to uniquely solve equations \eqref{eq:rc} and \eqref{eq:p}, at least six correspondences between the image points and the model points are needed. \cite{10.1145/358669.358692}. The challenging part of the problem is to be able to correctly detect the most meaningful points in the \acrshort{2d} image. Usually this can be archived by employing edge detection techniques, such as the Canny edge detector \cite{10.1109/TPAMI.1986.4767851} followed by the Hough transform \cite{10.1145/361237.361242}. This approach however may be biased it applied directly to the image due to the fact that these algorithm are gradient based and are not able to correctly distinguish the foreground from the background and also requires the definition of numerous hyper-parameters which are difficult to tune for broad applicability because the imaged scene and the illumination conditions are constantly changing throughout the orbit \cite{Sharma2018}.
 
 \subsection{General Architecture}
-In \cite{Sharma2018} is proposed a novel architecture to solve the initial pose of a non cooperative \acrshort{sc}, whose pipeline is depicted in figure \ref{fig:theposeproblem}.
+The architecture proposed in \cite{Sharma2018} tries to solve the pose estimation problem by:
+
+\begin{itemize}
+  \item coupling the \acrfull{wge} technique with the Sobel edge detection to perform the image processing;
+  \item using feature synthesis to reduce the search space for model matching;
+  \item combining a \acrshort{pnp} solver with the \acrfull{nr} method for pose estimation.
+\end{itemize}
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{gfx/SVDPipeline.eps}
+  \includegraphics[width=1.0\textwidth]{gfx/SVDPipeline.eps}
   \caption{The \acrshort{svd} architecture for solving the pose estimation problem \cite{Sharma2018}}
-  \label{fig:theposeproblem}
+  \label{fig:svdArchitecture}
 \end{figure}
 
-Its key features are (directly citing \cite{Sharma2018})  :
-\begin{itemize}
-  \item the fusion of the \acrshort{wge} technique with the more traditional Sobel edge detector and the Hough algorithm to perform the feature detection;
-  \item the use of feature synthesis to reduce the search space for feature correspondences between the features extracted from the images and the \acrshort{3d} model;
-  \item the combination of the \textit{e}\acrshort{pnp} solver and the \acrfull{nr} method for the final pose determination.
-\end{itemize}
-
-As the reader can see from the schematic represented in figure \ref{fig:theposeproblem}, the pipeline is composed from two different subsystems:
+As the reader can see from the schematic represented in figure \ref{fig:svdArchitecture}, the pipeline is composed from two different subsystems:
 \begin{itemize}
   \item the image processing subsystem, which receive as an input a \acrshort{2d} image, distinguishing the \acrshort{sc} from the image, extract its edge features and groups them into geometric groups;
-\end{itemize} the pose determination subsystems, which acceps as input the previously feature groups detected by the image processing subsystem and the \acrshort{3d} model. It then pairs the \acrshort{2d} and \acrshort{3d} geometric groups to formulate multiple correspondence hypotesis. For each hypothesis formulated, the endpoints of the line segments forming the geometric groups are used to solve equation \eqref{eq:rc} and equation \eqref{eq:p}. The five best solution then are iteratively refined by employing the \acrshort{nr} method.
+  \item the pose determination subsystems, which acceps as input the previously feature groups detected by the image processing subsystem and the \acrshort{3d} model. It then pairs the \acrshort{2d} and \acrshort{3d} geometric groups to formulate multiple correspondence hypotesis. For each hypothesis formulated, the endpoints of the line segments forming the geometric groups are used to solve equation \eqref{eq:rc} and equation \eqref{eq:p}. The five best solution then are iteratively refined by employing the \acrshort{nr} method.
+\end{itemize}
 
-two are the most meaningful innovation the \acrshort{svd} architecture introduces:
+Two are the most meaningful innovation the \acrshort{svd} architecture introduces:
 \begin{itemize}
   \item the usage of the \acrshort{wge} technique in order to distinguish the target \acrshort{sc} from the background and for enhancing the output of the edge detection procedure bu providing a robust identification of the small as well as large edges of the \acrshort{sc};
   \item the usage of feature groups detected in the image and in the \acrshort{3d} model to solve the feature correspondence problem, which also allows the \acrshort{svd} architecture to be more computationally efficient.
 \end{itemize}
 
-\subsection{Image processing subsystem}
+\subsection{Image Processing Subsystem}
 The taks of the image processing subsystem is to extract the most meaningful features from the \acrshort{2d} image a of the target \acrshort{sc}. To effectively and rapidly detect the target \acrshort{sc} edges - even in presence of the Earth in the background - an hybrid image processing subsystem is proposed in \cite{Sharma2018}.
 By fusing together the \acrshort{wge} technique and classical state-of-the-art edge detection techniques the architecture proposed by Sharma \textit{et al.} is capable to provide a robust and efficient identification of the rue edges of the \acrshort{sc}.
 In particular, the \acrshort{wge} technique is able to identify the a \acrfull{roi} in a more accurate and robust way with respect to state-of-art techniques. The \acrshort{roi} is detection not only makes the entire subsystem robust against the background, but also allows an automated selection of the hyper-parameters needed for the Hough transform, which will be used to detect both small and large features of the \acrshort{sc}, in contrast with state-of-the-art algorithms which rely on a single set of manually tuned hyper-parameters.
@@ -72,12 +81,12 @@ The flow of the image processing subsystem is illustrated in figure \ref{fig:ima
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=0.85\textwidth]{gfx/imageProcessingSubsystem.eps}
+  \includegraphics[width=1.0\textwidth]{gfx/imageProcessingSubsystem.eps}
   \caption{The image processing subsystem \cite{Sharma2018}}
   \label{fig:imageProcessingSubsystem}
 \end{figure}
 
-\subsubsection{ROI Detection}
+\subsubsection{\acrshort{roi} Detection}
 The first thing to perform when analyzing an image is to identify a \acrshort{roi}.
 The raw input image - assumed to be rectified - is firstly imported in MATLAB. After that, A Gaussian filter is applied in order to the decrease the magnitude of image noise. The Gaussian filtering can be carried out by using the MATLAB function \inlinecode{MATLAB}{imgaussfilt}. In this work, the images generated with the toolbox presented in chapter \ref{chap:second-chapter} are filtered by using a standard deviation $\sigma_X = 1.15$ before being fed to the image processing subsystem. During this work, has been observed that the choice of the $\sigma_X$ value is very important for the success of the subsequent steps, as a wrong value can highly impact the effectiveness of the \acrshort{wge} technique. Once the image has been prefiltered, is fed as input to the \acrshort{wge} block, for the computation of the target's \acrshort{roi}. The first step consist in computing the magnitude of the image gradient, $|\nabla I|$,  using the Prewitt filter for computing the image gradient (for more details about what the image gradient is, refer to appendix \ref{sec:imagegradient}).
 The \acrshort{sc} can be detected in the image by observing that, under most illumination conditions, in correspondence of the target \acrshort{sc} edges the gradient variation is more pronounced with respect to the background, regardless of the fact that the background is empty or the Earth is behind.
@@ -87,7 +96,7 @@ Indeed, to detect the spacecraft, the gradient distribution is normalized using 
   y = \frac{1}{\mu} e^{-\frac{x}{\mu}} \,.
 \end{equation*}
 
-By observing the result histogram, it is clearly possible to see that most of the gradient intensities are weak and corresponds to the feature in the background or on the spacecraft surface. The weak gradient pixel locations can be classified by tresholding the \acrshort{pdf} fit to the gradient histogram. The original authors suggest to use a value of $.0.99$ to treshold the \acrshort{pdf}, however, for what concerns this work, all the pixel which corresponds to a cumulative distribution inferior to $0.996$ are classified as weak and set to zero instead. Once the weak gradients are set to zero, only the most prominent features of the \acrshort{sc} are present in the image, as shown in figure \ref{fig:wgeSteps}.
+By observing the result histogram, it is clearly possible to see that most of the gradient intensities are weak and corresponds to the feature in the background or on the spacecraft surface. The weak gradient pixel locations can be classified by tresholding the \acrshort{pdf} fit to the gradient histogram. The original authors suggest to use a value of $0.99$ to treshold the \acrshort{pdf}, however, for what concerns this work, all the pixel which corresponds to a cumulative distribution inferior to $0.996$ are classified as weak and set to zero instead. Once the weak gradients are set to zero, only the most prominent features of the \acrshort{sc} are present in the image, as shown in figure \ref{fig:wgeSteps}.
 
 \begin{figure}[htbp]
   \centering
@@ -171,7 +180,7 @@ Once ($\alpha, \beta$) are known, the coarse relative position solution is given
   \includegraphics[width=0.65\textwidth]{gfx/coarsePoseEstimation.eps}
   \caption{Calculation of a coarse relative position solution using the WGE
     technique \cite{Sharma2018}}
-  \label{fig:imageProcessingSubsystem}
+  \label{fig:coarseRelative}
 \end{figure}
 
 \subsubsection{Feature Detection}\label{sec:featureextraction}
@@ -285,7 +294,7 @@ from which it follows the value of $\theta_3$
   \centering
   \includegraphics[width=0.45\textwidth]{gfx/hough_rho_theta_diagram.eps}
   \caption{$\rho$ and $\theta$ diagram}
-  \label{fig:theposeproblem}
+  \label{fig:rhotheta}
 \end{figure}
 
 Now, to find $\rho_3$ it is sufficient to compute the intersection between the line which passes trough the origin and is also perpendicular to the joined segment :
@@ -670,26 +679,56 @@ The accuracy of the estimated pose can be evaluated by defining the following er
   \mathbf{A_{diff}} = \mathbf{A_{TC}}^{est}(\mathbf{A_{TC}}^{true})^T
 \end{equation}
 
-where $\mathbf{E_t}$ represents the absolute difference between the "true" position of the \acrshort{sc} (the one imposed at the moment when the image was generated) and the estimated position provided by the pose solution, and $\mathbf{A_{diff}}$ is the \acrshort{dcm} representing the relative rotation between the "true" value (the one imposed at the moment when the image was generated) and the estimated value of $\mathbf{A_{TC}}$.
+where $\mathbf{E_t}$ represents the absolute difference between the ground truth position of the \acrshort{sc} (the one imposed at the moment when the image was generated) and the estimated position provided by the pose solution, and $\mathbf{A_{diff}}$ is the \acrshort{dcm} representing the relative rotation between the ground truth value (the one imposed at the moment when the image was generated) and the estimated value of $\mathbf{A_{TC}}$.
 
-\begin{figure}[htbp]
-  \centering
-  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial49modelMap.eps}}
-  \qquad
-  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC49.eps}}
-  \qquad
-  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial214modelMap.eps}}
-  \qquad
-  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC214.eps}}
-  \qquad
-  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial212modelMap.eps}}
-  \qquad
-  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC212.eps}}
-  \qquad
-  \subfloat[Map superposed to the image]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial311modelMap.eps}}
-  \qquad
-  \subfloat[\acrshort{3d} camera pose in map coordinates]{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC311.eps}}
-  \qquad
-  \caption{Cases of successful pose initialization}
-  \label{fig:EVVAI}
+\begin{figure}[htpb]
+  \setbox1=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial49modelMap.eps}}% The smaller image
+  \setbox2=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC49.eps}}% The larger image
+  {\,} \hfill
+  \subfloat[Map superposed to the image]{%
+    \raisebox{0.5\ht2-0.5\ht1}{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial49modelMap.eps}}} \hfill
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{%
+    \includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC49.eps}} \hfill
+  {\,}
+  \caption{Case of successful pose initialization (1)}
+  \label{fig:EVVAI1}
+\end{figure}
+
+\begin{figure}[htpb]
+  \setbox1=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial214modelMap.eps}}% The smaller image
+  \setbox2=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC214.eps}}% The larger image
+  {\,} \hfill
+  \subfloat[Map superposed to the image]{%
+    \raisebox{0.5\ht2-0.5\ht1}{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial214modelMap.eps}}} \hfill
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{%
+    \includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC214.eps}} \hfill
+  {\,}
+  \caption{Case of successful pose initialization (2)}
+  \label{fig:EVVAI2}
+\end{figure}
+
+\begin{figure}[htpb]
+  \setbox1=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial212modelMap.eps}}% The smaller image
+  \setbox2=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC212.eps}}% The larger image
+  {\,} \hfill
+  \subfloat[Map superposed to the image]{%
+    \raisebox{0.5\ht2-0.5\ht1}{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial212modelMap.eps}}} \hfill
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{%
+    \includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC212.eps}} \hfill
+  {\,}
+  \caption{Case of successful pose initialization (3)}
+  \label{fig:EVVAI3}
+\end{figure}
+
+\begin{figure}[htpb]
+  \setbox1=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial311modelMap.eps}}% The smaller image
+  \setbox2=\hbox{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC311.eps}}% The larger image
+  {\,} \hfill
+  \subfloat[Map superposed to the image]{%
+    \raisebox{0.5\ht2-0.5\ht1}{\includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/trial311modelMap.eps}}} \hfill
+  \subfloat[\acrshort{3d} camera pose in map coordinates]{%
+    \includegraphics[width=0.45\textwidth]{gfx/PoseDetermination/cameraWRTSC311.eps}} \hfill
+  {\,}
+  \caption{Case of successful pose initialization (4)}
+  \label{fig:EVVAI4}
 \end{figure}

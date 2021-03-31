@@ -63,7 +63,7 @@ If we make the assumption of square pixel, then $\alpha = 1 $ and $ f_x = f_y = 
 
 More information about camera model and camera calibration matrix can be found in \cite{10.5555/861369} and \cite{Pollefeys2004}.
 
-\section{Image derivatives}\label{sec:imagegradient}
+\section{Image Derivatives}\label{sec:imagegradient}
 For a grayscale image, the image intensity changes over the image itself can be described by using the $x$ and $y$ derivatives, $I_x$ and $I_y$ of the graylevel image $I$.
 Once defined the image derivatives, it is possible to define another quantity, the image gradient, which is the vector:
 
@@ -127,7 +127,7 @@ The linear Hough transform algorithm estimates the two parameters that define th
 By searching the boxes with highest values, typically by looking at local maxima in the accumulator space, it is possible to identify the the most likely lines. The final result of the Hough transform will be a \acrshort{2d} matrix, were one dimension will be represented by $\theta$ and the other one by $\rho$.
 Each element of that matrix will have a value equal to the sum of the pixels that are positioned on the line represented by the parameters $\rho$, $\theta$. So the element with the highest value indicates the straight line that is most represented in the input image \cite{houghreport}. More information about the how the Hough transform works can be retrieved in \cite{10.1145/361237.361242} and \cite{osti_4746348}.
 
-\subsection{Perspective-n-Point problem}
+\section{Perspective-n-Point Problem}
 The \acrfull{pnp} point is the problem of determining the position and the orientation of a calibrated camera given its intrinsic parameters and a set of correspondences between a given set of \acrshort{3d} points and their respective \acrshort{2d} projections in the image \cite{10.1007/s11263-008-0152-6}.
 The perspective projection for a standard pinhole camera that has been introduced in section \ref{subsection:pinhole} leads to the following equation (in homogeneous coordinates) for the model:
 
