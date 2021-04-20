@@ -44,7 +44,7 @@
 \usepackage{listings}
 \usepackage{subfig}
 \usepackage{babel}
-\usepackage[nointegrals]{wasysym}
+%\usepackage[nointegrals]{wasysym}
 \usepackage{amssymb}
 \usepackage{url}
 \usepackage{nicefrac}
@@ -52,6 +52,9 @@
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \usepackage{calc}
 \usepackage{microtype}
+\usepackage{rotating}
+\usepackage{calligra}
+\usepackage{mathabx}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Acronyms and Glossary
 \usepackage[acronym,nonumberlist,nopostdot]{glossaries}
@@ -77,7 +80,7 @@
 \newacronym{nr}{NR}{Netwon-Raphson}
 \newacronym{eo}{EO}{Electro-Optical}
 \newacronym{stl}{STL}{Stereolitographic}
-\newacronym{gci}{ECIF}{Earth Centered Inertial Frame}
+\newacronym{gci}{ECI}{Earth Centered Inertial}
 \newacronym{povray}{POV-Ray}{The Persistence Of Vision Raytracer}
 \newacronym{ccd}{CCD}{Charge Couple Device}
 \newacronym{sdl}{SDL}{Scene Description Language}
@@ -154,13 +157,12 @@
 \pagenumbering{Roman}
 \chapter*{Ringraziamenti}
 \addcontentsline{toc}{chapter}{Ringraziamenti}
-%\input{./initial-final-stuff/acknowledgments.tex}
+\input{./initial-final-stuff/acknowledgments.tex}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Statement of original authorship
-\pagenumbering{Roman}
-\chapter*{Statement of original authorship}
-\addcontentsline{toc}{chapter}{Statement of original authorship}
+\chapter*{Statement of Original Authorship}
+\addcontentsline{toc}{chapter}{Statement of Original Authorship}
 \input{./initial-final-stuff/authorship.tex}
 \cleardoublepage{}
 
@@ -208,9 +210,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Introduction
 \pagenumbering{arabic}
-\chapter*{Introduction\label{chap:introduction}}
-\addcontentsline{toc}{chapter}{Introduction}
-\markboth{Introduction}{Introduction}
+\chapter{Introduction\label{chap:introduction}}
+% \addcontentsline{toc}{chapter}{Introduction}
+% \markboth{Introduction}{Introduction}
 \input{./initial-final-stuff/introduction.tex}
 \cleardoublepage{}
 
@@ -229,26 +231,26 @@
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Conclusion
-\chapter*{Conclusions}\label{chap:conclusions}
-\addcontentsline{toc}{chapter}{Conclusions}
+\chapter{Conclusions}\label{chap:conclusions}
+%\addcontentsline{toc}{chapter}{Conclusions}
 \markboth{Conclusions}{Conclusions}
 \input{./initial-final-stuff/conclusions.tex}
-\cleardoublepage{}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Bibliography
-\bibliographystyle{plain}
-\bibliography{bibliography}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Appendices
 \appendix
 %%% Appendix A
-\chapter{First appendix: Attitude and Orbit Simulator \label{app:first-appendix}}
+\chapter{Attitude and Orbit Simulator \label{app:first-appendix}}
 \input{./appendices/appendix-a.tex}
 \cleardoublepage{}
 %%% Appendix B
-\chapter{Second appendix: Common \acrshort{cv} Models and Problems \label{app:second-appendix}}
+\chapter{Common \acrshort{cv} Models and Problems \label{app:second-appendix}}
 \input{./appendices/appendix-b.tex}
+\cleardoublepage{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Bibliography
+\bibliographystyle{plain}
+\bibliography{bibliography}
 \cleardoublepage{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% END OF THE DOCUMENT

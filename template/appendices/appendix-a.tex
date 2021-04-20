@@ -1,29 +1,29 @@
-In this appendix the kinematic and dynamic representation used for the simulation of the attitude of the target spacefrat will briefly be descripted.
+In this appendix the kinematic and dynamic representation used for the simulation of the attitude of the \acrshort{sc} is briefly described.
 
 \section{Keplerian Motion}
-The dynamics of the \acrshort{cg} of a rigid body is given by Newton equation of motion stating that the variation in time of the linear mentum is equal to the external forces applied to the body, with respect to an inertial reference frame. Thus :
+The dynamics of the \acrshort{cg} of a rigid body is given by Newton equation of motion stating that the variation in time of the linear momentum is equal to the external forces applied to the body, with respect to an inertial reference frame. Thus:
 
 \begin{equation}
-  \frac{d}{dt} (\textit{m} \mathbf{v}) = \sum\limits_{i=1}^n \mathbf{f_i}
+  \frac{d}{dt} (\textit{m} \mathbf{v}) = \sum\limits_{i=1}^n \mathbf{f_i} \,,
 \end{equation}
 
 where $\textit{m}$ is the mass of the body, $\mathbf{v}$ its velocity and $\mathbf{f_i}$ the forces applied to the system. Then, for a rigid body orbiting around a single massive body, the main force to take into account is the gravitational pull that can be modelled accordingly to Newton law of gravitation as follows:
 
 \begin{equation}
   \label{eqn:orbiteqtn}
-  m \mathbf{\ddot{r}} = - \frac{\mu \textit{m}} {\norm{\mathbf{r}}^3} \mathbf{r} + \mathbf{f}
+  m \mathbf{\ddot{r}} = - \frac{\mu \textit{m}} {\norm{\mathbf{r}}^3} \mathbf{r} + \mathbf{f} \,,
 \end{equation}
 
 where $\mu$ is the gravitational constant of the main attractor, $\mathbf{r}$ the position vector of the orbiting body computed from the main attractor \acrshort{cg} and $\mathbf{f}$ the sum of other forces applied to the system. The underlying assumption is to consider the main attractor to be still or moving in linear constant motion, which is never the case. Such assumptions holds well enough for many problem of interest. Considering null or negligible other forces it follows that the system motion is central, thus the angular momentum is conserved.\\
 Such quantity, for this system, is defined as follows
 
 \begin{equation}
-  \mathbf{h} = \mathbf{r} \wedge \mathbf{r}
+  \mathbf{h} = \mathbf{r} \wedge \mathbf{v} \,,
 \end{equation}
 
 where $\mathbf{v}$ is the velocity, derivative of the position vector $\mathbf{r}$ expressed in the said reference frame.\\
-Crossing \ref{eqn:orbiteqtn} with the angular momentum and considering that the gravitational field is conservative, it is possible to determine the position of the orbiting body in time through six parameters that represent the analytical solution of the restricted two body problem. For this research the influence of other massive bodies is not taken into account as for many of the applications here considered can be analysed considering satellites to be small bodies close to the planet.\\
-The most used set of parameters are often referred to as Keplerian parameters, however different parametrization are possible. Of these six constant two represent the shape of the orbit, which must be a conic according to Kepler's studies and Newton's formulation, three identify the orientation of the orbit in a \acrshort{3d} space and the last one links the position along the orbital with time. The shape is identified by the semi-major axis a of the conic and the eccentricity e, restricted to be between zero and one for closed orbits, being zero for circular orbits. In the reference frame with z axis aligned with angular momentum and x axis aligned with the minimum orbital distance (eccentricity vector) the position vector can be written as follows
+Crossing Equation \eqref{eqn:orbiteqtn} with the angular momentum and considering that the gravitational field is conservative, it is possible to determine the position of the orbiting body in time through six parameters that represent the analytical solution of the restricted two body problem. For this research the influence of other massive bodies is not taken into account as for many of the applications here considered can be analysed considering satellites to be small bodies close to the planet.\\
+The most used set of parameters are often referred to as Keplerian parameters, however different parametrization are possible. Of these six constant two represent the shape of the orbit, which must be a conic according to Kepler's studies and Newton's formulation, three identify the orientation of the orbit in a \acrshort{3d} space and the last one links the position along the orbital with time. The shape is identified by the semi-major axis a of the conic and the eccentricity e, restricted to be between zero and one for closed orbits, being zero for circular orbits. In the reference frame with z axis aligned with angular momentum and x axis aligned with the minimum orbital distance (eccentricity vector) the position vector can be written as follows:
 
 \begin{equation}
   \mathbf{r_{orb}} = \frac{\nicefrac{\norm{h}^2}{\mu}}{1 + e cos \theta} \begin{Bmatrix} cos \theta
@@ -32,41 +32,41 @@ The most used set of parameters are often referred to as Keplerian parameters, h
   \end{Bmatrix} = \frac{a(1-e^2)}{1+ e cos \theta} \begin{Bmatrix} cos \theta
     \\ sin \theta
     \\ 0
-  \end{Bmatrix}
+  \end{Bmatrix} \,.
 \end{equation}
 
 Then the position vector $\mathbf{r_{orb}}$ in this frame can be translated back into the inertial $\mathbf{r}$ by using three sequential rotations in the order \textit{z} - \textit{x} - \textit{z} according to the values of the other three parameters: argument of pericenter $\omega$ , inclination \textit{i} and right ascension of the ascending node $\Omega$.
 
 \section{Euler Equations}
 
-The dynamics of a rigid body which is tumbling into space can be modeled by mean of the well known Euler equations, having in mind that such equation is expressed in a non-inertial reference frame attached to the body frame :
+The dynamics of a rigid body which is tumbling into space can be modeled by mean of the well known Euler equations, having in mind that such equation is expressed in a non-inertial reference frame attached to the body frame:
 
 \begin{equation}
-  \dot{\mathbf{\omega_T}} = \mathbf{(I_T)}^{-1} \left[\mathbf{L_T} - \mathbf{\omega_T}  \wedge (\mathbf{I_T} \mathbf{\omega_T})\right]
+  \dot{\mathbf{\omega}}\mathbf{_T} = \mathbf{(I_T)}^{-1} \left[\mathbf{L_T} - \mathbf{\omega_T}  \wedge (\mathbf{I_T} \mathbf{\omega_T})\right] \,,
 \end{equation}
 
-where \textbf{$\omega_T$} is the angular velocity vector of the spacecraft in body frame, \textbf{$I_T$} is the inertia tensor of the spacecraft in body frame and \textbf{$L_T$} are the external torques acting on the spacecraft due to  external disturbances and control torques.
+where \textbf{$\omega_T$} is the angular velocity vector of the \acrshort{sc} in body frame, \textbf{$I_T$} is the inertia tensor of the \acrshort{sc} in body frame and \textbf{$L_T$} are the external torques acting on the \acrshort{sc} due to  external disturbances and control torques.
 
 \section{Direct Cosine Matrix}
-The direct cosine matrix, or attitude matrix, gives the transformation of a vector from a reference frame $N$ to another reference frame $O$ :
+The direct cosine matrix, or attitude matrix, gives the transformation of a vector from a reference frame $N$ to another reference frame $O$:
 
 \begin{equation}
-  \mathbf{r_{O}} = \mathbf{A_{ON}} \mathbf{r_{N}}
+  \mathbf{r_{O}} = \mathbf{A_{ON}} \mathbf{r_{N}} \,.
 \end{equation}
 
-So, if we consider the spacecraft body frame and the inertial frame, then we can write the relation between the two frames as :
+So, considering the \acrshort{sc} body frame and the inertial frame, then it is possible to write the relation between the two frames as:
 
 \begin{equation}
-  \mathbf{r_{T}} = \mathbf{A_{TN}} \mathbf{r_{N}}
+  \mathbf{r_{T}} = \mathbf{A_{TN}} \mathbf{r_{N}} \,.
 \end{equation}
 
-As it is demonstrated in \cite{Markley2014}, we can express the time dependence of the attitude matrix by writing the rotation from the body frame to the inertial frame as :
+As it is demonstrated in \cite{Markley2014}, it is possible to express the time dependence of the attitude matrix by writing the rotation from the body frame to the inertial frame as:
 
 \begin{equation}
-  \mathbf{\dot{A}_{TN}}= - [\omega_{TN} \wedge]\mathbf{A_{TN}}
+  \dot{\mathbf{A}}_\mathbf{TN} = - [\mathbf{\omega_{TN}} \wedge]\mathbf{A_{TN}} \,,
 \end{equation}
 
-where $[\omega_{TN} \wedge]$ is the skew-symmetric cross product matrix containing the components of the angular velocity vector :
+where $[\omega_{TN} \wedge]$ is the skew-symmetric cross product matrix containing the components of the angular velocity vector:
 
 \begin{equation*}
   \mathbf{[\omega_{TN} \wedge]} =
@@ -74,13 +74,13 @@ where $[\omega_{TN} \wedge]$ is the skew-symmetric cross product matrix containi
     0                & -\omega_{TN_{3}} & \omega_{TN_{2}}  \\
     \omega_{TN_{3}}  & 0                & -\omega_{TN_{1}} \\
     -\omega_{TN_{2}} & \omega_{TN_{1}}  & 0
-  \end{bmatrix}
+  \end{bmatrix} \,.
 \end{equation*}
 
-Thus, by integrating this relation, we can get full attitude at every iteration.
+Thus, by integrating this relation, it is possible to get full attitude at every iteration.
 
 \section{Environmental Disturbances} \label{sec:disturbances}
-The external disturbances acting on spacecraft placed in a LEO orbit are basically four and are due to :
+The external disturbances acting on \acrshort{sc} placed in a Low Earth Orbit are basically four and are due to:
 
 \begin{itemize}
   \item Gravity Gradient
@@ -89,111 +89,112 @@ The external disturbances acting on spacecraft placed in a LEO orbit are basical
   \item Aerodynamic Drag
 \end{itemize}
 
-Details about how those torques have been mathematically modeled will be given in the following sections.
+Details about how those torques have been mathematically modeled are given in the following Sections.
 
 \subsubsection{Gravity Gradient}
 Any non-symmetrical rigid body in a gravity field is subject to a gravity-gradient torque.
-If we consider a rigid spacecraft, the torque due to the gravity gradient about the spacecraft's center of mass can be modeled as :
+Considering a rigid \acrshort{sc}, the torque due to the gravity gradient about the \acrshort{sc}'s center of mass can be modeled as:
 
 \begin{equation}
-  \mathbf{L_{gg}} = \frac{3 \ mu}{r^3} \mathbf{n} \wedge (\mathbf{I} \ \mathbf{n})
+  \mathbf{L_{gg}} = \frac{3 \mu}{r^3} \mathbf{n} \wedge (\mathbf{I} \ \mathbf{n}) \,,
 \end{equation}
 
 where $\mu$ is the Eart's gravitational constant, $\textbf{r}$ is the radius vector from the center of the Earth, thus $r \equiv \Vert{\textbf{r}}\Vert$, $\textbf{I}$ is the inertia tensor in body frame and $\textbf{n}$ is the body frame representation of a nadir-pointing unit vector.\\
 Further details about the model can be found in reference \cite{Markley2014}.
 
 \subsubsection{Earth's Magnetic Field}
-The torque generated by a magnetic dipole $\textbf{m}$ in a magnetic field $\textbf{B}$ is
+The torque generated by a magnetic dipole $\mathbf{m}$ in a magnetic field $\mathbf{B}$ is:
 
 \begin{equation}
-  \mathbf{L_{mag}} = \mathbf{m} \wedge \mathbf{B}
+  \mathbf{L_{mag}} = \mathbf{m} \wedge \mathbf{B} \,,
   \label{eq:magfield}
 \end{equation}
 
-where $\mathbf{B}$ is the magnetic field in the body frame.
-The most basic source of a magnetic dipole is a current loop. A current of I amperes flowing in a planar loop of area A produces a dipole moment of magnitude m=IA in the direction normal to the plane of the loop and satisfying a right-hand rule.
-When $\textbf{m}$ is in $Am^2$ and the magnetic field is specified in Tesla, Eq. \ref{eq:magfield} gives the torque in $Nm$. If there are N turns of wire in the loop, the dipole moment has magnitude m=NIA (such as the case of a magnetic torquer).
-To model $\textbf{B}$ either the full IGRF model or the simple dipole model can be used.\\
-For what concerns this work, the full IGRF model truncated to the 10th order has been used. Further details about the model can be found in reference \cite{Davis2014}
+where $\mathbf{B}$ is the Earth's magnetic field in the body frame.
+The most basic source of a magnetic dipole is a current loop. A current of $I$ amperes flowing in a planar loop of area $A$ produces a dipole moment of magnitude $m=IA$ in the direction normal to the plane of the loop and satisfying the right-hand rule.
+When $\mathbf{m}$ is in $Am^2$ and $\mathbf{B}$ in Tesla, Equation \eqref{eq:magfield} gives the torque in $Nm$. If there are $N$ turns of wire in the loop, the dipole moment has magnitude $m=NIA$ (such as the case of a magnetic torquer).
+To model $\mathbf{B}$ either the full International Geomagnetic Reference Field (IGRF) model or the simple dipole model can be used.\\
+For what concerns this work, the full IGRF model truncated to the $10$-th order has been used. Further details about the model can be found in reference \cite{Davis2014}
 
 \subsubsection{Solar Radiation Pressure}
-Solar radiation pressure acting on the surfaces of the spacecraft causes a disturbance torque that in general, cannot be neglected for orbits higher than \SI{800}{\kilo\meter}, so it has been taken into account in this work.
-The SRP torque is zero zero when the spacecraft is in the shadow of the Earth or any other body, of course.
-To take into account the effect of solar radiation pressure on the spacecraft, the spacecraft's surface can be modeled as a collection of $N$ flat plates of area $S_{i}$, outward normal $\mathbf{n_{b}}$ in the body coordinate frame, specular reflection coefficient $\rho_s$, diffuse reflection coefficient $\rho_{d}$ and absorption coefficient $\rho_{a}$; those coefficients must sum to unity.
+Solar Radiation Pressure (SRP) acting on the surfaces of the \acrshort{sc} causes a disturbance torque that in general, cannot be neglected for orbits higher than \SI{800}{\kilo\meter}, so it has been taken into account in this work.
+The SRP torque is zero when the \acrshort{sc} is in the shadow of the Earth or any other body, of course.
+To take into account the effect of SRP on the \acrshort{sc}, the \acrshort{sc}'s surface can be modeled as a collection of $N$ flat plates of area $S_{i}$, outward normal $\mathbf{n_{b}}$ in the body coordinate frame, specular reflection coefficient $\rho_s$, diffuse reflection coefficient $\rho_{d}$ and absorption coefficient $\rho_{a}$; those coefficients must sum to unity.
 For what concerns this work, only $\rho_s$ and $\rho_d$ have been considered, since all the absorbed radiation is emitted as thermal radiation,  although not necessarily at the same time or from the same surface as its absorption.
-For an accurate modeling of thermal radiation we must also known the absolute temerature and the emissivity of each surface.
-We can define the spacecraft-to-Sun unit vector in the spacecraft's body frame as :
+For an accurate modeling of thermal radiation it is also needed the knowledge of the absolute temperature and of the emissivity of each surface.
+It is possible to define the spacecraft-to-Sun unit vector in the \acrshort{sc}'s body frame as:
 
 \begin{equation}
-  \mathbf{s_t} = \mathbf{A_{TN}} \mathbf{s_i}
+  \mathbf{s_t} = \mathbf{A_{TN}} \mathbf{s_i} \,,
 \end{equation}
 
-where $\mathbf{A_{TN}}$ is the attitude matrix and $\mathbf{s_i}$ is the spacecraft-to-Sun unit vector in the GCI frame.
-We can define the angle between the Sun vector and the normal exiting from the normal to the i-th plate as :
+where $\mathbf{A_{TN}}$ is the attitude matrix and $\mathbf{s_i}$ is the spacecraft-to-Sun unit vector in the \acrshort{gci} frame.
+The angle between the Sun vector and the normal exiting from the normal to the \textit{i}-th plate can be defined as:
 
 \begin{equation}
-  cos(\theta_{SRP}^{i}) = \mathbf{n}_{T}^{i} \cdot \mathbf{s_b}
+  cos(\theta_{SRP}^{i}) = \mathbf{n}_{T}^{i} \cdot \mathbf{s_b} \,.
 \end{equation}
 
-The SRP force on the i-th plate can be expressed as :
+The SRP force on the \textit{i}-th plate can be expressed as:
 
 \begin{equation}
-  \mathbf{F}_{SRP} = - P_{Sun}A_{i}\left[ 2\left( \frac{\rho_{d}^{i}}{3} + \rho_{s}^{i}cos(\theta_{SRP}^{i}) \right) \mathbf{n}_{B}^{i} + (1 -\rho_{s}) \mathbf{s_t} \right] max(cos(\theta_{SRP}^{i}),0)
+  \mathbf{F}_{SRP} = - P_{Sun}A_{i}\left[ 2\left( \frac{\rho_{d}^{i}}{3} + \rho_{s}^{i}cos(\theta_{SRP}^{i}) \right) \mathbf{n}_{B}^{i} + (1 -\rho_{s}) \mathbf{s_t} \right] max(cos(\theta_{SRP}^{i}),0) \,,
 \end{equation}
 
-where $P_{Sun}$ is the solar radiation pressure.
-The Solar radiation pressure torque acting on the spacecraft is then given by :
+where $P_{Sun}$ is the SRP.
+The SRP torque acting on the \acrshort{sc} is then given by:
 
 \begin{equation}
-  \mathbf{L}_{SRP}^{i} = \sum\limits_{i=1}^n  \mathbf{r}_{i} \wedge \mathbf{F}_{SRP}^{i}
+  \mathbf{L}_{SRP}^{i} = \sum\limits_{i=1}^n  \mathbf{r}_{i} \wedge \mathbf{F}_{SRP}^{i} \,,
 \end{equation}
 
-where $\mathbf{r}_{i}$ is the vector from the spacecraft center of mass to the centre of pressure of the SRP on the i-th face.
-In this formulation we are not considering the albedo radiation coming from the Earth and from the Moon.
-Further details on how the solar radiation pressure, the spacecraft-to-Sun unit vector and the eclipse condition have been modeled can be found in reference \cite{Markley2014}.
+where $\mathbf{r}_{i}$ is the vector from the \acrshort{sc} center of mass to the centre of pressure of the SRP on the \textit{i}-th face.
+In this formulation, it is not not considered the albedo radiation coming from the Earth and from the Moon.
+Further details on how the SRP, the spacecraft-to-Sun unit vector and the eclipse condition have been modeled can be found in reference \cite{Markley2014}.
 
 \subsubsection{Aerodynamic Drag}
-Aerodynamic torque is generally computed by modeling the spacecraft as a collection of $N$ flat plates of area $A_i$ and outward normal unit vector $\mathbf{n_{B}}$ expressed in the spacecraft body-fixed coordinate system. The torque depends on the velocity of the spacecraft relative to the atmosphere, which is not simply the velocity of the spacecraft in the GCI frame, because the atmosphere is not stationary in that frame.
-The most common assumption is that the atmosphere co-rotates with the Earth. The relative velocity in the GCI frame is then given by :
+Aerodynamic torque is generally computed by modeling the \acrshort{sc} as a collection of $N$ flat plates of area $A_i$ and outward normal unit vector $\mathbf{n_{B}}$ expressed in the \acrshort{sc} body-fixed coordinate system. The torque depends on the velocity of the \acrshort{sc} relative to the atmosphere, which is not simply the velocity of the \acrshort{sc} in the \acrshort{gci} frame, because the atmosphere is not stationary in that frame.
+The most common assumption is that the atmosphere co-rotates with the Earth. The relative velocity in the \acrshort{gci} frame is then given by:
 
 \begin{equation}
-  \mathbf{v_{relI}} =  \mathbf{v_I} + [\mathbf{\omega_{\earth} \wedge}] \mathbf{r_I}
+  \mathbf{v_{relI}} =  \mathbf{v_I} + [\boldsymbol{\omega_{\Earth} \wedge}] \mathbf{r_I} \,,
 \end{equation}
 
-where $\mathbf{r_I}$ and $\mathbf{v_I}$ are the position and velocity of the spacecraft expressed in the GCI frame.
-The Earth's angular velocity vector is $\mathbf{\omega_{\earth}} = \omega_{\earth}[0 \ 0 \ 1]'$ with $\omega_{\earth}$ = \SI{0.000072921158553}{\radian/\second}.
-The velocity in the body frame is the computed as :
+where $\mathbf{r_I}$ and $\mathbf{v_I}$ are the position and velocity of the \acrshort{sc} expressed in the \acrshort{gci} frame.
+The Earth's angular velocity vector is $\boldsymbol{\omega_{\Earth}} = \omega_{\Earth}[0 \ 0 \ 1]^T$, with $\omega_{\Earth}$ = \SI{0.000072921158553}{\radian/\second}.
+
+The velocity in the body frame is then computed as:
 
 \begin{equation}
-  \mathbf{v_{relT}} = \mathbf{A_{TN}}   \begin{bmatrix} \dot{x} + \omega_{\earth} y \\ \dot{y} - \omega_{\earth} x \\ \dot{x} \end{bmatrix}
+  \mathbf{v_{relT}} = \mathbf{A_{TN}}   \begin{bmatrix} \dot{x} + \omega_{\Earth} y \\ \dot{y} - \omega_{\Earth} x \\ \dot{x} \end{bmatrix} \,.
 \end{equation}
 
-The inclination of the \textit{i-th} plate with respect to the relative velocity is given by :
+The inclination of the \textit{i}-th plate with respect to the relative velocity is given by:
 
 \begin{equation}
-  cos(\theta_{aero}^{i}) = \frac{\mathbf{n}_{T}^{i} \cdot \mathbf{v}_{rel\ T}}{\norm{\mathbf{v}_{rel}}}
+  cos(\theta_{aero}^{i}) = \frac{\mathbf{n}_{T}^{i} \cdot \mathbf{v}_{relT}}{\norm{\mathbf{v}_{rel}}} \,.
 \end{equation}
 
-The aerodynamic force on i-th plate in the flat plate model is
+The aerodynamic force on \textit{i}-th plate in the flat plate model is
 
 \begin{equation}
-  \mathbf{F}_{aero}^{i} = - \frac{1}{2} \rho C_{D} \norm{\mathbf{v}_{rel}} \mathbf{v}_{rel_{} T}\ S_{i}\ max(cos(\theta_{aero}^{i}),0)
+  \mathbf{F}_{aero}^{i} = - \frac{1}{2} \rho C_{D} \norm{\mathbf{v}_{rel}} \mathbf{v}_{rel_{} T}\ S_{i}\ max(cos(\theta_{aero}^{i}),0) \,,
 \end{equation}
 
 where $\rho$ is the atmospheric density, and $C_D$ is the drag coefficient.
-$\rho$ can be modeled by mean of the well known exponential decaying model for the atmospheric density :
+$\rho$ can be modeled by mean of the well known exponential decaying model for the atmospheric density:
 
 \begin{equation}
-  \rho = \rho_{0} e^{(-(h-h_{0})/H)}
+  \rho = \rho_{0} e^{(-(h-h_{0})/H)} \,,
 \end{equation}
 
 where $\rho_{0}$ and $h_{0}$ are reference density and height, respectively, $h$ is the height above the ellipsoid and $H$ is the scale height, which is the fractional change in density with eight.
 The value of $\rho_{0}$, $h_{0}$  and $H$ changes with $h$.
 The values used to perform the simulation are the one given in \cite{Markley2014}.
-The actual torque due to the aerodynamic drag can be computed as :
+The actual torque due to the aerodynamic drag can be computed as:
 
 \begin{equation}
-  \mathbf{L}_{aero}^{i} = \sum\limits_{i=1}^n  \mathbf{r}_{i} \wedge \mathbf{F}_{aero}^{i}
+  \mathbf{L}_{aero}^{i} = \sum\limits_{i=1}^n  \mathbf{r}_{i} \wedge \mathbf{F}_{aero}^{i} \,,
 \end{equation}
 
-where $n$ is the number of faces and $\mathbf{r}_{i}$ is the vector from the spacecraft center of mass to the center of pressure on the $i$ th face.
+where $n$ is the number of faces and $\mathbf{r}_{i}$ is the vector from the \acrshort{sc} center of mass to the center of pressure on the \textit{i}-th face.
